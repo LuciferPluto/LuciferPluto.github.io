@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>PS2整理（FIFIO/边沿检测） | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="PS/2相关实现解析
+在看南京大学数字电路实验的第七题时，发现在键盘输入中有很多在实际芯片的模块级构建时可以用到的小技巧，这里整理后加以说明方便以后运用
+代码解析
+对于PS/2的键盘控制，首先是负责接收键盘的数据
+module ps2_ke..." />
+    <meta name="keywords" content="YSYX" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">PS2整理（FIFIO/边沿检测）</h2>
+            <div class="post-date">2025-09-03</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="ps2相关实现解析">PS/2相关实现解析</h2>
+<p>在看南京大学数字电路实验的第七题时，发现在键盘输入中有很多在实际芯片的模块级构建时可以用到的小技巧，这里整理后加以说明方便以后运用</p>
+<h2 id="代码解析">代码解析</h2>
+<p>对于PS/2的键盘控制，首先是负责接收键盘的数据</p>
+<pre><code class="language-verilog">module ps2_keyboard(clk,clrn,ps2_clk,ps2_data,data,
+                    ready,nextdata_n,overflow);
+    input clk,clrn,ps2_clk,ps2_data;
+    input nextdata_n;
+    output [7:0] data;
+    output reg ready;
+    output reg overflow;     // fifo overflow
+    // internal signal, for test
+    reg [9:0] buffer;        // ps2_data bits
+    reg [7:0] fifo[7:0];     // data fifo
+    reg [2:0] w_ptr,r_ptr;   // fifo write and read pointers
+    reg [3:0] count;  // count ps2_data bits
+    // detect falling edge of ps2_clk
+    reg [2:0] ps2_clk_sync;
+
+    always @(posedge clk) begin
+        ps2_clk_sync &lt;=  {ps2_clk_sync[1:0],ps2_clk};
+    end
+
+    wire sampling = ps2_clk_sync[2] &amp; ~ps2_clk_sync[1];
+
+    always @(posedge clk) begin
+        if (clrn == 0) begin // reset
+            count &lt;= 0; w_ptr &lt;= 0; r_ptr &lt;= 0; overflow &lt;= 0; ready&lt;= 0;
+        end
+        else begin
+            if ( ready ) begin // read to output next data
+                if(nextdata_n == 1'b0) //read next data
+                begin
+                    r_ptr &lt;= r_ptr + 3'b1;
+                    if(w_ptr==(r_ptr+1'b1)) //empty
+                        ready &lt;= 1'b0;
+                end
+            end
+            if (sampling) begin
+              if (count == 4'd10) begin
+                if ((buffer[0] == 0) &amp;&amp;  // start bit
+                    (ps2_data)       &amp;&amp;  // stop bit
+                    (^buffer[9:1])) begin      // odd  parity
+                    fifo[w_ptr] &lt;= buffer[8:1];  // kbd scan code
+                    w_ptr &lt;= w_ptr+3'b1;
+                    ready &lt;= 1'b1;
+                    overflow &lt;= overflow | (r_ptr == (w_ptr + 3'b1));
+                end
+                count &lt;= 0;     // for next
+              end else begin
+                buffer[count] &lt;= ps2_data;  // store ps2_data
+                count &lt;= count + 3'b1;
+              end
+            end
+        end
+    end
+    assign data = fifo[r_ptr]; //always set output data
+
+endmodule
+</code></pre>
+<h3 id="1-模块概述">1. 模块概述</h3>
+<p>该模块 <code>ps2_keyboard</code> 实现了一个用于接收标准 PS/2 键盘数据的控制器。它在 FPGA 内部通过<strong>同步采样方式对异步的 <code>ps2_clk</code> 与 <code>ps2_data</code> 信号进行解码</strong>，将<strong>键盘发送的 11 位帧（包括起始位、数据位、奇校验位和停止位）转换为 8 位扫描码</strong>，并通过 FIFO 进行缓存，供系统读取。</p>
+<h3 id="2-接口说明">2. 接口说明</h3>
+<table>
+<thead>
+<tr>
+<th>信号名</th>
+<th>方向</th>
+<th>位宽</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clk</code></td>
+<td>输入</td>
+<td>1</td>
+<td>FPGA 系统时钟，用于同步逻辑。</td>
+</tr>
+<tr>
+<td><code>clrn</code></td>
+<td>输入</td>
+<td>1</td>
+<td>异步复位信号，低电平有效。</td>
+</tr>
+<tr>
+<td><code>ps2_clk</code></td>
+<td>输入</td>
+<td>1</td>
+<td>PS/2 设备发送的时钟信号（约 10–16kHz）。</td>
+</tr>
+<tr>
+<td><code>ps2_data</code></td>
+<td>输入</td>
+<td>1</td>
+<td>PS/2 设备发送的数据线信号。</td>
+</tr>
+<tr>
+<td><code>nextdata_n</code></td>
+<td>输入</td>
+<td>1</td>
+<td>低电平时表示上层模块请求读取下一个数据。</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>输出</td>
+<td>8</td>
+<td>当前 FIFO 中的键盘扫描码数据。</td>
+</tr>
+<tr>
+<td><code>ready</code></td>
+<td>输出</td>
+<td>1</td>
+<td>当 FIFO 非空时置 1，表示有可读取数据。</td>
+</tr>
+<tr>
+<td><code>overflow</code></td>
+<td>输出</td>
+<td>1</td>
+<td>当 FIFO 写入时已满，则该信号置 1。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-ps2-协议简要说明">3. PS/2 协议简要说明</h3>
+<p>PS/2 键盘通过 <strong>时钟线（ps2_clk）</strong> 和 <strong>数据线（ps2_data）</strong> 进行通信。<br>
+每个数据帧包含 <strong>11 位信号</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>位序号</th>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bit 0</td>
+<td>起始位</td>
+<td>固定为 0</td>
+</tr>
+<tr>
+<td>bit 1–8</td>
+<td>数据位</td>
+<td>键盘扫描码（低位先传）</td>
+</tr>
+<tr>
+<td>bit 9</td>
+<td>奇校验位</td>
+<td>使得所有 1 的数量为奇数</td>
+</tr>
+<tr>
+<td>bit 10</td>
+<td>停止位</td>
+<td>固定为 1</td>
+</tr>
+</tbody>
+</table>
+<p>数据在<strong>时钟下降沿时采样</strong>。</p>
+<h3 id="4-信号同步与下降沿检测">4. 信号同步与下降沿检测</h3>
+<p>由于 PS/2 信号与 FPGA 主时钟不同步，直接采样会导致亚稳态。<br>
+因此代码使用了 3 级同步寄存器：</p>
+<pre><code class="language-verilog">always @(posedge clk) begin
+    ps2_clk_sync &lt;= {ps2_clk_sync[1:0], ps2_clk};
+end
+</code></pre>
+<p>并通过以下逻辑检测下降沿：</p>
+<pre><code class="language-verilog">wire sampling = ps2_clk_sync[2] &amp; ~ps2_clk_sync[1];
+</code></pre>
+<p>含义：当上两个采样周期 <code>ps2_clk</code> 为高、电平在当前周期变为低时，输出一个时钟宽度的高脉冲 <code>sampling=1</code>。<br>
+该脉冲用于在下降沿时刻采集 <code>ps2_data</code>。</p>
+<h3 id="5-数据采样与帧解析逻辑">5. 数据采样与帧解析逻辑</h3>
+<p>模块通过 <code>count</code> 计数器记录当前接收的位数。</p>
+<p>在每次检测到 <code>sampling=1</code>（即下降沿）时：</p>
+<ul>
+<li>若 <code>count &lt; 10</code>，说明仍在接收数据帧，采样并存入 <code>buffer[count]</code>；</li>
+<li>若 <code>count == 10</code>，表示一帧数据接收完毕，进行以下检查：
+<ul>
+<li><code>buffer[0] == 0</code>（起始位正确）；</li>
+<li><code>ps2_data == 1</code>（停止位正确）；</li>
+<li><code>(^buffer[9:1]) == 1</code>（奇校验正确）。</li>
+</ul>
+</li>
+</ul>
+<p>若上述条件均成立，则表示接收成功，将 <code>buffer[8:1]</code>（即 8 位数据）写入 FIFO。</p>
+<pre><code class="language-verilog">fifo[w_ptr] &lt;= buffer[8:1];
+w_ptr &lt;= w_ptr + 3'b1;
+ready &lt;= 1'b1;
+overflow &lt;= overflow | (r_ptr == (w_ptr + 3'b1));
+</code></pre>
+<h3 id="6-fifo-数据管理">6. FIFO 数据管理</h3>
+<p>模块使用 8×8 位 FIFO 存储键盘扫描码：</p>
+<ul>
+<li>
+<p><code>fifo[7:0]</code> 为存储区；</p>
+</li>
+<li>
+<p><code>w_ptr</code> 写指针；</p>
+</li>
+<li>
+<p><code>r_ptr</code> 读指针；</p>
+</li>
+<li>
+<p><code>overflow</code> 表示写满但未读的情况。</p>
+</li>
+<li>
+<table>
+<thead>
+<tr>
+<th>信号名</th>
+<th>含义</th>
+<th>位宽</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>w_ptr</code></td>
+<td>写指针 (write pointer)</td>
+<td>3 位</td>
+<td>指向 FIFO 当前<strong>写入位置</strong>，即下一次要写入的存储单元。</td>
+</tr>
+<tr>
+<td><code>r_ptr</code></td>
+<td>读指针 (read pointer)</td>
+<td>3 位</td>
+<td>指向 FIFO 当前<strong>读出位置</strong>，即当前要输出的存储单元。</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>读取逻辑如下：</p>
+<pre><code class="language-verilog">if (ready) begin
+    if(nextdata_n == 1'b0) begin
+        r_ptr &lt;= r_ptr + 1;
+        if(w_ptr == (r_ptr + 1))
+            ready &lt;= 1'b0; // FIFO 已空
+    end
+end
+</code></pre>
+<p>即：</p>
+<ul>
+<li>当 <code>nextdata_n=0</code> 时，读取下一个扫描码；</li>
+<li>若读完后 FIFO 为空，<code>ready</code> 清零。</li>
+</ul>
+<p>控制 FIFO 的**入队（写入）<strong>和</strong>出队（读取）**操作，使得接收到的数据可以被暂存、按顺序输出，而不会丢失。</p>
+<pre><code class="language-verilog">fifo[w_ptr] &lt;= buffer[8:1]; // 写入8位扫描码
+w_ptr &lt;= w_ptr + 3'b1;      // 写指针自增
+ready &lt;= 1'b1;              // 通知上层有新数据
+overflow &lt;= overflow | (r_ptr == (w_ptr + 3'b1)); // 检查是否溢出
+</code></pre>
+<ul>
+<li>每接收一个完整扫描码，就写入 FIFO；</li>
+<li><code>w_ptr</code> 前移一格，指向下一个可写位置；</li>
+<li>如果 <code>w_ptr</code> 追上 <code>r_ptr</code>，说明 FIFO 满，触发 <code>overflow=1</code>；</li>
+<li><code>ready</code> 置 1 表示“有新数据可读”。</li>
+</ul>
+<h3 id="7-数据输出">7. 数据输出</h3>
+<p>无论是否读取，当前输出口始终保持：</p>
+<pre><code class="language-verilog">assign data = fifo[r_ptr];
+</code></pre>
+<p>即输出 FIFO 队头元素。</p>
+<h3 id="8-时序流程总结">8. 时序流程总结</h3>
+<ol>
+<li><strong>外部键盘发送数据帧（11 位）</strong><br>
+→ <code>ps2_clk</code> 产生下降沿。</li>
+<li><strong>在每个下降沿时采样 <code>ps2_data</code></strong><br>
+→ 存入 <code>buffer</code>。</li>
+<li><strong>接收满 11 位后检查帧合法性</strong><br>
+→ 校验成功则写入 FIFO。</li>
+<li><strong>上层模块拉低 <code>nextdata_n</code></strong><br>
+→ 读取 FIFO 中数据，更新指针。</li>
+<li><strong>若 FIFO 写入超出容量则 <code>overflow=1</code></strong>。</li>
+</ol>
+<h2 id="项目运用">项目运用</h2>
+<h3 id="1-异步信号沿检测">1. <strong>异步信号沿检测</strong></h3>
+<p>——这里有一个数字电路中用于<strong>检测“下降沿”<strong>的经典写法用于</strong>对samping 置 0</strong> 操作</p>
+<ul>
+<li>
+<pre><code class="language-VERILOG">always @(posedge clk) begin
+    ps2_clk_sync &lt;= {ps2_clk_sync[1:0], ps2_clk};
+end
+
+wire sampling = ps2_clk_sync[2] &amp; ~ps2_clk_sync[1];
+</code></pre>
+</li>
+<li>
+<p><code>ps2_clk</code> 是 PS/2 外设提供的时钟信号，不一定与 FPGA 主时钟 <code>clk</code> 同步。<br>
+所以我们需要：</p>
+<ol>
+<li><strong>用主时钟 clk 对 ps2_clk 进行同步</strong>（防止亚稳态）。</li>
+<li><strong>检测 ps2_clk 的下降沿</strong>，在那一刻产生一个采样脉冲 <code>sampling=1</code>。</li>
+</ol>
+</li>
+<li>
+<p>其上述代码的主要步骤是：</p>
+<ol>
+<li>移位寄存器同步输入信号
+<ul>
+<li>每次主时钟上升沿时：
+<ul>
+<li>把当前的 <code>ps2_clk</code> 推入移位寄存器。</li>
+<li>3 个 bit 用来保存 ps2_clk 最近 3 个周期的状态。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>用samping检测“下降沿”
+<ul>
+<li>当信号从高变低（1 → 0）时，sampling 输出一个时钟周期的高脉冲。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>逻辑功能等价于：</p>
+<blockquote>
+<pre><code>sampling = 上两次采样是1，上一次采样是0 → 检测下降沿
+</code></pre>
+</blockquote>
+<p>这个技巧非常常见，用于任何<strong>异步信号沿检测</strong>。<br>
+同理：</p>
+<ul>
+<li>检测上升沿：<code>(~ps2_clk_sync[2]) &amp; ps2_clk_sync[1]</code></li>
+<li>检测下降沿：<code>ps2_clk_sync[2] &amp; ~ps2_clk_sync[1]</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-对fifo机制">2. 对FIFO机制</h3>
+<ol>
+<li>
+<p>FIFO 基本概念</p>
+<ul>
+<li>
+<p>**FIFO（First-In First-Out，先进先出）**是一种常用的数据缓冲结构。<br>
+在硬件系统中，它的作用是协调“生产者（写入端）”与“消费者（读取端）”之间的速率差异，使得数据传输更平滑、无丢失。</p>
+</li>
+<li>
+<p>FIFO 由以下三部分组成：</p>
+<ul>
+<li>
+<p><strong>存储单元</strong>（如寄存器数组或RAM）</p>
+</li>
+<li>
+<p><strong>写指针 w_ptr（write pointer）</strong>：指示当前写入的位置</p>
+</li>
+<li>
+<p><strong>读指针 r_ptr（read pointer）</strong>：指示当前读取的位置</p>
+</li>
+</ul>
+</li>
+<li>
+<p>两个关键状态：</p>
+<ul>
+<li>
+<p><strong>Empty</strong>：当 <code>w_ptr == r_ptr</code> 时表示 FIFO 为空。</p>
+</li>
+<li>
+<p><strong>Full</strong>：当 <code>(w_ptr + 1) == r_ptr</code> 时表示 FIFO 已满。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>PS/2 键盘控制器中的 FIFO 实现机制</p>
+<ul>
+<li>在 PS/2 键盘控制器中，数据是<strong>串行接收</strong>的，每次接收到一个完整字节（扫描码）后写入 FIFO。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>1️⃣ FIFO 结构：</li>
+</ul>
+<pre><code class="language-verilog">reg [7:0] fifo[7:0]; // 存储 8 字节扫描码
+reg [2:0] w_ptr, r_ptr; // 写指针与读指针
+/*
+w_ptr 表示下一个要写入数据的地址；
+r_ptr 表示下一个要读出的数据地址。
+*/
+</code></pre>
+<ul>
+<li>2️⃣ 写入逻辑：</li>
+</ul>
+<pre><code class="language-verilog">fifo[w_ptr] &lt;= buffer[8:1]; // 写入新扫描码
+w_ptr &lt;= w_ptr + 1;
+</code></pre>
+<p>当 PS/2 时钟采样完成 11 位（1 起始 + 8 数据 + 奇校验 + 1 停止）后，若校验正确，则将 <code>buffer[8:1]</code> 存入 FIFO。<br>
+此时 <code>w_ptr</code> 自增，若 <code>w_ptr+1 == r_ptr</code>，则说明写指针追上读指针（FIFO 满），触发 <code>overflow</code>。</p>
+<ul>
+<li>3️⃣ 读取逻辑：</li>
+</ul>
+<pre><code class="language-verilog">if (nextdata_n == 0) begin
+    r_ptr &lt;= r_ptr + 1;
+end
+</code></pre>
+<p>当外部模块（例如主控制逻辑）读取了当前 <code>data = fifo[r_ptr]</code> 后，拉低 <code>nextdata_n</code>，使得 <code>r_ptr</code> 自增，从而指向下一个数据。</p>
+<ul>
+<li>4️⃣ 状态管理：</li>
+</ul>
+<pre><code class="language-verilog">if (w_ptr == (r_ptr + 1)) ready &lt;= 0; // FIFO 空
+</code></pre>
+<p>ready 信号表明 FIFO 中有数据可读。</p>
+<ol start="3">
+<li>同步 FIFO 的实现机制（单时钟域）</li>
+</ol>
+<p>同步 FIFO 是最简单的一种情况，读写都在同一个时钟（<code>clk</code>）下进行：</p>
+<p>✅ 特点</p>
+<ul>
+<li>单一时钟控制所有逻辑</li>
+<li>写入与读取的有效信号可以在同一时钟沿判断</li>
+<li>状态（full/empty）判断简单</li>
+</ul>
+<p>✅ 核心逻辑结构</p>
+<pre><code class="language-verilog">always @(posedge clk) begin
+    if (wr_en &amp;&amp; !full)
+        fifo[w_ptr] &lt;= din;
+    if (rd_en &amp;&amp; !empty)
+        dout &lt;= fifo[r_ptr];
+
+    if (wr_en &amp;&amp; !full)
+        w_ptr &lt;= w_ptr + 1;
+    if (rd_en &amp;&amp; !empty)
+        r_ptr &lt;= r_ptr + 1;
+end
+
+assign full  = (w_ptr + 1'b1) == r_ptr;
+assign empty = (w_ptr == r_ptr);
+</code></pre>
+<p>在 PS/2 键盘控制器中正是这种<strong>同步 FIFO</strong>，因为 <code>clk</code> 同时用于检测 ps2_clk 同步信号与数据缓存。</p>
+<ol start="4">
+<li>异步 FIFO 的实现机制（跨时钟域）</li>
+</ol>
+<p>当数据写入与读取处于<strong>不同的时钟域</strong>时（例如串口接收 vs 系统总线读取），必须使用异步 FIFO。</p>
+<p>1️⃣ 问题来源</p>
+<ul>
+<li>写端时钟（<code>wr_clk</code>）与读端时钟（<code>rd_clk</code>）相互独立；</li>
+<li>指针同步必须防止亚稳态（metastability）。</li>
+</ul>
+<p>2️⃣ 典型实现机制</p>
+<p><strong>写指针、读指针分别在各自时钟域更新：</strong></p>
+<pre><code class="language-verilog">always @(posedge wr_clk)
+    if (wr_en &amp;&amp; !full)
+        w_ptr_bin &lt;= w_ptr_bin + 1;
+
+always @(posedge rd_clk)
+    if (rd_en &amp;&amp; !empty)
+        r_ptr_bin &lt;= r_ptr_bin + 1;
+</code></pre>
+<p><strong>使用 Gray 编码避免多比特翻转带来的同步错误：</strong></p>
+<pre><code class="language-verilog">assign w_ptr_gray = (w_ptr_bin &gt;&gt; 1) ^ w_ptr_bin;
+assign r_ptr_gray = (r_ptr_bin &gt;&gt; 1) ^ r_ptr_bin;
+</code></pre>
+<p><strong>在对方时钟域内同步指针：</strong></p>
+<pre><code class="language-verilog">// 写指针同步到读时钟域
+always @(posedge rd_clk)
+    w_ptr_gray_sync &lt;= {w_ptr_gray_sync[1:0], w_ptr_gray};
+
+// 读指针同步到写时钟域
+always @(posedge wr_clk)
+    r_ptr_gray_sync &lt;= {r_ptr_gray_sync[1:0], r_ptr_gray};
+</code></pre>
+<p><strong>full/empty 判断在各自域内完成：</strong></p>
+<pre><code class="language-verilog">assign full  = (w_ptr_gray_next == {~r_ptr_gray_sync[2:1], r_ptr_gray_sync[0]});
+assign empty = (r_ptr_gray == w_ptr_gray_sync);
+</code></pre>
+<ol start="5">
+<li>知识点总结与对比</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>同步 FIFO</th>
+<th>异步 FIFO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>时钟域</td>
+<td>单时钟域</td>
+<td>双时钟域（读写独立）</td>
+</tr>
+<tr>
+<td>实现复杂度</td>
+<td>简单</td>
+<td>较复杂（需同步与 Gray 编码）</td>
+</tr>
+<tr>
+<td>亚稳态问题</td>
+<td>不存在</td>
+<td>存在，需要同步寄存器链</td>
+</tr>
+<tr>
+<td>延迟</td>
+<td>低</td>
+<td>稍高（同步延迟）</td>
+</tr>
+<tr>
+<td>应用场景</td>
+<td>内部模块缓冲（如 PS/2 键盘）</td>
+<td>不同时钟域数据交互（如 UART、AXI、PCIe）</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/9QKzn89sFT/" class="tag">
+                    YSYX
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/hdlbits/">
+                  <h3 class="post-title">
+                    HDLbits
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

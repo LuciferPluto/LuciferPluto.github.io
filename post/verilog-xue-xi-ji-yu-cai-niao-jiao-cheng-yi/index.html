@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Verilog学习——基于菜鸟教程（一） | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Verilog学习——基于菜鸟教程（一）
+一、EDA技术概述
+发展历程
+
+相关名词
+
+摩尔曾经对半导体集成技术的发展做出预言:大约每18个月，芯片的集成度提高Ⅰ倍，功耗下降半，称为摩尔定律（Moore's law)。
+数字芯片经历了从SSI..." />
+    <meta name="keywords" content="verilog" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Verilog学习——基于菜鸟教程（一）</h2>
+            <div class="post-date">2024-08-28</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="verilog学习基于菜鸟教程一">Verilog学习——基于菜鸟教程（一）</h1>
+<h2 id="一-eda技术概述">一、EDA技术概述</h2>
+<h3 id="发展历程">发展历程</h3>
+<blockquote>
+<p>相关名词</p>
+<ol>
+<li>摩尔曾经对半导体集成技术的发展做出预言:大约每18个月，芯片的集成度提高Ⅰ倍，功耗下降半，称为摩尔定律（Moore's law)。</li>
+<li>数字芯片经历了从SSI、MSI、LSI 到 VLSI，直到现在的系统芯片(SOC，System On Chip)——把一个完整的电子系统集成在一个芯片上。</li>
+<li>可编程逻辑器件(PLD，Programmable Logic Device)——极大地改变了设计制作电子系统的方式与方法</li>
+<li>简单形式：编程逻辑阵列(PLA，Programmable Logic Array)、通用阵列逻辑(GAL,Generic Array Logic)</li>
+<li>高级形式：现场可编程门阵列(FPGA, Field ProgrammableGate Array)和复杂可编程逻辑器件(CPLD，Complex Programmable Logic Device）</li>
+<li>电子系统的设计理念和设计方法：电子CAD (Computer Aided Design)——电子CAE(ComputerAided Engineering）——电子设计自动化(EDA，Electronic Design Automation)
+<ol>
+<li>EDA即电子设计自动化。
+<ul>
+<li>EDA技术的发展是以计算机科学、微电子技术的发展为基础,并融合了应用电子技术、智能技术以及计算机图形学、拓扑学、计算数学等众多学科的最新成果发展起来的。</li>
+<li>EDA就是立足于计算机工作平台而开发出来的一整套先进的设计电子系统的软件工具。</li>
+</ul>
+</li>
+<li>CAD阶段<br>
+电子CAD阶段是EDA技术发展的早期阶段。功能是借助于计算机对所设计电路的性能进行一些模拟和预测;另外，就是完成PCB板的布局布线、简单版图的绘制等工作。</li>
+<li>CAE阶段<br>
+随着电子CAD的工具逐步完善和发展——电子CAE阶段。在这个阶段，各种单点设计工具、各种设计单元库逐渐完备，并且开始将许多单点工具集成在一起使用</li>
+</ol>
+</li>
+<li>IP（Intellectual Property）核：（IP模块）：指功能完整，性能指标可靠，已验证的、可重用的电路功能模块。
+<ol>
+<li>IP（Intellectual Property）：原来的含义是指知识产权、著作权，在<strong>IC设计领域指实现某种功能的设计</strong>。</li>
+<li>IP复用（IP reuse）</li>
+<li>注!!!这里的IP和计算机网络的网络互连协议不是一个东西，那个IP是（Internet，Protocol）</li>
+</ol>
+</li>
+<li>SoPC（System on Programmable Chip，可编程芯片系统）</li>
+<li>DSP（数字信号处理）</li>
+</ol>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231017212730905.png" alt="image-20231017212730905" loading="lazy"></figure>
+<ol>
+<li>电子技术各个领域全方位融入EDA技术。</li>
+<li>IP（Intellectual Property）核在电子设计领域得到了广泛的应用。</li>
+<li>嵌入式微处理器软核的出现，更大规模的FPGA/CPLD器件的不断推出，使得SoPC（System on Programmable Chip，可编程芯片系统）步入实用化阶段。</li>
+<li>用FPGA实现完全硬件的DSP（数字信号处理）处理成为可能。</li>
+<li>在设计和仿真两方面支持标准硬件描述语言的EDA软件不断推出，系统级、行为验证级硬件描述语言的出现使得复杂电子系统的设计和验证更加高效。</li>
+</ol>
+<h3 id="top-down设计与ip核复用">Top-down设计与IP核复用</h3>
+<ol>
+<li>
+<p>top-down（自顶向下）</p>
+<p>设计方式：</p>
+<figure data-type="image" tabindex="2"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231017221104415.png" alt="image-20231017221104415" loading="lazy"></figure>
+<p>设计——验证——修改设计——再验证</p>
+<ul>
+<li>
+<p>这种设计方法首先从<strong>系统设计</strong>入手——在<strong>顶层</strong>进行<strong>功能方框图的划分和结构设计</strong>——在<strong>功能级</strong>进行<strong>仿真、纠错</strong>——并用<strong>硬件描述语言</strong>对高层次的<strong>系统行为进行描述</strong>——用<strong>综合工具将</strong>设计转化为<strong>具体门电路网表,</strong>（其对应的物理实现可以是PLD器件或专用集成电路(ASIC)）——</p>
+</li>
+<li>
+<blockquote>
+<p>（由于设计的主要仿真和调试过程是在高层次上完成的，这不仅有利于早期发现结构设计上的错误，避免设计工作的浪费，而且也减少了逻辑功能仿真的工作量。提高了设计的一次成功率）</p>
+</blockquote>
+</li>
+<li>
+<p>在Top-down设计中，将设计分成<strong>系统级、功能级、门级、开关级</strong>等几个不同的层次，按照自上而下的顺序，在不同的层次上，对系统进行设计与仿真。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Bottom-up设计</p>
+<ul>
+<li>Bottom-up设计，<strong>即自底向上的设计</strong>，由设计者调用设计库中的元件(如各种门电路、加法器、计数器等) ，设计组合出满足自己需要的系统</li>
+<li>在数字系统设计中，一般是以Top-down设计为主，Bottom-up设计为辅。</li>
+</ul>
+</li>
+<li>
+<p>IP复用技术与SoC</p>
+<ul>
+<li>
+<p>IP复用（IC中的）：分为软核、固核和硬核</p>
+<ul>
+<li>软IP--软核表现为RTL代码（Verilog或VHDL）。软核只经过功能仿真，其优点是灵活性高、可移植性强。</li>
+<li>固IP--固核指经过了综合（布局布线）的带有平面规划信息的网表，通常以RTL代码和对应具体工艺网表的混合形式提供。</li>
+<li>硬IP--硬核指经过验证的设计版图，其经过前端和后端验证，并针对特定的设计工艺，用户不能对其进行修改 。</li>
+</ul>
+</li>
+<li>
+<p>Soc系统芯片(System on Chip)，或者称为芯片系统，是指把―个完整的系统集成在一个芯片.L;简单地说，就是用一个芯片实现一个功能完整的系统。</p>
+<ul>
+<li>
+<p>手机SoC集成了CPU/GPU(图形处理器)/RAM/Modem（调制解调器）/DSP（数字信号处理）/CODEC（解编码器）等部件</p>
+</li>
+<li>
+<p>微电子工艺提供了硬件基础、EDA软件提供了工具</p>
+</li>
+<li>
+<blockquote>
+<p>发展经历：</p>
+<figure data-type="image" tabindex="3"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018172710220.png" alt="image-20231018172710220" loading="lazy"></figure>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="eda设计的流程">EDA设计的流程</h3>
+<p>两种方案：</p>
+<ul>
+<li>用可编程逻辑器件（PLD）
+<ul>
+<li>可用（FPGA/CPLD）半定制，器件内已集成各种逻辑资源，用户只要对其中资源编程就实现所需要的功能，而且可以反复修改、反复编程，真到完全满足要求，灵活性高、成本低、风险小。</li>
+</ul>
+</li>
+<li>用专用集成电路（ASIC）全定制——也叫掩膜（Mask）ASIC，可以达到功耗最低，更省面积——需要设计版图（CIF/GDS II格式）并交厂家流片</li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018192211518.png" alt="image-20231018192211518" loading="lazy"></li>
+</ul>
+<ol>
+<li>设计输入
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018192308884.png" alt="image-20231018192308884" loading="lazy"></li>
+</ul>
+</li>
+<li>综合
+<ul>
+<li>将较高层次的设计描述<strong>自动转化</strong>为较低层次描述的过程<br>
+◆行为综合：从算法表示、行为描述转换到寄存器传输级（RTL）<br>
+◆逻辑综合：RTL级描述转换到逻辑门级（包括触发器）<br>
+◆版图综合或结构综合：从逻辑门表示转换到版图表示，或转换到PLD器件的配置网表表示<br>
+<strong>综合器是能自动实现上述转换的软件工具</strong>，是能将原理图或HDL语言描述的电路功能转化为具体电路网表的工具。</li>
+<li>软件编译器和硬件综合器区别<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018192439069.png" alt="image-20231018192439069" loading="lazy"></li>
+</ul>
+</li>
+<li>编程和配置
+<ul>
+<li>下载：把适配后生成的编程文件装入到PLD器件中的过程。</li>
+<li>编程（Program）：通常将对基于EEPROM工艺的非易失结构CPLD器件的下载</li>
+<li>配置（Configure）：将基于SRAM工艺结构的PLD器件的下载</li>
+</ul>
+</li>
+</ol>
+<h3 id="常用的eda软件工具">常用的EDA软件工具</h3>
+<p>一般是按照公司类别分类以及按照软件功能分类</p>
+<p>按照公司分：</p>
+<ol>
+<li>专业EDA软件公司开发——第三方EDA软件工具</li>
+<li>FPGA/CPLD生产厂家开发的EDA工具</li>
+</ol>
+<p>实际生活中可以把两个结合</p>
+<ol>
+<li>
+<p>集成的 FPGA/CPLD开发工具<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018194821159.png" alt="image-20231018194821159" loading="lazy"></p>
+</li>
+<li>
+<p>设计输入工具</p>
+<ul>
+<li>帮助完成原理图与HDL文本的编辑和输入工作</li>
+</ul>
+</li>
+<li>
+<p>逻辑综合器</p>
+<ul>
+<li>
+<p>将设计者在<strong>EDA平台上编辑输入的HDL文本、原理图或者状态图描述</strong>根据<strong>硬件结构与约束控制条件来编译、优化和转换</strong>——得到<strong>门电路甚至底层的电路描述网表文件</strong></p>
+</li>
+<li>
+<figure data-type="image" tabindex="6"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018195354123.png" alt="image-20231018195354123" loading="lazy"></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>仿真工具——（编译型和解释型）<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231018195706060.png" alt="image-20231018195706060" loading="lazy"></p>
+</li>
+<li>
+<p>芯片版图设计软件</p>
+</li>
+<li>
+<p>其他EDA工具</p>
+</li>
+</ol>
+<h3 id="发展趋势">发展趋势</h3>
+<ol>
+<li>高性能的EDA工具将得到进一步发展，超大规模集成电路的集成度和工艺水平不断提高。市场对系统的集成度不断提出更高的要求。高性能的EDA工具，其自动化和智能化程度不断提高，为嵌入式系统设计提供了功能强大的开发环境。计算机硬件平台性能大幅度提高，为复杂的SoC设计提供了物理基础。</li>
+<li>EDA技术将促使ASIC和FPGA逐步走向融合 。</li>
+<li>EDA技术的应用领域将越来越广泛。</li>
+</ol>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/1xX2tV1atw/" class="tag">
+                    verilog
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-er/">
+                  <h3 class="post-title">
+                    Verilog学习——基于菜鸟教程（二）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

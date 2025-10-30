@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>HDLbits | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="HDLbits
+要求
+
+
+
+Getting Started - 建议完成, 以熟悉完成习题的流程
+
+
+Verilog Language - 建议不熟悉Verilog的同学完成
+
+
+Combinational Logic
+
+Basic Gat..." />
+    <meta name="keywords" content="YSYX" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">HDLbits</h2>
+            <div class="post-date">2025-09-02</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="hdlbits">HDLbits</h1>
+<h2 id="要求">要求</h2>
+<blockquote>
+<ul>
+<li>
+<p>Getting Started - 建议完成, 以熟悉完成习题的流程</p>
+</li>
+<li>
+<p>Verilog Language - 建议不熟悉Verilog的同学完成</p>
+</li>
+<li>
+<p>Combinational Logic</p>
+<ul>
+<li>Basic Gates
+<ul>
+<li>More logic gates</li>
+<li>Truth tables</li>
+<li>Simple circuit A</li>
+<li>Simple circuit B</li>
+<li>Thermostat</li>
+<li>3-bit population count</li>
+<li>Even longer vectors</li>
+</ul>
+</li>
+<li>Multiplexers
+<ul>
+<li>2-to-1 multiplexer</li>
+<li>9-to-1 multiplexer</li>
+<li>256-to-1 4-bits multiplexer</li>
+</ul>
+</li>
+<li>Arithmetic Circuits
+<ul>
+<li>Signed addition overflow</li>
+<li>100-bits binary adder</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Sequential Logic</p>
+<ul>
+<li>
+<p>Latches and Flip-Flops</p>
+<ul>
+<li>D flip-flip</li>
+<li>DFF with reset value</li>
+<li>DFF with asynchronous reset</li>
+<li>DFF with byte enable</li>
+<li>Mux and DFF</li>
+<li>Create circuit from truth table</li>
+<li>Detect an edge</li>
+<li>Detect both edges</li>
+<li>Edge capture register</li>
+<li>Dual-edge triggered flip-flop</li>
+</ul>
+</li>
+<li>
+<p>Counters</p>
+<ul>
+<li>Decade counter again</li>
+<li>Slow decade counter</li>
+<li>Counter 1000</li>
+<li>12-hour clock</li>
+</ul>
+</li>
+<li>
+<p>Shift Registers</p>
+<ul>
+<li>Left/right rotator</li>
+<li>Left/right arithmetic shift by 1 or 8</li>
+<li>5-bits LFSR</li>
+<li>Shift register</li>
+<li>3-input LUT</li>
+</ul>
+</li>
+<li>
+<p>More Circuits - 全部完成</p>
+</li>
+<li>
+<p>Finite State Machines</p>
+<ul>
+<li>Lemmings 1</li>
+<li>Lemmings 2</li>
+<li>Lemmings 3</li>
+<li>Lemmings 4</li>
+<li>PS/2 packet parser</li>
+<li>PS/2 packet parser and datapath</li>
+<li>Serial receiver</li>
+<li>Serial receiver and datapath</li>
+<li>Serial receiver with parity checking</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="getting-started">Getting Started</h2>
+<p>设计步骤：编写HDL（Verilog）代码，编译代码以生成电路，然后模拟电路并修复错误。</p>
+<ul>
+<li>Click <strong>Simulate</strong> to compile and simulate your design.</li>
+<li>Click <strong>Show Quartus messages</strong> to show/hide them</li>
+<li>使用 ModelSim 并行仿真您的电路和我们的参考解决方案，然后比较模块的输出</li>
+</ul>
+<p>情况：</p>
+<blockquote>
+<p><strong>Status: Success!</strong>. There are a few other possibilities:</p>
+<ul>
+<li><strong>Compile Error</strong> — Circuit did not compile.</li>
+<li><strong>Simulation Error</strong> — Circuit compiled successfully, but simulation did not complete.</li>
+<li><strong>Incorrect</strong> — Circuit compiled and simulated, but the outputs did not match the reference.</li>
+<li><strong>Success!</strong> — Circuit was correct</li>
+</ul>
+</blockquote>
+<h2 id="verilog-language">Verilog Language</h2>
+<ul>
+<li>向量中要做重复拼接对于单个信号值可以<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144522.png" alt="image-20250926104840886" loading="lazy">
+<ul>
+<li>但是对于赋值信号来说，需要在外面扩展一个花括号<code>{}</code></li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144523.png" alt="image-20250926104915867" loading="lazy"></li>
+</ul>
+</li>
+<li>多选一选择器有两种表现形式：一种是always一种是assign
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144524.png" alt="image-20250926113527465" loading="lazy"></li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144525.png" alt="image-20250926113540578" loading="lazy"></li>
+</ul>
+</li>
+<li>同时在定义输出wire时要注意其位宽大小</li>
+<li>注意锁存器的发生：避免latch，即如果有if逻辑，但存在不完整的条件判断，这会导致锁存器的产生，需要想清楚条件的完整性</li>
+<li>条件赋值：<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144526.png" alt="image-20250927190820622" loading="lazy"></li>
+<li>对于多向量翻转：可用genvar定义
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144527.png" alt="image-20250927194308659" loading="lazy"></li>
+</ul>
+</li>
+<li>也可以是这种循环
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144528.png" alt="image-20250927194954371" loading="lazy"></li>
+</ul>
+</li>
+<li>对于多位加法器：
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144529.png" alt="image-20250927195651436" loading="lazy"></li>
+<li>先构造一个一位加法器，后实例化首位的加法器，然后将其cout当作下一个加法器的cin
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144530.png" alt="image-20250927195744252" loading="lazy"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="basic-gate">Basic Gate</h2>
+<ul>
+<li>对于3位输入向量的种群计数电路，我们可以直接根据输入的真值表来设计逻辑。
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144531.png" alt="image-20250927210545517" loading="lazy"></li>
+<li>在Verilog中，当我们将多个1位信号相加时，综合工具会自动创建一个适当的加法器电路来计算1的个数。</li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144532.png" alt="image-20250927210558297" loading="lazy"></li>
+</ul>
+</li>
+<li>对于单纯累加的256-1选择器，可以这样表述
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144533.png" alt="image-20250927212446300" loading="lazy"></li>
+</ul>
+</li>
+<li>要想完成多位二进制加法<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144534.png" alt="image-20250927213112037" loading="lazy">
+<ul>
+<li>由于是二进制以此是符合1’bitFA的，以此<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144535.png" alt="image-20250927213145188" loading="lazy"></li>
+</ul>
+</li>
+</ul>
+<h2 id="circuits">Circuits</h2>
+<ul>
+<li>
+<p>对于JK触发器，需要使用到之前的D存储的值，由于是reg，因此可存储值即Q_old，因此根据真值表去推算，</p>
+<ul>
+<li>当JK为0，D = Q， 则与门的1是不影响另外一个值，或门的0不影响另外一个值</li>
+<li>因此D = （j &amp;~ Q）| (~k &amp; Q)</li>
+<li>其中D输入由J、K和当前Q值通过门电路计算得出。在时钟的上升沿，D值被锁存到Q输出，从而实现JK触发器的功能。</li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144536.png" alt="image-20250927225432139" loading="lazy"></li>
+</ul>
+</li>
+<li>
+<p>8位向量上升沿检测器</p>
+<ul>
+<li>
+<p>这个电路用于检测8位输入信号中每个比特位的<strong>上升沿</strong>（从0变为1的跳变），并在跳变发生后的下一个时钟周期输出检测结果。</p>
+</li>
+<li>
+<p><strong>上升沿检测</strong>：当某个比特位从0变为1时，就检测到了一个上升沿</p>
+</li>
+<li>
+<p><strong>延迟输出</strong>：检测结果在跳变发生后的下一个时钟周期才输出</p>
+</li>
+<li>
+<figure data-type="image" tabindex="12"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144537.png" alt="image-20250928153030738" loading="lazy"></figure>
+</li>
+<li>
+<h3 id="关键逻辑">关键逻辑</h3>
+<ul>
+<li><code>prev_in</code>：寄存器，存储上一个时钟周期的输入值</li>
+<li><code>pedge = in &amp; ~prev_in</code>：上升沿检测公式
+<ul>
+<li><code>~prev_in</code>：前一个周期值的反相</li>
+<li><code>in &amp; ~prev_in</code>：当前为1且前一个周期为0时输出1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Edgecapture</p>
+<ul>
+<li>检测32位输入信号中每个比特位的<strong>下降沿</strong>（从1到0的跳变），并在检测到下降沿后将对应的输出位<strong>锁存为1</strong>，直到同步复位信号将其清零。</li>
+<li>总结：要检测上升沿：out &lt;= in &amp; ~latch_in;
+<ul>
+<li>检测任意边沿：out &lt;= in ^ latch_in;</li>
+<li>检查下降沿: out &lt;= ~in &amp; latch_in;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>8位移位寄存器与3输入LUT电路设计</p>
+<ul>
+<li>
+<p>功能说明</p>
+<p>设计一个结合8位移位寄存器和3输入查找表(LUT)的电路：</p>
+<ul>
+<li><strong>8位移位寄存器</strong>：串行输入S，在时钟控制下移位</li>
+<li><strong>3输入LUT</strong>：根据输入ABC选择8个寄存器输出之一</li>
+<li><strong>随机访问读取</strong>：通过ABC地址选择输出位</li>
+<li><strong>顺序写入</strong>：通过移位操作写入数据</li>
+</ul>
+</li>
+<li>
+<pre><code class="language-verilog">module top_module (
+    input clk,
+    input enable,
+    input S,
+    input A, B, C,
+    output Z
+);
+
+// 8位移位寄存器
+reg [7:0] q;
+
+// 移位寄存器逻辑
+always @(posedge clk) begin
+    if (enable) begin
+        // 使能时执行移位操作
+        q &lt;= {q[6:0], S};
+    end
+    // 不使能时保持当前值
+end
+
+// 3输入多路选择器（LUT功能）
+assign Z = q[{A, B, C}];
+
+endmodule
+</code></pre>
+</li>
+<li>
+<figure data-type="image" tabindex="13"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144538.png" alt="image-20250928205004367" loading="lazy"></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>一维元胞自动机</p>
+<ul>
+<li>功能说明</li>
+</ul>
+<p>实现一个512个细胞的一维元胞自动机，遵循Rule 90规则：</p>
+<ul>
+<li>
+<p><strong>Rule 90规则</strong>：每个细胞的下一个状态是其左右邻居的异或(XOR)</p>
+</li>
+<li>
+<p><strong>边界条件</strong>：两端边界细胞的外部邻居为0</p>
+</li>
+<li>
+<p><strong>同步加载</strong>：<code>load</code>信号有效时加载初始状态</p>
+</li>
+<li>
+<p><strong>时钟推进</strong>：每个时钟周期更新一次状态</p>
+</li>
+<li>
+<figure data-type="image" tabindex="14"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144539.png" alt="image-20250928212520474" loading="lazy"></figure>
+</li>
+<li>
+<pre><code class="language-verilog">module top_module(
+    input clk,
+    input load,
+    input [511:0] data,
+    output reg [511:0] q
+);
+
+always @(posedge clk) begin
+    if (load) begin
+        // 同步加载初始状态
+        q &lt;= data;
+    end else begin
+        // Rule 90: 每个细胞的下一个状态 = 左邻居 XOR 右邻居
+        // 处理边界条件：q[-1] = 0, q[512] = 0
+        q[0] &lt;= 0 ^ q[1];                    // 最左端细胞
+        q[511] &lt;= q[510] ^ 0;                // 最右端细胞
+        
+        // 中间细胞
+        for (int i = 1; i &lt; 511; i = i + 1) begin
+            q[i] &lt;= q[i-1] ^ q[i+1];
+        end
+    end
+end
+
+endmodule
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>小结——康威生命游戏 (Conway's Game of Life)</p>
+<ul>
+<li>
+<p>实现一个16x16的康威生命游戏，使用环形边界（toroidal）：</p>
+<ul>
+<li><strong>网格大小</strong>：16x16 = 256个细胞</li>
+<li><strong>环形边界</strong>：上下左右边界相连，形成环面</li>
+<li><strong>生命规则</strong>：
+<ul>
+<li>0-1个邻居：细胞死亡</li>
+<li>2个邻居：状态不变</li>
+<li>3个邻居：细胞存活/诞生</li>
+<li>4+个邻居：细胞死亡</li>
+</ul>
+</li>
+<li><strong>同步加载</strong>：<code>load</code>信号有效时加载初始状态</li>
+<li><strong>时钟推进</strong>：每个时钟周期更新一代</li>
+</ul>
+</li>
+<li>
+<p>难点在于：</p>
+<ul>
+<li>这是一个<strong>同步状态机</strong>：所有细胞同时更新</li>
+<li><strong>邻居计算</strong>是核心难点</li>
+<li><strong>边界处理</strong>需要特殊考虑</li>
+</ul>
+</li>
+<li>
+<p>确定数据结构：<code>reg [3:0] neighbor_count [0:255];</code></p>
+<ul>
+<li>解决邻居计算（组合逻辑）——不要忘记单独对特殊边界情况做出判断</li>
+<li>状态更新（时序逻辑）</li>
+</ul>
+</li>
+<li>
+<pre><code class="language-verilog">module top_module(
+    input clk,
+    input load,
+    input [255:0] data,
+    output reg [255:0] q
+);
+
+// 计算每个细胞的邻居数量
+reg [3:0] neighbor_count [0:255]; // 每个细胞的邻居计数（0-8）
+
+integer i, j, row, col, left_col, right_col, top_row, bottom_row;
+integer idx, neighbor_idx;
+
+always @(*) begin
+    for (i = 0; i &lt; 256; i = i + 1) begin
+        // 计算当前细胞的行列坐标
+        row = i / 16;
+        col = i % 16;
+        
+        // 计算邻居的行列（考虑环形边界）
+        left_col = (col == 0) ? 15 : (col - 1);
+        right_col = (col == 15) ? 0 : (col + 1);
+        top_row = (row == 0) ? 15 : (row - 1);
+        bottom_row = (row == 15) ? 0 : (row + 1);
+        
+        // 初始化邻居计数
+        neighbor_count[i] = 0;
+        
+        // 检查8个邻居
+        // 左上
+        neighbor_idx = top_row * 16 + left_col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 上
+        neighbor_idx = top_row * 16 + col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 右上
+        neighbor_idx = top_row * 16 + right_col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 左
+        neighbor_idx = row * 16 + left_col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 右
+        neighbor_idx = row * 16 + right_col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 左下
+        neighbor_idx = bottom_row * 16 + left_col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 下
+        neighbor_idx = bottom_row * 16 + col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+        
+        // 右下
+        neighbor_idx = bottom_row * 16 + right_col;
+        neighbor_count[i] = neighbor_count[i] + q[neighbor_idx];
+    end
+end
+
+// 更新状态
+always @(posedge clk) begin
+    if (load) begin
+        q &lt;= data;
+    end else begin
+        for (i = 0; i &lt; 256; i = i + 1) begin
+            case (neighbor_count[i])
+                4'd2: q[i] &lt;= q[i];  // 保持状态
+                4'd3: q[i] &lt;= 1'b1;  // 存活或诞生
+                default: q[i] &lt;= 1'b0; // 死亡
+            endcase
+        end
+    end
+end
+
+endmodule
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>串行数据接受状态机——移位计算</p>
+<ul>
+<li>
+<p>添加数据路径来输出正确接收的数据字节。数据字节需要在done信号有效时输出，其他时间可以是不关心值。</p>
+</li>
+<li>
+<p>注意串行协议先发送最低有效位——右移</p>
+</li>
+<li>
+<figure data-type="image" tabindex="15"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@master/picture/202510231144540.png" alt="image-20250930090312576" loading="lazy"></figure>
+</li>
+<li>
+<pre><code class="language-verilog">module top_module(
+    input clk,
+    input in,
+    input reset,   // Synchronous reset
+    output [7:0] out_byte,
+    output done
+);
+
+    // Define states
+    parameter IDLE = 2'b00;   // Waiting for start bit (0)
+    parameter DATA = 2'b01;   // Receiving data bits
+    parameter STOP = 2'b10;   // Checking stop bit
+    parameter ERROR = 2'b11;  // Stop bit error, waiting for correct stop bit
+    
+    reg [1:0] state, next_state;
+    reg [2:0] bit_count;     // Counter for data bits (0-7)
+    reg [7:0] shift_reg;     // Shift register for collecting data bits
+    reg done_reg;            // Registered done signal
+    
+    // State register
+    always @(posedge clk) begin
+        if (reset)
+            state &lt;= IDLE;
+        else
+            state &lt;= next_state;
+    end
+    
+    // Bit counter
+    always @(posedge clk) begin
+        if (reset)
+            bit_count &lt;= 0;
+        else if (state == IDLE &amp;&amp; !in)  // Start bit detected, clear counter
+            bit_count &lt;= 0;
+        else if (state == DATA)
+            bit_count &lt;= bit_count + 1;
+    end
+    
+    // Shift register for collecting data bits
+    // Note: LSB is received first, so we shift right and place new bit at the MSB
+    always @(posedge clk) begin
+        if (reset)
+            shift_reg &lt;= 8'b0;
+        else if (state == DATA)
+            shift_reg &lt;= {in, shift_reg[7:1]}; // Shift right, new bit at MSB
+    end
+    
+    // Next state logic
+    always @(*) begin
+        case (state)
+            IDLE:
+                if (!in)  // Start bit detected (0)
+                    next_state = DATA;
+                else
+                    next_state = IDLE;
+            DATA:
+                if (bit_count == 7)  // Received all 8 data bits
+                    next_state = STOP;
+                else
+                    next_state = DATA;
+            STOP:
+                if (in)  // Correct stop bit (1)
+                    next_state = IDLE;
+                else     // Incorrect stop bit
+                    next_state = ERROR;
+            ERROR:
+                if (in)  // Found correct stop bit
+                    next_state = IDLE;
+                else
+                    next_state = ERROR;
+            default:
+                next_state = IDLE;
+        endcase
+    end
+    
+    // Output logic
+    // Done signal is registered to ensure it's stable
+    wire done_combo = (state == STOP &amp;&amp; in);
+    always @(posedge clk) begin
+        done_reg &lt;= done_combo;
+    end
+    assign done = done_reg;
+    
+    // Output byte is valid only when done is asserted
+    // At other times, it's don't-care
+    assign out_byte = (done_reg) ? shift_reg : 8'bx;
+
+endmodule
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/9QKzn89sFT/" class="tag">
+                    YSYX
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/zai-ubuntu-zhong-an-zhuang-eda-gong-ju/">
+                  <h3 class="post-title">
+                    在Ubuntu中安装EDA工具
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

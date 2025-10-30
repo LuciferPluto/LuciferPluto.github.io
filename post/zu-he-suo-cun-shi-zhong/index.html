@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>组合/锁存时钟 | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="组合/锁存时钟读RAM
+读addr，rdata的优劣：（继而可以解释为什么要打一拍）
+彻底了解时序电路、组合电路、触发器、锁存器的区别_时序逻辑和锁存器逻辑区别-CSDN博客
+第五章·锁存器和触发器 - 知乎
+在设计RAM中，读数据部分需要..." />
+    <meta name="keywords" content="验证" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">组合/锁存时钟</h2>
+            <div class="post-date">2025-03-20</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="组合锁存时钟读ram">组合/锁存时钟读RAM</h1>
+<p>读addr，rdata的优劣：（继而可以解释为什么要打一拍）</p>
+<p><a href="https://blog.csdn.net/qq_41634276/article/details/98749213">彻底了解时序电路、组合电路、触发器、锁存器的区别_时序逻辑和锁存器逻辑区别-CSDN博客</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/546287566">第五章·锁存器和触发器 - 知乎</a></p>
+<p>在设计RAM中，读数据部分需要先读addr和rdata，</p>
+<p>在RAM使用锁存电路的方式去实现读数据的操作时需要先读地址，然后打一拍之后再读出数据，这个会使得留出足够的冗余去等待使能信号有效后的数据稳定。</p>
+<p>用组合电路的方式去实现，不需要打一拍的情况，同时读地址和出读数据。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/FSQFceVF_v/" class="tag">
+                    验证
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-si/">
+                  <h3 class="post-title">
+                    Verilog学习——基于菜鸟教程（四）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

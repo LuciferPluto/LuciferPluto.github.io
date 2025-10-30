@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://luciferpluto.github.io/</id>
+    <title>Lucifer&amp;甜葡萄柚-world</title>
+    <updated>2025-10-30T02:29:01.470Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://luciferpluto.github.io/"/>
+    <link rel="self" href="https://luciferpluto.github.io/atom.xml"/>
+    <subtitle>一个IC小白的学习记录</subtitle>
+    <logo>https://luciferpluto.github.io/images/avatar.png</logo>
+    <icon>https://luciferpluto.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2025, Lucifer&amp;甜葡萄柚-world</rights>
+    <entry>
+        <title type="html"><![CDATA[ Verilog学习——基于菜鸟教程（附——linux）]]></title>
+        <id>https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-fu-linux/</id>
+        <link href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-fu-linux/">
+        </link>
+        <updated>2025-10-30T09:23:03.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PS2整理（FIFIO/边沿检测）]]></title>
+        <id>https://luciferpluto.github.io/post/ps2-zheng-li-fifiobian-yan-jian-ce/</id>
+        <link href="https://luciferpluto.github.io/post/ps2-zheng-li-fifiobian-yan-jian-ce/">
+        </link>
+        <updated>2025-09-03T03:07:25.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HDLbits]]></title>
+        <id>https://luciferpluto.github.io/post/hdlbits/</id>
+        <link href="https://luciferpluto.github.io/post/hdlbits/">
+        </link>
+        <updated>2025-09-02T08:22:25.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[在Ubuntu中安装EDA工具]]></title>
+        <id>https://luciferpluto.github.io/post/zai-ubuntu-zhong-an-zhuang-eda-gong-ju/</id>
+        <link href="https://luciferpluto.github.io/post/zai-ubuntu-zhong-an-zhuang-eda-gong-ju/">
+        </link>
+        <updated>2025-08-30T03:05:56.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[解决VM共享文件夹与主体机不互联的问题]]></title>
+        <id>https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/</id>
+        <link href="https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/">
+        </link>
+        <updated>2025-07-15T03:03:17.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GDB调试器学习]]></title>
+        <id>https://luciferpluto.github.io/post/gdb-diao-shi-qi-xue-xi/</id>
+        <link href="https://luciferpluto.github.io/post/gdb-diao-shi-qi-xue-xi/">
+        </link>
+        <updated>2025-06-10T07:37:50.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[emacs使用]]></title>
+        <id>https://luciferpluto.github.io/post/emacs-shi-yong/</id>
+        <link href="https://luciferpluto.github.io/post/emacs-shi-yong/">
+        </link>
+        <updated>2025-04-16T07:35:17.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[组合/锁存时钟]]></title>
+        <id>https://luciferpluto.github.io/post/zu-he-suo-cun-shi-zhong/</id>
+        <link href="https://luciferpluto.github.io/post/zu-he-suo-cun-shi-zhong/">
+        </link>
+        <updated>2025-03-20T03:12:27.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Verilog学习——基于菜鸟教程（四）]]></title>
+        <id>https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-si/</id>
+        <link href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-si/">
+        </link>
+        <updated>2024-09-02T06:28:26.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Verilog学习——基于菜鸟教程（三）]]></title>
+        <id>https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-san/</id>
+        <link href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-san/">
+        </link>
+        <updated>2024-08-31T09:21:47.000Z</updated>
+    </entry>
+</feed>

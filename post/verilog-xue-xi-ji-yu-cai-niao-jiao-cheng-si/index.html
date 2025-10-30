@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Verilog学习——基于菜鸟教程（四） | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Verilog学习——基于菜鸟教程（四）
+基础语法
+格式
+
+
+Verilog 是区分大小写
+
+
+格式不固定，可以一行或多行
+
+
+以分号:为一段语句的结束符
+注：空白符（换行、制表、空格）都没有实际的意义，在编译阶段可忽略。
+
+
+示例：
+
+`..." />
+    <meta name="keywords" content="verilog" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Verilog学习——基于菜鸟教程（四）</h2>
+            <div class="post-date">2024-09-02</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="verilog学习基于菜鸟教程四">Verilog学习——基于菜鸟教程（四）</h1>
+<h2 id="基础语法">基础语法</h2>
+<h3 id="格式">格式</h3>
+<ol>
+<li>
+<p>Verilog 是区分大小写</p>
+</li>
+<li>
+<p>格式不固定，可以一行或多行</p>
+</li>
+<li>
+<p>以分号<code>:</code>为一段语句的结束符</p>
+<p>注：空白符（换行、制表、空格）都没有实际的意义，在编译阶段可忽略。</p>
+</li>
+<li>
+<p>示例：</p>
+<blockquote>
+<pre><code class="language-verilog">`wire [1:0]  res`ults ;`
+`assign      results = (a == 1'b0) ? 2'b01 ：`
+         `(b==1'b0) ? 2'b10 ：`
+             2'b11 ;`
+</code></pre>
+</blockquote>
+</li>
+</ol>
+<h3 id="注释">注释：</h3>
+<p>两种注释方法：</p>
+<ol>
+<li>
+<p>用 <strong>//</strong> 进行单行注释：</p>
+<pre><code class="language-verilog">reg [3:0] counter ;  // A definition of counter register
+</code></pre>
+</li>
+<li>
+<p>用 <strong>/*</strong> 与 *<strong>/</strong> 进行跨行注释:</p>
+<pre><code class="language-verilog">wire [11:0]  addr ;
+/* 
+Next are notes with multiple lines.
+Codes here cannot be compiled.
+*/
+assign   addr = 12'b0 ;
+</code></pre>
+</li>
+</ol>
+<h3 id="标识符关键字">标识符&amp;&amp;关键字</h3>
+<ol>
+<li>标识符（identifier）可以是任意一组字母、数字、<strong>$</strong> 符号和 <strong>_</strong>(下划线)符号的合</li>
+<li>但标识符的<strong>第一个字符必须是字母或者下划线</strong>，不能以数字或者美元符开始。</li>
+<li>标识符是区分大小写的。</li>
+<li>关键字是 Verilog 中预留的用于定义语言结构的特殊标识符。
+<ul>
+<li>Verilog 中<strong>关键字全部为小写。</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-verilog">reg [3:0] counter ; //reg 为关键字， counter 为标识符
+input clk; //input 为关键字，clk 为标识符
+input CLK; //CLK 与 clk是 2 个不同的标识符
+</code></pre>
+<h3 id="数值表示">数值表示</h3>
+<ul>
+<li>
+<p>用四种基本值表示硬件电路的电平逻辑</p>
+<ul>
+<li>0：逻辑 0 或 &quot;假&quot;</li>
+<li>1：逻辑 1 或 &quot;真&quot;</li>
+<li>x 或 X：未知</li>
+<li>z 或 Z：高阻</li>
+</ul>
+<p><strong>x</strong> 意味着信号数值的不确定，即在实际电路里，信号可能为 1，也可能为 0。</p>
+<p><strong>z</strong> 意味着信号处于高阻状态，<strong>常见于信号（input, reg）没有驱动时的逻辑结果</strong>。例如一个 pad 的 input 呈现高阻状态时，其逻辑值和上下拉的状态有关系。<strong>上拉则逻辑值为 1，下拉则为 0 。</strong></p>
+</li>
+<li>
+<p>整数数值表示</p>
+<ul>
+<li>
+<p>合法的基数格式有 4 中，包括：</p>
+<ul>
+<li>十进制('d 或 'D)，</li>
+<li>十六进制('h 或 'H)，</li>
+<li>二进制（'b 或 'B），</li>
+<li>八进制（'o 或 'O）。</li>
+</ul>
+</li>
+<li>
+<p>数值可指明位宽，也可不指明位宽。（一般直接写数字时，默认为十进制表示）</p>
+</li>
+<li>
+<p><strong>负数表示</strong></p>
+<p>通常在表示位宽的数字前面加一个减号来表示负数</p>
+<ul>
+<li>-15 在 5 位二进制中的形式为 <strong>5'b</strong>10001, 在 6 位二进制中的形式为 <strong>6'b</strong>11_0001。（110001）——补码</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>实数表示</p>
+<ul>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231027192444569.png" alt="image-20231027192444569" loading="lazy"></li>
+</ul>
+</li>
+<li>
+<p>字符串表示</p>
+<ul>
+<li>
+<p>字符串是由双引号包起来的字符队列。</p>
+</li>
+<li>
+<p>字符串不能多行书写，即字符串中不能包含回车符。</p>
+</li>
+<li>
+<p>Verilog 将字符串当做一系列的单字节 ASCII 字符队列。</p>
+</li>
+<li>
+<p>例如，为存储字符串 &quot;www.runoob.com&quot;, 需要 14*8bit 的存储单元</p>
+<pre><code class="language-verilog">reg [0: 14*8-1]       str ;
+initial begin
+    str = &quot;www.runoob.com&quot;;
+end
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据类型">数据类型</h3>
+<p>最常用两种数据类型——线网（wire）与寄存器（reg）</p>
+<p>其余类型可以理解为这两种数据类型的扩展或辅助。</p>
+<ul>
+<li>
+<p>线网（wire）</p>
+<ul>
+<li>wire 类型表示<strong>硬件单元之间的物理连线</strong>，由其连接的**器件输出端连续驱动。**如果没有驱动元件连接到 wire 型变量，<strong>缺省值一般为 &quot;Z&quot;。</strong></li>
+<li>线网型还有其他数据类型，包括 wand，wor，wri，triand，trior，trireg 等。这些数据类型用的频率不是很高</li>
+</ul>
+</li>
+<li>
+<p>寄存器（reg）</p>
+<ul>
+<li>
+<p>用来表示存储单元，<strong>它会保持数据原有的值，直到被改写</strong></p>
+</li>
+<li>
+<p>reg也有其他功能：例如</p>
+</li>
+<li>
+<p><strong>在 always 块中</strong>，<strong>寄存器可能被综合成边沿触发器</strong>，</p>
+</li>
+<li>
+<p>在组合逻辑中可能被综合成 wire 型变量。</p>
+</li>
+<li>
+<p>寄存器不需要驱动源，也不一定需要时钟信号。</p>
+</li>
+<li>
+<p>在仿真时，寄存器的值可在任意时刻通过赋值操作进行改写。</p>
+</li>
+<li>
+<pre><code class="language-verilog">reg rstn ;
+initial begin
+    rstn = 1'b0 ;
+    #100 ;
+    rstn = 1'b1 ;
+end
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>向量：</p>
+<ul>
+<li>
+<p>当位宽大于 1 时，wire 或 reg 即可声明为向量的形式</p>
+</li>
+<li>
+<p>eg</p>
+<pre><code class="language-verilog">reg [3:0]      counter ;    //声明4bit位宽的寄存器counter
+wire [32-1:0]  gpio_data;   //声明32bit位宽的线型变量gpio_data
+wire [8:2]     addr ;       //声明7bit位宽的线型变量addr，位宽范围为8:2
+reg [0:31]     data ;       //声明32bit位宽的寄存器变量data, 最高有效位为0
+</code></pre>
+</li>
+<li>
+<p>也可以指定某一位或若干相邻位，作为逻辑使用</p>
+<pre><code class="language-verilog">wire [9:0]     data_low = data[0:9] ;
+addr_temp[3:2] = addr[8:7] + 1'b1 ;
+</code></pre>
+</li>
+<li>
+<p>也支持可变的向量域选择</p>
+<pre><code class="language-verilog">reg [31:0]     data1 ;
+reg [7:0]      byte1 [3:0];
+integer j ;
+always@* begin
+    for (j=0; j&lt;=3;j=j+1) begin
+        byte1[j] = data1[(j+1)*8-1 : j*8]; 
+        //把data1[7:0]…data1[31:24]依次赋值给byte1[0][7:0]…byte[3][7:0]
+    end
+end
+</code></pre>
+</li>
+<li>
+<p><strong>指定 bit 位后固定位宽的向量域选择访问。</strong></p>
+<ul>
+<li>
+<p><strong>[bit+: width]</strong> : 从起始 bit 位开始递增，位宽为 width。</p>
+</li>
+<li>
+<p><strong>[bit-: width]</strong> : 从起始 bit 位开始递减，位宽为 width。</p>
+</li>
+<li>
+<p>示例——bit+width-1/bit-width+1</p>
+<pre><code class="language-verilog">//下面 2 种赋值是等效的
+A = data1[31-: 8] ;
+A = data1[31:24] ;
+
+//下面 2 种赋值是等效的
+B = data1[0+ : 8] ;
+B = data1[0:7] ;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>对信号重新组合成新的向量——借助大括号</p>
+<pre><code class="language-verilog">wire [31:0]    temp1, temp2 ;//定义了temp1，temp2容量为32位宽的向量
+assign temp1 = {byte1[0][7:0], data1[31:8]};  //数据拼接
+assign temp2 = {32{1'b0}};  //赋值32位的数值0（1位2进制表示为0）
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>整数，实数，时间寄存器变量</p>
+<ul>
+<li>
+<p><strong>整数</strong></p>
+<ul>
+<li>
+<p>整数类型<strong>用关键字 integer 来声明</strong>。</p>
+</li>
+<li>
+<p>声明时不用指明位宽，<strong>位宽和编译器有关，一般为32 bit</strong>。</p>
+</li>
+<li>
+<p>reg 型变量为无符号数，而 integer 型变量为有符号数。</p>
+</li>
+<li>
+<pre><code class="language-verilog">reg [31:0]      data1 ;
+reg [3:0]       byte1 [7:0]; //数组变量，后续介绍
+integer j ;  //整型变量，用来辅助生成数字电路,integer 信号 j 作为辅助信号，将 data1 的数据依次赋值给数组 byte1。综合后实际电路里并没有 j 这个信号，j 只是辅助生成相应的硬件电路。
+always@* begin
+    for (j=0; j&lt;=3;j=j+1) begin
+        byte1[j] = data1[(j+1)*8-1 : j*8]; 
+        //把data1[7:0]…data1[31:24]依次赋值给byte1[0][7:0]…byte[3][7:0]
+        end
+end
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>实数</strong></p>
+<ul>
+<li>
+<p>实数用<strong>关键字 real 来声明，</strong></p>
+</li>
+<li>
+<p>可用十进制或科学计数法来表示。</p>
+</li>
+<li>
+<p>实数声明不能带有范围，<strong>默认值为 0。</strong></p>
+</li>
+<li>
+<p>如果将一个实数赋值给一个整数，<strong>则只有实数的整数部分会赋值给整数</strong></p>
+</li>
+<li>
+<pre><code class="language-verilog">real        data1 ;
+integer     temp ;
+initial begin
+    data1 = 2e3 ;
+    data1 = 3.75 ;//寄存器的值会随时可修改
+end
+ 
+initial begin
+    temp = data1 ; //temp 值的大小为3
+end
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>时间（time）</p>
+<ul>
+<li>
+<p>Verilog 使用特殊的时间寄存器 time 型变量，<strong>对仿真时间进行保存</strong>。</p>
+</li>
+<li>
+<p><strong>宽度一般为 64 bit</strong>，通过<strong>调用系统函数 $time</strong> 获取当前仿真时间。</p>
+</li>
+<li>
+<pre><code class="language-verilog">time       current_time ;//定义current_time为time型变量
+initial begin//time框架
+       #100 ;
+       current_time = $time ; //current_time 的大小为 100
+end
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>数组</p>
+<ul>
+<li>
+<p>允许<strong>声明 reg, wire, integer, time, real 及其向量类型的数组。</strong></p>
+</li>
+<li>
+<p>数组维数没有限制。</p>
+</li>
+<li>
+<p>线网（wire）数组也可以用于连接实例模块的端口。</p>
+</li>
+<li>
+<p>数组中的每个元素都可以作为一个标量或者向量，以同样的方式来使用，形如：<strong>&lt;数组名&gt;[&lt;下标&gt;]</strong>。</p>
+</li>
+<li>
+<p>对于多维数组来讲，用户需要说明其每一维的索引。</p>
+</li>
+<li>
+<p>数组定义</p>
+<pre><code class="language-verilog">integer          flag [7:0] ; //8个整数组成的数组
+reg  [3:0]       counter [3:0] ; //由4个4bit计数器组成的数组
+wire [7:0]       addr_bus [3:0] ; //由4个8bit wire型变量组成的数组
+wire             data_bit[7:0][5:0] ; //声明1bit wire型变量的二维数组
+reg [31:0]       data_4d[11:0][3:0][3:0][255:0] ; //声明4维的32bit数据变量数组
+</code></pre>
+</li>
+<li>
+<p>数组赋值</p>
+<pre><code class="language-verilog">flag [1]   = 32'd0 ; //将flag数组中第二个元素赋值为32bit的0值（32位十进制表示0）
+counter[3] = 4'hF ;  //将数组counter中第4个元素的值赋值为4bit 十六进制数F，等效于counter[3][3:0] = 4'hF，即可省略宽度; 
+assign addr_bus[0]        = 8'b0 ; //将数组addr_bus中第一个元素的值赋值为0
+assign data_bit[0][1]     = 1'b1;  //将数组data_bit的第1行第2列的元素赋值为1，这里不能省略第二个访问标号，即              assign data_bit[0] = 1'b1; 是非法的。
+data_4d[0][0][0][0][15:0] = 15'd3 ;  //将数组data_4d中标号为[0][0][0][0]的寄存器单元的15~0bit赋值为3
+</code></pre>
+</li>
+<li>
+<p>注意：虽然数组与向量的访问方式在一定程度上类似，但不要将向量和数组混淆。</p>
+<ul>
+<li><strong>向量是一个单独的元件，位宽为 n；</strong></li>
+<li><strong>数组由多个元件组成，其中每个元件的位宽为 n 或 1</strong>。</li>
+<li>它们在结构的定义上就有所区别。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>参数</p>
+<ul>
+<li>
+<p>表示常量，用关键字 parameter 声明，只能赋值一次</p>
+<pre><code class="language-verilog">parameter      data_width = 10'd32 ;
+parameter      i=1, j=2, k=3 ;
+parameter      mem_size = data_width * 10 ;
+</code></pre>
+</li>
+<li>
+<p>通过<strong>实例化的方式</strong>，可以更改参数在模块中的值。</p>
+</li>
+<li>
+<p>局部参数用 <strong>localparam 来声明</strong>，</p>
+<ul>
+<li>其作用和用法与 parameter 相同，</li>
+<li>区别在于它的值不能被改变。</li>
+<li>所以<strong>当参数只在本模块中调用时，可用 localparam 来说明。</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>字符串</p>
+<ul>
+<li>
+<p>字符串<strong>保存在 reg 类型的变量中</strong>，每个字符占用一个字节（8bit）。</p>
+</li>
+<li>
+<p>因此寄存器变量的宽度应该足够大，以保证不会溢出。</p>
+</li>
+<li>
+<p>字符串不能多行书写，即字符串中不能包含回车符。</p>
+</li>
+<li>
+<p>如果寄存器变量的宽度大于字符串的大小，则使用 0 来填充左边的空余位；</p>
+</li>
+<li>
+<p>如果寄存器变量的宽度小于字符串大小，则会截去字符串左边多余的数据。</p>
+</li>
+<li>
+<p>例如，为存储字符串 &quot;run.runoob.com&quot;, 需要 14*8bit 的存储单元：</p>
+<pre><code class="language-verilog">reg [0: 14*8-1]       str ;
+initial begin
+    str = &quot;run.runoob.com&quot;; 
+end
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>特殊字符</p>
+<ul>
+<li>其实，在 <strong>SystemVerilog（主要用于 Verilog 仿真的编程语言）语言中</strong>，已经可以直接用关键字 string 来表示字符串变量类型，这为 Verilog 的仿真带来了极大的便利。</li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231027211812684.png" alt="image-20231027211812684" loading="lazy"></li>
+</ul>
+</li>
+</ul>
+<h3 id="表达式">表达式</h3>
+<blockquote>
+<ul>
+<li>由操作符和操作数构成，</li>
+<li>其目的是根据操作符的意义得到一个计算结果。</li>
+<li>表达式可以在出现数值的任何地方使用。</li>
+</ul>
+</blockquote>
+<pre><code class="language-verilog">a^b ;          //a与b进行异或操作
+address[9:0] + 10'b1 ;  //地址累加
+flag1 &amp;&amp; flag2 ;  //逻辑与操作
+</code></pre>
+<ul>
+<li>
+<p>操作数</p>
+<blockquote>
+<ul>
+<li>操作数可以是任意的数据类型，只是某些特定的语法结构要求使用特定类型的操作数。</li>
+<li>操作数可以为常数，整数，实数，线网，寄存器，时间，位选，域选，存储器及函数调用等。</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>操作符</p>
+<blockquote>
+<ul>
+<li>Verilog 中提供了大约 9 种操作符，分别是<strong>算术、关系、等价、逻辑、按位、归约、移位、拼接、条件操作符。</strong></li>
+<li>大部分操作符与 C 语言中类似。同类型操作符之间，除条件操作符从右往左关联，其余操作符都是自左向右关联。圆括号内表达式优先执行。</li>
+</ul>
+</blockquote>
+<p><strong>不同操作符之间，优先级是不同的。</strong></p>
+<ul>
+<li>下表列出了操作符优先级从高至低的排列顺序。</li>
+<li>当没有圆括号时，Verilog 会根据操作符优先级对表达式进行计算。</li>
+<li>为了避免由操作符优先级导致的计算混乱，在不确定优先级时，建议用圆括号将表达式区分开来。<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231027212919855.png" alt="image-20231027212919855" loading="lazy">（单目——对单操作数正负)</li>
+</ul>
+</li>
+<li>
+<p>算术操作符</p>
+<ul>
+<li>
+<p>包括单目操作符和双目操作符</p>
+</li>
+<li>
+<p>如果操作数某一位为 X，则计算结果也会全部出现 X。</p>
+<pre><code class="language-verilog">b = 4'b100x ;
+c = a+b ;       //结果为c=4'bxxxx
+</code></pre>
+</li>
+<li>
+<p>对变量进行声明时，要根据变量的操作符对变量的位宽进行合理声明，不要让结果溢出——无符号数乘法时，结果变量位宽应该为 2 个操作数位宽之和。</p>
+</li>
+<li>
+<p>+ 和 - 也可以作为单目操作符来使用，表示操作数的正负性。此类操作符优先级最高。</p>
+</li>
+<li>
+<p>负数表示时，可以直接在十进制数字前面增加一个减号 <strong>-</strong>，也可以指定位宽。<strong>因为负数使用二进制补码来表示，不指定位宽来表示负数</strong>，编译器在转换时，会自动分配位宽，从而导致意想不到的结果</p>
+</li>
+</ul>
+</li>
+<li>
+<p>关系操作符</p>
+<ul>
+<li>关系操作符有大于（&gt;），小于（&lt;），大于等于（&gt;=），小于等于（&lt;=）。</li>
+<li>关系操作符的<strong>正常结果有 2 种，真（1）或假（0）。</strong></li>
+<li>如果操作数中<strong>有一位为 x 或 z，则关系表达式的结果为 x。</strong></li>
+</ul>
+</li>
+<li>
+<p>等价操作符</p>
+<ul>
+<li>等价操作符包括逻辑相等（<mark>），逻辑不等（!=），全等（</mark>=），非全等（!==）。</li>
+<li>等价操作符的正常结果有 2 种：为真（1）或假（0）。</li>
+<li><strong>逻辑相等/不等操作符不能比较 x 或 z，当操作数包含一个 x 或 z，则结果为不确定值。</strong></li>
+<li>全等比较时**，如果按位比较有相同的 x 或 z，返回结果也可以为 1**，即全等比较可比较 x 或 z。<strong>所以，全等比较的结果一定不包含 x。</strong></li>
+</ul>
+</li>
+<li>
+<p>逻辑操作符</p>
+<ul>
+<li>
+<p>逻辑操作符主要有 3 个：&amp;&amp;（逻辑与）, ||（逻辑或），!（逻辑非）。</p>
+</li>
+<li>
+<p>逻辑操作符的计算结果是一个 1bit 的值，0 表示假，1 表示真，x 表示不确定。</p>
+</li>
+<li>
+<p>如果<strong>一个操作数不为 0，它等价于逻辑 1；如果一个操作数等于 0，它等价于逻辑 0。如果它任意一位为 x 或 z，它等价于 x。</strong></p>
+</li>
+<li>
+<p>如果任意一个操作数包含 x，逻辑操作符运算结果不一定为 x。</p>
+</li>
+<li>
+<p>逻辑操作符的<strong>操作数可以为变量，也可以为表达式。</strong></p>
+<pre><code class="language-verilog">(A==2) &amp;&amp; (! B)  //为真，此时第一个操作数为表达式
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>按位操作符（见2.4）</p>
+</li>
+<li>
+<p>归约操作符</p>
+</li>
+<li>
+<p>移位操作符</p>
+</li>
+<li>
+<p>拼接操作符</p>
+</li>
+<li>
+<p>条件操作符</p>
+</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/1xX2tV1atw/" class="tag">
+                    verilog
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-san/">
+                  <h3 class="post-title">
+                    Verilog学习——基于菜鸟教程（三）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title> Verilog学习——基于菜鸟教程（附——linux） | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Verilog学习——基于菜鸟教程（二）（附——linux）
+配置环境——linux虚拟机——Ubuntu
+将VM的Ubuntu原地址（C盘）移到E盘
+将VMware虚拟机移到其它磁盘（C盘-&gt;D盘）_vm可以从c盘移动d盘 吗-CS..." />
+    <meta name="keywords" content="verilog" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title"> Verilog学习——基于菜鸟教程（附——linux）</h2>
+            <div class="post-date">2025-10-30</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="verilog学习基于菜鸟教程二附linux">Verilog学习——基于菜鸟教程（二）（附——linux）</h1>
+<h2 id="配置环境linux虚拟机ubuntu">配置环境——linux虚拟机——<strong>Ubuntu</strong></h2>
+<h3 id="将vm的ubuntu原地址c盘移到e盘">将VM的Ubuntu原地址（C盘）移到E盘</h3>
+<p><a href="https://blog.csdn.net/qq_37035946/article/details/103702802?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=VM%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E8%B7%AF%E5%BE%84&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-6-103702802.142%5Ev96%5Epc_search_result_base2&amp;spm=1018.2226.3001.4187">将VMware虚拟机移到其它磁盘（C盘-&gt;D盘）_vm可以从c盘移动d盘 吗-CSDN博客</a></p>
+<h3 id="将原vm虚拟机扩容">将原VM虚拟机扩容：</h3>
+<p><a href="https://blog.csdn.net/m0_74923682/article/details/129255801?ops_request_misc=%7B%22request%5Fid%22%3A%22169806765816800184163174%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=169806765816800184163174&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-129255801-null-null.142%5Ev96%5Epc_search_result_base2&amp;utm_term=%E5%A6%82%E4%BD%95%E6%89%A9%E5%A4%A7%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E5%91%A2&amp;spm=1018.2226.3001.4187">虚拟机扩容（超详细实测好用步骤）_lin.eternity的博客-CSDN博客</a></p>
+<h3 id="安装iverilog和gtkwave">安装Iverilog和Gtkwave</h3>
+<blockquote>
+<p>编辑器:VS code<br>
+编译器:<a href="https://so.csdn.net/so/search?q=iverilog&amp;spm=1001.2101.3001.7020">iverilog</a>（语法结构、语义结构）输入啥、输出啥。<br>
+波形查看:gtkwave</p>
+</blockquote>
+<ol>
+<li><strong>Iverilog</strong>
+<ol>
+<li>是一种基于 Verilog HDL 的综合工具，用于将 Verilog HDL代码 转换成可以在现实世界中运行的硬件电路。Iverilog 使用一种叫做 ”门级综合” 的技术来生成电路模型，它可以将 Verilog HDL代码 转换成门级电路模型，也可以将其转换成可以在 FPGA 或其他硬件平台上运行的实际电路。</li>
+<li>Iverilog 还提供了一些其他的功能（例如：模拟和验证电路的功能以及自动化测试平台的集成等），这些功能使得 Iverilog 成为数字电路设计领域的一种非常有用的工具。</li>
+</ol>
+</li>
+<li>Gtkwave
+<ol>
+<li>Gtkwave 是 Xilinx 公司开发的一种<strong>用于设计和验证 GTX（通用图形处理器）的工具，同时也可以用于 iverilog 仿真和查看仿真波形</strong>。它提供了一个简单易用的界面，可以帮助用户快速设计和验证 GTX 芯片，并可以自动生成用于 FPGA 或 ASIC 实现的代码。它还支持多种硬件描述语言，如 Verilog HDL、VHDL 等，方便用户将设计转换为可实现的硬件电路。</li>
+<li>**运用 gtkwave 软件进行 iverilog 仿真时，用户可以设置仿真参数，如仿真时间、仿真精度等，并可以选择不同的模块进行仿真。**仿真结果会以波形的形式显示在软件界面上，用户可以通过调整波形的显示方式和参数来更好地观察和理解仿真结果。同时，gtkwave 软件还提供了多种工具，如波形缩放、标记、测量等，帮助用户更方便地分析和验证设计。</li>
+</ol>
+</li>
+</ol>
+<h3 id="测试">测试</h3>
+<p><a href="https://www.kancloud.cn/dlover/fpga/1742849">5.7 linux下搭建轻量易用的verilog仿真环境 · FPGA使用笔记 · 看云 (kancloud.cn)</a></p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231030213629910.png" alt="image-20231030213629910" loading="lazy"></figure>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/1xX2tV1atw/" class="tag">
+                    verilog
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/ps2-zheng-li-fifiobian-yan-jian-ce/">
+                  <h3 class="post-title">
+                    PS2整理（FIFIO/边沿检测）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

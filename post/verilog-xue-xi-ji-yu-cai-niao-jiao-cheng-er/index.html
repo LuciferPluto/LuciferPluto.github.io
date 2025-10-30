@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Verilog学习——基于菜鸟教程（二） | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Verilog学习——基于菜鸟教程（二）
+语言简介：
+
+
+Verilog HDL（简称 Verilog ）是一种硬件描述语言，用于数字电路的系统设计。可对算法级、门级、开关级等多种抽象设计层次进行建模。
+
+
+具有很强的电路描述与建模能力，能..." />
+    <meta name="keywords" content="verilog" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Verilog学习——基于菜鸟教程（二）</h2>
+            <div class="post-date">2024-08-21</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="verilog学习基于菜鸟教程二">Verilog学习——基于菜鸟教程（二）</h1>
+<h2 id="语言简介">语言简介：</h2>
+<ol>
+<li>
+<p>Verilog HDL（简称 Verilog ）是一种硬件描述语言，用于数字电路的系统设计。可对算法级、门级、开关级等多种抽象设计层次进行建模。</p>
+</li>
+<li>
+<p>具有<strong>很强的电路描述与建模能力，能从多个层次对数字系统进行描述和建模</strong>。因此，在简化硬件设计任务、提高设计效率与可靠性、语言易读性、层次化和结构化设计等方面展现了强大的生命力与潜力。</p>
+</li>
+<li>
+<p>Verilog <strong>继承了 C 语言的多种操作符和结构</strong>，与另一种硬件描述语言 VHDL 相比，语法不是很严格，代码更加简洁，更容易上手。</p>
+</li>
+<li>
+<p>Verilog 定义了语法，同时对语法结构都定义了清晰的仿真语义。</p>
+</li>
+<li>
+<p>因此，Verilog 编写的数字模型就能够使用 Verilog 仿真器进行验证。</p>
+</li>
+</ol>
+<ul>
+<li>注：当用 Verilog 设计**完成数字模块后进行仿真时，需要在外部添加激励，**<strong>激励文件叫 testbench</strong>。有时 testbench 设计可能比数字模块本身都复杂。所以前面在介绍 Verilog 基本语法时，几乎没有仿真。</li>
+<li>后面介绍<strong>行为级和时序级相关知识时，会多用仿真说明。</strong></li>
+</ul>
+<p><strong>特性：</strong></p>
+<ol>
+<li>可采用 3 种不同的方式进行设计建模：
+<ol>
+<li>行为级描述——使用过程化结构建模；</li>
+<li>数据流描述——使用连续赋值语句建模；</li>
+<li>结构化方式——使用门和模块例化语句描述。</li>
+</ol>
+</li>
+<li>两类数据类型：
+<ol>
+<li>线网（wire）数据类型，线网表示物理元件之间的连线</li>
+<li>寄存器（reg）数据类型，寄存器表示抽象的数据存储元件。</li>
+</ol>
+</li>
+<li>能够描述层次设计，可使用模块实例化描述任何层次。</li>
+<li>用户定义原语（UDP）创建十分灵活。原语既可以是组合逻辑，也可以是时序逻辑。</li>
+<li>可提供显示语言结构指定设计中的指定端口到端口的时延，以及路径时延和时序检查。</li>
+<li>Verilog 支持**其他编程语言接口（PLI）**进行进一步扩展。PLI 允许外部函数访问 Verilog 模块内部信息，为仿真提供了更加丰富的测试方法。</li>
+<li>同一语言可用于生成模拟激励和指定测试的约束条件。</li>
+<li>设计逻辑功能时，设计者可不用关心不影响逻辑功能的因素，例如工艺、温度等。</li>
+</ol>
+<p><strong>应用条件</strong></p>
+<ol>
+<li>
+<p>Verilog 作为硬件描述语言，主要用来生成专用集成电路（ASIC）。</p>
+<p>主要通过 3 个途径来完成：</p>
+<p><strong>1、可编程逻辑器件</strong></p>
+<p>FPGA 和 CPLD 是实现这一途径的主流器件。他们直接面向用户，具有极大的灵活性和通用性，实现快捷，测试方便，开发效率高而成本较低。</p>
+<p><strong>2、半定制或全定制 ASIC</strong></p>
+<p>通俗来讲，就是利用 Verilog 来设计具有某种特殊功能的专用芯片。根据基本单元工艺的差异，又可分为门阵列 ASIC，标准单元 ASIC，全定制 ASIC。</p>
+<p><strong>3、混合 ASIC</strong></p>
+<p>主要指既具有面向用户的 FPGA 可编程逻辑功能和逻辑资源，同时也含有可方便调用和配置的硬件标准单元模块，如CPU，RAM，锁相环，乘法器等。</p>
+</li>
+</ol>
+<h2 id="配置环境">配置环境</h2>
+<p>重点是仿真——因此不同的环境对应的仿真软件也不同</p>
+<ol>
+<li>FPGA——Xilinx公司的VIVADO；因特尔公司的 Quartus II；</li>
+<li>ASIC —— Synopsys 公司的 VCS ；Icarus Verilog 和 GTKwave</li>
+<li>这里用 Quartus II + Modelsim 联合仿真的测试方法，运行环境为 64bit-win10 系统。</li>
+</ol>
+<h3 id="quartus-ii">Quartus II</h3>
+<ol>
+<li>由于intel官网（https://fpgasoftware.intel.com/13.1/?edition=subscription&amp;platform=windows）的需要购买license 文件，因此使用破解版。</li>
+</ol>
+<p>（如果 license 文件需要替换 Host-ID，只需要 license 文件中的 HOSTID 替换为 NIC 选项中随便一个 ID 即可）</p>
+<p>破解版地址：<a href="https://blog.csdn.net/qq_55691662/article/details/123402005?ops_request_misc=%7B%22request%5Fid%22%3A%22169803188716800227444318%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=169803188716800227444318&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-123402005-null-null.142%5Ev96%5Epc_search_result_base2&amp;utm_term=quartusii_13.1%E5%AE%89%E8%A3%85%E5%8F%8A%E7%A0%B4%E8%A7%A3&amp;spm=1018.2226.3001.4187">Quartus II 13.1的安装及使用_quartus13.1_普通网友的博客-CSDN博客</a></p>
+<ol start="2">
+<li>
+<p>为了后续仿真——还要进行<strong>Modelsim 安装</strong></p>
+<p>（版本号：modelsim-win64-10.4-se）SE是最高版本</p>
+<blockquote>
+<p>优势：</p>
+<p>modelsim是Mentor公司开发的优秀的HDL语言仿真软件。<br>
+<strong>它能提供友好的仿真环境，采用单内核支持[VHDL]和Verilog混合仿真的仿真器。它采用直接优化的编译技术、Tcl/Tk技术和单一内核仿真技术，编译仿真速度快且编译的代码与平台无关。</strong></p>
+</blockquote>
+<p>依然是需要购买正版，因此我们继续破解——地址（包括下载地址——[【精选】Modelsim 安装步骤详解_兄弟抱一下<sub>的博客-CSDN博客](https://blog.csdn.net/QWERTYzxw/article/details/115350715?ops_request_misc=%7B%22request%5Fid%22%3A%22169804635916800227465544%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=169804635916800227465544&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2</sub>all<sub>sobaiduend</sub>default-1-115350715-null-null.142<sup>v96</sup>pc_search_result_base2&amp;utm_term=Modelsim 安装&amp;spm=1018.2226.3001.4187)）</p>
+<blockquote>
+<p>注意事项：</p>
+<ol>
+<li>
+<p>按照上面文章安装破解时注意——在到下面的步骤是点<strong>No</strong></p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231023162427089.png" alt="image-20231023162427089" loading="lazy"></figure>
+</li>
+<li>
+<p>注册时将mgls64.dll<strong>取消只读属性</strong></p>
+</li>
+<li>
+<p>同时从第三步网盘地址下载的两个文件——“MentorKG.exe”、“patch_dll.bat”移到之前modelsim的安装地址的win64/win32文件内（并且确保是取消了<strong>只读属性</strong>）</p>
+</li>
+<li>
+<p>生成的license文件是txt格式的，默认在<code>C:\Users\user\AppData\Local\Temp</code>但也可能user变成中文的“用户”，所以根据自己的实际情况而变。</p>
+</li>
+<li>
+<p>改环境变量：在计算机属性——高级系统设置——环境变量里面，添加到用户变量里面；</p>
+<p>注意：路径一栏填license文件的地址</p>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<h2 id="案例展示">案例展示</h2>
+<ol>
+<li>
+<p>成功生成test文件，并跑通<img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231023173344049.png" alt="image-20231023173344049" loading="lazy"></p>
+</li>
+<li>
+<p>与modelSim联合仿真：</p>
+<figure data-type="image" tabindex="2"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231023190744349.png" alt="image-20231023190744349" loading="lazy"></figure>
+<p>出现<code>No Design Loaded</code>的报错的原因是：（仍未解决！！！）</p>
+<blockquote>
+<p>排查过程：</p>
+<ol>
+<li>
+<p>击View——transcript，就会出现各种运行记录，其中也会提示Error，就可以根据提示进行修改了。</p>
+</li>
+<li>
+<figure data-type="image" tabindex="3"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231023192046000.png" alt="image-20231023192046000" loading="lazy"></figure>
+</li>
+<li>
+<p>但是还是没有出现波形图</p>
+<p><a href="https://blog.csdn.net/qq_47588036/article/details/108178512">Modelsim:error loading design解决方案-CSDN博客</a></p>
+</li>
+<li>
+<p>打开相对应的部分，发现是空行，仍不知原因：</p>
+<figure data-type="image" tabindex="4"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231023200319791.png" alt="image-20231023200319791" loading="lazy"></figure>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<p><strong>结论</strong>：EDA集成开发还是在Linux系统进行，Windows系统会出现诸多不确定因素，后续联合开发仍是在Linux上为主。。。。。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/1xX2tV1atw/" class="tag">
+                    verilog
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

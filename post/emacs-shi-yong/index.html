@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>emacs使用 | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="emacs使用
+组合按键
+Emacs中大量的按键操作都是各式各样的组合按键（快捷键），下面是几种通常的约定：
+
+Ctrl键：表示为C
+Alt键：表示为M
+Shift键：表示为S
+组合按键：比如向下移动一行的组合按键是Ctrl+n，就表示为：..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">emacs使用</h2>
+            <div class="post-date">2025-04-16</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="emacs使用">emacs使用</h1>
+<h2 id="组合按键">组合按键</h2>
+<p>Emacs中大量的按键操作都是各式各样的组合按键（快捷键），下面是几种通常的约定：</p>
+<ul>
+<li>Ctrl键：表示为C</li>
+<li>Alt键：表示为M</li>
+<li>Shift键：表示为S</li>
+<li>组合按键：比如向下移动一行的组合按键是Ctrl+n，就表示为：C-n，其含义表示同时按下键盘上的Ctrl和n键。</li>
+</ul>
+<hr>
+<h3 id="会话管理配置"><strong>会话管理配置</strong></h3>
+<pre><code class="language-lisp">;; =================================================================
+;; Saving Emacs Sessions - 保存会话状态（重启后恢复所有打开文件）
+;; =================================================================
+(load &quot;desktop&quot;)        ; 加载桌面持久化模块
+(desktop-load-default)  ; 启用默认会话管理
+(desktop-read)          ; 启动时自动加载上次保存的会话
+</code></pre>
+<p><strong>作用</strong>：每次退出Emacs会自动记录打开的文件和窗口布局，重启后按<code>M-x desktop-save</code>可手动保存当前状态。</p>
+<hr>
+<h3 id="文件类型识别"><strong>文件类型识别</strong></h3>
+<pre><code class="language-lisp">;; 将.user_bashrc识别为shell脚本
+(setq auto-mode-alist (cons '(&quot;\\.user_bashrc&quot; . shell-script-mode) auto-mode-alist))
+
+;; 将.pt文件识别为Tcl脚本
+(setq auto-mode-alist (cons '(&quot;.*\\.pt$&quot; . tcl-mode) auto-mode-alist))
+
+;; 将.ld文件识别为C代码
+(setq auto-mode-alist (cons '(&quot;.*\\.ld$&quot; . c-mode) auto-mode-alist))
+</code></pre>
+<p><strong>作用</strong>：Emacs根据文件扩展名自动切换编辑模式（如语法高亮、缩进规则）。</p>
+<hr>
+<h3 id="交互增强配置"><strong>交互增强配置</strong></h3>
+<pre><code class="language-lisp">;; 历史记录长度设置为500条
+(custom-set-variables '(history-length 500))
+
+;; 禁止光标移动时自动换行
+(custom-set-variables '(next-line-add-newlines nil))
+
+;; 禁用自动备份文件（避免生成~结尾的备份）
+(setq make-backup-files nil)
+
+;; %键匹配括号跳转（类似Vi的行为）
+(global-set-key &quot;%&quot; 'match-paren)
+(defun match-paren (...) ...) ; 自定义括号匹配函数
+</code></pre>
+<p><strong>作用</strong>：优化编辑体验，如历史记录容量、光标行为、文件管理等。</p>
+<hr>
+<h3 id="界面美化设置"><strong>界面美化设置</strong></h3>
+<pre><code class="language-lisp">;; 状态栏显示24小时制时钟
+(setq display-time-24hr-format t)
+(display-time)
+
+;; 显示列号
+(column-number-mode t)
+
+;; 禁用菜单栏和工具栏
+(menu-bar-mode '-1)
+(tool-bar-mode '-1)
+
+;; 设置黑底白字配色
+(set-foreground-color &quot;white&quot;)
+(set-background-color &quot;Gray22&quot;)
+
+;; 黄色鼠标指针+红色光标
+(set-mouse-color &quot;yellow&quot;)
+(set-cursor-color &quot;red&quot;)
+</code></pre>
+<p><strong>作用</strong>：简化界面元素，强化视觉反馈，提升编码专注度。</p>
+<hr>
+<h3 id="核心快捷键体系"><strong>核心快捷键体系</strong></h3>
+<h3 id="1-书签系统">1**. 书签系统**</h3>
+<pre><code>LISP;; 按F1跳转到书签1位置，并自动更新该书签
+(global-set-key [f1] 'bookmark-jump-default1)
+(defun bookmark-jump-default1 (pos)
+  (bookmark-jump &quot;default-bookmark1&quot;)  ; 跳转
+  (bookmark-set &quot;default-bookmark1&quot;)) ; 更新位置
+
+;; 按C-f1设置当前光标位置为书签1
+(global-set-key [C-f1] 'bookmark-set-default1)
+(defun bookmark-set-default1 (pos)
+  (bookmark-set &quot;default-bookmark1&quot;))
+
+;; F2/C-f2 对应书签2的跳转与设置（逻辑同上）
+</code></pre>
+<p><strong>操作场景</strong>：</p>
+<ul>
+<li>在代码关键位置按 <code>C-f1</code> 保存位置</li>
+<li>后续任意位置按 <code>F1</code> 立即返回标记位置</li>
+<li>支持两套独立书签（书签1/书签2）</li>
+</ul>
+<hr>
+<h3 id="2-搜索系统"><strong>2. 搜索系统</strong></h3>
+<pre><code>LISP;; 基本搜索
+[F3]       : 前向搜索（输入文字后继续按F3跳下一处）
+[C-f3]     : 正则表达式前向搜索
+[S-f3]     : 后向搜索
+[C-S-f3]   : 正则表达式后向搜索
+
+;; 搜索模式中
+[F3]       : 继续前向搜索（相当于&quot;查找下一个&quot;）
+[S-f3]     : 继续后向搜索
+</code></pre>
+<p><strong>示例</strong>：</p>
+<ol>
+<li>按 <code>F3</code> 输入 <code>module</code> ➔ 逐个跳转到所有<code>module</code>关键词</li>
+<li>按 <code>C-f3</code> 输入 <code>^assign</code> ➔ 搜索行首的assign语句</li>
+</ol>
+<hr>
+<h3 id="3-缓冲区窗口管理"><strong>3. 缓冲区/窗口管理</strong></h3>
+<pre><code>LISP[C-f4]    : 关闭当前文件/缓冲区（kill-this-buffer）
+[M-f4]    : 保存所有文件并退出Emacs
+
+[f6]      : 在多个窗口间循环切换（类似C-x o）
+[C-f6]    : 列出并切换已打开的文件（switch-to-buffer）
+[S-f6]    : 显示缓冲区列表（buffer-menu）
+
+[f12]     : 垂直分割当前窗口（C-x 3）
+[S-f12]   : 水平分割窗口（C-x 2）
+[f11]     : 最大化当前窗口（删除其他窗口）
+[S-f11]   : 关闭当前窗口（不关闭文件）
+</code></pre>
+<p><strong>工作流示例</strong>：</p>
+<ol>
+<li><code>F12</code> 垂直分屏 ➔ 左侧代码，右侧shell</li>
+<li><code>F6</code> 在左右窗口间切换</li>
+<li><code>C-f4</code> 关闭不再需要的文件</li>
+</ol>
+<hr>
+<h3 id="4-剪贴板增强"><strong>4. 剪贴板增强</strong></h3>
+<pre><code>LISP[f4]      : 复制选中内容到寄存器t（类似命名剪贴板）
+[S-f4]    : 粘贴寄存器t中的内容
+
+;; 示例：
+1. 选中文本 → 按F4保存到寄存器t
+2. 光标移动 → 按S-f4插入内容
+</code></pre>
+<p><strong>优势</strong>：避免覆盖系统剪贴板，适合临时存储代码片段。</p>
+<hr>
+<h3 id="5-行操作与导航"><strong>5. 行操作与导航</strong></h3>
+<pre><code>LISP[f5]      : 输入行号快速跳转（goto-line）
+[C-d]     : 删除整行（原为删除字符）
+[C-backspace] : 向后删除单词
+[C-delete]    : 向前删除单词
+</code></pre>
+<p><strong>对比原生快捷键</strong>：</p>
+<ul>
+<li>原删除行需 <code>C-k</code> 两次 ➔ 新配置 <code>C-d</code> 更符合直觉</li>
+</ul>
+<hr>
+<h3 id="6-替换系统"><strong>6. 替换系统</strong></h3>
+<pre><code>LISP[f9]      : 交互式替换（逐个确认）
+[C-f9]    : 正则表达式交互替换
+[f10]     : 直接全文替换字符串
+[C-f10]   : 正则表达式全文替换
+
+[S-f9]    : 使用寄存器t内容作为被替换内容
+;; 示例：
+1. 复制&quot;old_var&quot;到寄存器t（F4）
+2. 按S-f9 ➔ 输入&quot;new_var&quot;替换所有出现
+</code></pre>
+<p><strong>效率技巧</strong>：结合寄存器实现快速批量替换模板代码。</p>
+<hr>
+<h3 id="7-verilog开发辅助"><strong>7. Verilog开发辅助</strong></h3>
+<pre><code>LISP;; 需要外部脚本支持（需配置路径）
+M-i      : 将选中的端口列表转为实例化代码（调用pl_mi脚本）
+M-l      : 将声明转为端口列表（pd_pl脚本）
+M-d      : 端口列表转声明（pl_pd脚本）
+</code></pre>
+<p><strong>工作流</strong>：</p>
+<ol>
+<li>选中Verilog模块的端口声明</li>
+<li>按 <code>M-i</code> 自动生成实例化模板</li>
+<li>按 <code>M-d</code> 反向转换回声明格式</li>
+</ol>
+<hr>
+<h3 id="8-shell集成"><strong>8. Shell集成</strong></h3>
+<pre><code>LISP(shell)                 ; 启动时自动创建shell缓冲区
+(rename-buffer &quot;shell-1&quot;) ; 重命名为shell-1
+</code></pre>
+<p><strong>操作</strong>：</p>
+<ul>
+<li><code>C-c C-c</code> 中断正在运行的命令</li>
+<li><code>M-x shell</code> 创建新shell会话</li>
+<li><code>S-F6</code> 显示缓冲区列表</li>
+<li><code>D-X/多个D-X</code> 删除缓冲区窗口</li>
+</ul>
+<hr>
+<h3 id="9-配置加载"><strong>9. 配置加载</strong></h3>
+<pre><code>LISP
+
+
+
+(load &quot;C:/emacs_pack/.l_emacs&quot; t t t) ; 加载用户自定义配置
+</code></pre>
+<p><strong>作用</strong>：允许分层配置，将个性化设置放在外部文件。</p>
+<h3 id="10列模式操作">10.列模式操作</h3>
+<p>打开CUA模式</p>
+<p><a href="https://emacs-china.org/t/emacs-column-editing/15224">分享一个Emacs宝藏级操作：Column Editing - Emacs-general - Emacs China</a></p>
+<p><code>M-x</code>：cua-mode</p>
+<p>即打开了CUA模式</p>
+<p>通过<code>C-Enter</code>进入 <code>cua-set-retangle-mark</code>模式，之后可以使用方向键进行区域选择，再次按下回车则可以选择不同的插入模式。</p>
+<blockquote>
+<p>要在 Emacs 中默认启用 CUA 模式，您需要在您的 Emacs 配置文件 (<a href="https://www.google.com.hk/search?q=emacs.d%2Finit.el&amp;sca_esv=5781ecd08cb21da5&amp;hl=zh-CN&amp;sxsrf=AE3TifOAHBXnpuHC8Hs--7sKmZPZrVKqdQ%3A1758174345249&amp;source=hp&amp;ei=iZzLaIq3DZfRkPIPitWC0Q0&amp;iflsig=AOw8s4IAAAAAaMuqmVABunDXFAKhgKV7D1a38OOmwtV-&amp;ved=2ahUKEwih2Y3vzeGPAxVOD0QIHVpJMTwQgK4QegQIARAB&amp;uact=5&amp;oq=emacs%E5%A6%82%E4%BD%95%E9%BB%98%E8%AE%A4%E5%B0%B1%E6%98%AF%E7%94%A8CUA%E6%A8%A1%E5%BC%8F&amp;gs_lp=Egdnd3Mtd2l6IiNlbWFjc-WmguS9lem7mOiupOWwseaYr-eUqENVQeaooeW8jzIIEAAYgAQYogQyBRAAGO8FMggQABiABBiiBDIFEAAY7wUyCBAAGIAEGKIESPc1ULcKWPA0cAF4AJABAJgBlgOgAfcVqgEHMi02LjIuMbgBA8gBAPgBAfgBApgCBqACpAyoAgrCAgcQIxgnGOoCwgIEECMYJ8ICChAAGIAEGEMYigXCAgsQABiABBixAxiDAcICERAuGIAEGLEDGNEDGIMBGMcBwgIOEC4YgAQYsQMY0QMYxwHCAggQABiABBixA8ICBRAAGIAEmAME8QXfwsctTUJ4qpIHBzEuMC4yLjOgB90ysgcFMi0yLjO4B58MwgcFMC4zLjPIBxA&amp;sclient=gws-wiz&amp;mstk=AUtExfByph0RG5ZCrgpOAn4zmZe6wzxGSLioYFDR-_uGrUw0GhRlbrQX_o-YE01gX4-y4zIsLFON-Epwhtv3wPuE6uqBxjOewzFL2ezAJouzL_jemnxzMo9c6hQ26BaW4xuk_yZk1aHqkvHLpwo9eshiKlluJCxstlXk28qAidV8z2JsT14&amp;csui=3">emacs.d/init.el</a> 或 <a href="https://www.google.com.hk/search?q=~%2F.emacs&amp;sca_esv=5781ecd08cb21da5&amp;hl=zh-CN&amp;sxsrf=AE3TifOAHBXnpuHC8Hs--7sKmZPZrVKqdQ%3A1758174345249&amp;source=hp&amp;ei=iZzLaIq3DZfRkPIPitWC0Q0&amp;iflsig=AOw8s4IAAAAAaMuqmVABunDXFAKhgKV7D1a38OOmwtV-&amp;ved=2ahUKEwih2Y3vzeGPAxVOD0QIHVpJMTwQgK4QegQIARAC&amp;uact=5&amp;oq=emacs%E5%A6%82%E4%BD%95%E9%BB%98%E8%AE%A4%E5%B0%B1%E6%98%AF%E7%94%A8CUA%E6%A8%A1%E5%BC%8F&amp;gs_lp=Egdnd3Mtd2l6IiNlbWFjc-WmguS9lem7mOiupOWwseaYr-eUqENVQeaooeW8jzIIEAAYgAQYogQyBRAAGO8FMggQABiABBiiBDIFEAAY7wUyCBAAGIAEGKIESPc1ULcKWPA0cAF4AJABAJgBlgOgAfcVqgEHMi02LjIuMbgBA8gBAPgBAfgBApgCBqACpAyoAgrCAgcQIxgnGOoCwgIEECMYJ8ICChAAGIAEGEMYigXCAgsQABiABBixAxiDAcICERAuGIAEGLEDGNEDGIMBGMcBwgIOEC4YgAQYsQMY0QMYxwHCAggQABiABBixA8ICBRAAGIAEmAME8QXfwsctTUJ4qpIHBzEuMC4yLjOgB90ysgcFMi0yLjO4B58MwgcFMC4zLjPIBxA&amp;sclient=gws-wiz&amp;mstk=AUtExfByph0RG5ZCrgpOAn4zmZe6wzxGSLioYFDR-_uGrUw0GhRlbrQX_o-YE01gX4-y4zIsLFON-Epwhtv3wPuE6uqBxjOewzFL2ezAJouzL_jemnxzMo9c6hQ26BaW4xuk_yZk1aHqkvHLpwo9eshiKlluJCxstlXk28qAidV8z2JsT14&amp;csui=3">~/.emacs</a>) 中加入以下代码来加载 <code>cua-mode</code> 和 <code>cua-base</code>。</p>
+<pre><code>(require 'cua-base)
+(cua-mode 1)
+</code></pre>
+<p>这段代码会加载 <code>cua-base</code> 库，并激活 <code>cua-mode</code>，从而在 Emacs 中启用 CUA 模式下的剪切、复制、粘贴等功能，以及其特色的可视化块选择。</p>
+</blockquote>
+<hr>
+<h3 id="键位设计哲学"><strong>键位设计哲学</strong></h3>
+<p>该配置融合了：</p>
+<ol>
+<li><strong>Windows习惯迁移</strong>：
+<ul>
+<li><code>C-o</code> 打开文件
+<ul>
+<li>多个分屏要在一个屏幕中打开文件的时候<code>ctrl+o</code>+<code>Tab(多按几次)</code>+输入要打开的文件名（也可用Tab补全）这样就不会干扰另外的窗口了。</li>
+</ul>
+</li>
+<li><code>C-s</code> 保存</li>
+<li><code>C-backspace</code> 删除单词</li>
+<li>Ctrl+P 显示当前工作目录</li>
+<li>Ctrl+Backspace 删除前一个单词</li>
+<li>Ctrl+Delete 删除后一个单词</li>
+<li>Ctrl+D 删除整行</li>
+</ul>
+</li>
+<li><strong>高频操作聚合</strong>：
+<ul>
+<li>F1-F12 覆盖书签/搜索/窗口管理等核心需求</li>
+<li>修饰键组合（C- / S-）扩展功能维度</li>
+</ul>
+</li>
+<li><strong>硬件适配优化</strong>：
+<ul>
+<li>充分利用功能键区，减少组合键疲劳</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="配置亮点总结"><strong>配置亮点总结</strong></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">功能类别</th>
+<th style="text-align:center">核心快捷键</th>
+<th style="text-align:center">效率提升场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">跨文件导航</td>
+<td style="text-align:center">F1/F2书签</td>
+<td style="text-align:center">大型项目核心模块跳转</td>
+</tr>
+<tr>
+<td style="text-align:center">精准编辑</td>
+<td style="text-align:center">C-d整行删除 + F5跳行</td>
+<td style="text-align:center">快速代码结构调整</td>
+</tr>
+<tr>
+<td style="text-align:center">多窗口协作</td>
+<td style="text-align:center">F12分屏 + F6切换</td>
+<td style="text-align:center">边写代码边看文档/运行结果</td>
+</tr>
+<tr>
+<td style="text-align:center">正则表达式操作</td>
+<td style="text-align:center">C-f3/C-f9正则搜索替换</td>
+<td style="text-align:center">批量处理相似代码模式</td>
+</tr>
+<tr>
+<td style="text-align:center">领域特定加速</td>
+<td style="text-align:center">Verilog的M-i/M-d转换</td>
+<td style="text-align:center">硬件描述语言开发效率倍增</td>
+</tr>
+</tbody>
+</table>
+<p>建议先掌握 <code>F1-F5</code> + <code>F12</code> 的基础组合，逐步扩展到替换和Verilog专用功能。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/zu-he-suo-cun-shi-zhong/">
+                  <h3 class="post-title">
+                    组合/锁存时钟
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

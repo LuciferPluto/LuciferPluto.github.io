@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>GDB调试器学习 | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="GDB调试器学习文档
+1. GDB简介
+GDB（GNU Debugger）是GNU项目的一部分，是一个强大的调试工具，支持调试C、C++、Fortran等语言编写的程序。GDB允许你暂停程序的执行、逐步执行代码、检查和修改变量、查看调用栈、..." />
+    <meta name="keywords" content="Linux,YSYX" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">GDB调试器学习</h2>
+            <div class="post-date">2025-06-10</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="gdb调试器学习文档">GDB调试器学习文档</h1>
+<h2 id="1-gdb简介">1. <strong>GDB简介</strong></h2>
+<p>GDB（GNU Debugger）是GNU项目的一部分，是一个强大的调试工具，支持调试C、C++、Fortran等语言编写的程序。GDB允许你暂停程序的执行、逐步执行代码、检查和修改变量、查看调用栈、设置断点等。它广泛应用于开发和调试过程中，特别是在嵌入式开发、系统级编程等场景。</p>
+<h3 id="11-gdb常见功能">1.1 <strong>GDB常见功能</strong></h3>
+<ul>
+<li><strong>单步执行</strong>：逐行执行程序并进入函数。</li>
+<li><strong>设置断点</strong>：在特定位置暂停程序。</li>
+<li><strong>打印变量</strong>：查看变量的值。</li>
+<li><strong>查看内存</strong>：检查内存内容。</li>
+<li><strong>监视变量</strong>：监视变量变化时停下来。</li>
+<li><strong>查看调用栈</strong>：查看函数调用路径。</li>
+<li><strong>修改程序状态</strong>：在调试过程中修改变量、内存或寄存器的值。</li>
+</ul>
+<h2 id="2-启动gdb">2. <strong>启动GDB</strong></h2>
+<p>在Linux终端中，你可以通过以下命令启动GDB：</p>
+<pre><code class="language-shell">gdb &lt;executable&gt;
+</code></pre>
+<p>其中，<code>&lt;executable&gt;</code> 是你编译后的程序的可执行文件。如果你希望在编译时生成调试信息（用于GDB），请使用 <code>-g</code> 选项：</p>
+<pre><code class="language-shell">gcc -g program.c -o program
+</code></pre>
+<p>启动后，GDB将显示欢迎信息，并进入调试模式。</p>
+<pre><code class="language-shell">(gdb)
+</code></pre>
+<h2 id="3-gdb命令概述">3. <strong>GDB命令概述</strong></h2>
+<ol>
+<li><strong>基础命令</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>运行程序</strong>：使用 <code>run</code> 或简写 <code>r</code> 启动程序执行。</p>
+<pre><code class="language-shell">(gdb) run
+</code></pre>
+</li>
+<li>
+<p><strong>退出GDB</strong>：使用 <code>quit</code> 或简写 <code>q</code> 退出调试器。</p>
+<pre><code class="language-shell">(gdb) quit
+</code></pre>
+</li>
+</ul>
+<ol start="2">
+<li><strong>设置断点</strong></li>
+</ol>
+<p>断点用于在程序执行到某一行时暂停，以便你检查程序的状态。</p>
+<ul>
+<li>
+<p>在函数入口处设置断点：</p>
+<pre><code class="language-shell">(gdb) break function_name
+</code></pre>
+</li>
+<li>
+<p>在特定文件的特定行设置断点：</p>
+<pre><code class="language-shell">(gdb) break filename.c:line_number
+</code></pre>
+</li>
+<li>
+<p>设置条件断点：只有满足条件时才会停下来：</p>
+<pre><code class="language-shell">(gdb) break function_name if variable &gt; 10
+</code></pre>
+</li>
+</ul>
+<ol start="3">
+<li><strong>单步执行</strong></li>
+</ol>
+<p>GDB提供了两种单步执行模式：</p>
+<ul>
+<li>
+<p><strong>step</strong>：逐行执行，并进入当前行的函数（如果当前行是一个函数调用）。</p>
+<pre><code class="language-shell">(gdb) step
+</code></pre>
+</li>
+<li>
+<p><strong>next</strong>：逐行执行，但如果当前行是函数调用，跳过该函数。</p>
+<pre><code class="language-shell">(gdb) next
+</code></pre>
+</li>
+</ul>
+<ol start="4">
+<li><strong>运行到函数末尾</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>finish</strong>：执行当前函数，直到返回到调用该函数的地方。</p>
+<pre><code class="language-shell">(gdb) finish
+</code></pre>
+</li>
+</ul>
+<ol start="5">
+<li><strong>查看变量值</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>print</strong>：打印一个变量的当前值。</p>
+<pre><code class="language-shell">(gdb) print variable_name
+</code></pre>
+<p>你也可以打印表达式的值：</p>
+<pre><code class="language-shell">(gdb) print a + b
+</code></pre>
+</li>
+<li>
+<p><strong>info locals</strong>：显示当前函数中所有局部变量的值。</p>
+<pre><code class="language-shell">(gdb) info locals
+</code></pre>
+</li>
+</ul>
+<ol start="6">
+<li><strong>查看寄存器值</strong></li>
+</ol>
+<p>使用 <code>info registers</code> 查看CPU寄存器的当前值：</p>
+<pre><code class="language-shell">(gdb) info registers
+</code></pre>
+<ol start="7">
+<li><strong>查看内存</strong></li>
+</ol>
+<p>你可以通过 <code>x</code> 命令查看内存的内容，支持多种格式输出（十六进制、十进制、字符等）。</p>
+<ul>
+<li>
+<p>查看内存中从指定地址开始的内容：</p>
+<pre><code class="language-shell">(gdb) x/4x 0x601000  # 显示从地址0x601000开始的4个16进制数
+</code></pre>
+<p>这里 <code>/4x</code> 表示显示4个16进制数。</p>
+</li>
+</ul>
+<ol start="8">
+<li><strong>查看调用栈</strong></li>
+</ol>
+<p>使用 <code>backtrace</code> 或 <code>bt</code> 命令查看函数的调用栈：</p>
+<pre><code class="language-shell">(gdb) backtrace
+</code></pre>
+<p>这会列出当前的调用栈，帮助你了解程序是如何到达当前状态的。</p>
+<ol start="9">
+<li><strong>设置监视点</strong></li>
+</ol>
+<p>监视点允许你在某个变量的值发生变化时暂停程序。</p>
+<pre><code class="language-shell">(gdb) watch variable_name
+</code></pre>
+<p>当 <code>variable_name</code> 的值变化时，程序会暂停执行。</p>
+<ol start="10">
+<li><strong>继续执行程序</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>continue</strong>：继续程序执行，直到下一个断点或程序结束。</p>
+<pre><code class="language-shell">(gdb) continue
+</code></pre>
+</li>
+</ul>
+<ol start="11">
+<li><strong>调试多线程程序</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>info threads</strong>：查看所有线程的状态。</p>
+<pre><code class="language-shell">(gdb) info threads
+</code></pre>
+</li>
+<li>
+<p><strong>thread</strong>：切换到指定线程。</p>
+<pre><code class="language-shell">(gdb) thread thread_number
+</code></pre>
+</li>
+<li>
+<p><strong>break</strong>：为指定线程设置断点。</p>
+<pre><code class="language-shell">(gdb) break function_name thread thread_number
+</code></pre>
+</li>
+</ul>
+<ol start="12">
+<li><strong>调试远程程序</strong></li>
+</ol>
+<p>GDB可以用于调试远程程序，使用 <code>target remote</code> 命令连接到远程调试目标。</p>
+<pre><code class="language-shell">(gdb) target remote &lt;remote_host&gt;:&lt;port&gt;
+</code></pre>
+<ol start="13">
+<li><strong>扫描内存</strong></li>
+</ol>
+<p>使用 <code>x</code> 命令：</p>
+<ul>
+<li>
+<p><strong>x</strong>: 显示内存内容，可以指定显示格式和大小。</p>
+<p>例如，查看内存中的一个整数值：</p>
+<pre><code>(gdb) x/4xw 0x601000  # 从地址 0x601000 开始，显示4个字（每个4字节）的16进制内容
+</code></pre>
+<p>你可以根据需要调整格式：</p>
+<ul>
+<li><code>/4x</code>：查看4个16进制数</li>
+<li><code>/4d</code>：查看4个十进制数</li>
+<li><code>/4s</code>：查看4个字符串</li>
+</ul>
+</li>
+</ul>
+<ol start="14">
+<li><strong>查看帮助</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>help</strong>：查看命令的帮助信息。你可以指定具体的命令，查看该命令的详细帮助。</p>
+<pre><code>(gdb) help break
+</code></pre>
+</li>
+<li>
+<p><strong>man gdb</strong>：在Linux系统中，你可以使用 <code>man</code> 命令查看GDB的完整手册，获得命令的详细说明。</p>
+<pre><code>man gdb
+</code></pre>
+</li>
+</ul>
+<hr>
+<h2 id="4-案例调试一个简单的c程序">4. <strong>案例：调试一个简单的C程序</strong></h2>
+<p><strong>程序代码：<code>calculator.c</code></strong></p>
+<pre><code class="language-C++">#include &lt;stdio.h&gt;
+
+void add(int a, int b) {
+    int sum = a + b;
+    printf(&quot;Sum: %d\n&quot;, sum);
+}
+
+void subtract(int a, int b) {
+    int diff = a - b;
+    printf(&quot;Difference: %d\n&quot;, diff);
+}
+
+void multiply(int a, int b) {
+    int product = a * b;
+    printf(&quot;Product: %d\n&quot;, product);
+}
+
+int main() {
+    int x = 10, y = 5;
+
+    add(x, y);
+    subtract(x, y);
+    multiply(x, y);
+
+    return 0;
+}
+</code></pre>
+<ol>
+<li><strong>编译并启动GDB</strong></li>
+</ol>
+<p>编译程序并生成调试信息：</p>
+<pre><code class="language-shell">gcc -g calculator.c -o calculator
+</code></pre>
+<p>然后，启动GDB调试器：</p>
+<pre><code class="language-shell">gdb ./calculator
+</code></pre>
+<ol start="2">
+<li>设置断点**</li>
+</ol>
+<p>在 <code>add</code> 函数的入口处设置断点：</p>
+<pre><code class="language-shell">(gdb) break add
+</code></pre>
+<ol start="3">
+<li><strong>运行程序</strong></li>
+</ol>
+<pre><code class="language-shell">(gdb) run
+</code></pre>
+<p>当程序执行到 <code>add</code> 函数时，它会停下来并返回如下信息：</p>
+<pre><code class="language-bash">Breakpoint 1, add (a=10, b=5) at calculator.c:5
+5       int sum = a + b;
+</code></pre>
+<ol start="4">
+<li><strong>单步调试</strong></li>
+</ol>
+<p>使用 <code>step</code> 命令进入函数：</p>
+<pre><code class="language-shell">(gdb) step
+</code></pre>
+<ol start="5">
+<li><strong>打印变量</strong></li>
+</ol>
+<p>查看变量的值：</p>
+<pre><code class="language-bash">在这时，你可以打印局部变量的值，看看 a、b 和 sum 的值。
+
+(gdb) print a
+$1 = 10
+(gdb) print b
+$2 = 5
+(gdb) print sum
+$3 = 15
+
+你可以看到 a 和 b 的值，以及计算出的 sum 值。
+</code></pre>
+<ol start="6">
+<li>跳过不感兴趣的函数</li>
+</ol>
+<p>当执行到某些库函数时，你可能不希望逐行进入，想跳过它们。你可以使用 <code>next</code> 命令跳过库函数：</p>
+<pre><code class="language-bash">(gdb) next
+</code></pre>
+<p><code>next</code> 会跳过当前行的函数调用，直接到下一行代码。</p>
+<ol start="7">
+<li>运行到函数末尾</li>
+</ol>
+<p>如果你想要直接运行到 <code>add</code> 函数的末尾并返回 <code>main</code> 函数，可以使用 <code>finish</code> 命令：</p>
+<pre><code>(gdb) finish
+</code></pre>
+<p>这会继续执行，直到 <code>add</code> 函数执行完并返回到 <code>main</code> 函数。</p>
+<ol start="8">
+<li>查看调用栈</li>
+</ol>
+<p>如果程序停止时发生了崩溃（例如段错误），你可以使用 <code>backtrace</code> 命令查看调用栈：</p>
+<pre><code>(gdb) backtrace
+</code></pre>
+<p>这将列出函数调用的历史，从当前函数到 <code>main</code> 函数的调用路径。</p>
+<ol start="9">
+<li>设置监视点</li>
+</ol>
+<p>假设你想要监视变量 <code>x</code> 或 <code>y</code>，以便在它们的值发生变化时停下来。使用 <code>watch</code> 命令：</p>
+<pre><code>(gdb) watch x
+</code></pre>
+<p>每当变量 <code>x</code> 的值发生变化时，程序会自动停下来。</p>
+<ol start="10">
+<li>设置更多断点</li>
+</ol>
+<p>你还可以设置断点在其他函数或者特定的行。例如，设置断点在 <code>multiply</code> 函数的开始处：</p>
+<pre><code>(gdb) break multiply
+</code></pre>
+<ol start="11">
+<li><strong>继续执行</strong></li>
+</ol>
+<p>继续程序执行，直到程序结束：</p>
+<pre><code class="language-shell">(gdb) continue
+</code></pre>
+<p>当程序执行到 <code>multiply</code> 函数时，GDB 会再次停下来。</p>
+<ol start="12">
+<li><strong>退出GDB</strong></li>
+</ol>
+<p>退出GDB：</p>
+<pre><code>(gdb) quit
+</code></pre>
+<h2 id="总结">总结</h2>
+<p>类比VSCODE的调试界面，与之相同的功能，但是用GUI的界面将其表现。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/cKF2qt4KBz/" class="tag">
+                    Linux
+                  </a>
+                
+                  <a href="https://luciferpluto.github.io/tag/9QKzn89sFT/" class="tag">
+                    YSYX
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/emacs-shi-yong/">
+                  <h3 class="post-title">
+                    emacs使用
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

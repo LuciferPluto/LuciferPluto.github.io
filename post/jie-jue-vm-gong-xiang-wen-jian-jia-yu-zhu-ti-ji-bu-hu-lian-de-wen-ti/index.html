@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>解决VM共享文件夹与主体机不互联的问题 | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="解决VM共享文件夹与主体机不互联的问题
+问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。
+但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并..." />
+    <meta name="keywords" content="Linux" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">解决VM共享文件夹与主体机不互联的问题</h2>
+            <div class="post-date">2025-07-15</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="解决vm共享文件夹与主体机不互联的问题">解决VM共享文件夹与主体机不互联的问题</h2>
+<p>问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。</p>
+<p>但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并没有出现，所以究其原因：</p>
+<p>问题1：<a href="https://www.cnblogs.com/132818Creator/p/12557920.html">win10装 vmware ubuntu 共享文件夹 以及共享不生效的问题解决办法 - HappyCoder_1 - 博客园</a></p>
+<p>但是出现只在root情况下，其余都会有权限问题</p>
+<p>由此想到重新安装VM tools ，随即想到将VM中重新安装tools，但是又变灰了</p>
+<p>问题2：<a href="https://blog.csdn.net/qq_40259641/article/details/79022844">安装VMware Tools选项显示灰色的正确解决办法_vmtools怎么安装是灰色的-CSDN博客</a></p>
+<p>最后可以解决</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/cKF2qt4KBz/" class="tag">
+                    Linux
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/gdb-diao-shi-qi-xue-xi/">
+                  <h3 class="post-title">
+                    GDB调试器学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

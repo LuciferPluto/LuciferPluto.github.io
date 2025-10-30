@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Verilog学习——基于菜鸟教程（三） | Lucifer&amp;甜葡萄柚-world</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://luciferpluto.github.io//favicon.ico?v=1761791336249">
+<link rel="stylesheet" href="https://luciferpluto.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Verilog学习——基于菜鸟教程（三）
+设计方法
+
+
+Verilog 的设计多采用自上而下的设计方法（top-down）。
+
+定义顶层模块功能，
+进而分析要构成顶层模块的必要子模块；
+进一步对各个模块进行分解、设计，直到到达无法进一步分解..." />
+    <meta name="keywords" content="verilog" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://luciferpluto.github.io/">
+        <img src="https://luciferpluto.github.io//images/avatar.png?v=1761791336249" class="site-logo">
+        <h1 class="site-title">Lucifer&amp;甜葡萄柚-world</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      一个IC小白的学习记录
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://luciferpluto.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Verilog学习——基于菜鸟教程（三）</h2>
+            <div class="post-date">2024-08-31</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="verilog学习基于菜鸟教程三">Verilog学习——基于菜鸟教程（三）</h1>
+<h2 id="设计方法">设计方法</h2>
+<blockquote>
+<ol>
+<li>Verilog 的设计多采用自上而下的设计方法（top-down）。
+<ul>
+<li>定义顶层模块功能，</li>
+<li>进而分析要构成顶层模块的必要子模块；</li>
+<li>进一步对各个模块进行分解、设计，直到到达无法进一步分解的底层功能块。</li>
+</ul>
+</li>
+<li>目的是将一个较大的系统，细化成多个小系统，从时间、工作量上分配给更多的人员去设计，从而提高了设计速度，缩短了开发周期。</li>
+<li><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231022213451266.png" alt="image-20231022213451266" loading="lazy"></li>
+</ol>
+</blockquote>
+<h2 id="设计流程">设计流程</h2>
+<figure data-type="image" tabindex="2"><img src="https://cdn.jsdelivr.net/gh/LuciferPluto/typora-Image@main/img/image-20231022213544660.png" alt="image-20231022213544660" loading="lazy"></figure>
+<blockquote>
+<p>流程步骤解释：</p>
+<ol>
+<li><strong>需求分析</strong>：从功能出发，先对逻辑功能有总体设计</li>
+<li><strong>功能划分</strong>：继而对电路的功能、接口、与结构根据需要的功能分成各子模块，再设计各子模块的接口和时序（包括接口时序和内部信号的时序）等。</li>
+<li><strong>文本描述</strong>：也可用专业的HDL编辑环境——对分配到的子模块的数字电路进行相应的设计建模——保存为**.v**文件</li>
+<li><strong>功能仿真</strong>：在布局布线之前，因此为”前仿真“，——“sign-off的功能之一”
+<ul>
+<li>需要做的工作：对建模文件进行编译，对模型电路进行功能上的仿真验证，查找设计的错误并修正。</li>
+<li>只是验证逻辑的正确性</li>
+</ul>
+</li>
+<li><strong>逻辑综合</strong>：
+<ul>
+<li>补充：综合（synthesize），就是在标准单元库和特定的设计约束的基础上，将<strong>设计的高层次描述（Verilog 建模）转换为门级网表的过程。</strong></li>
+<li>逻辑综合的目的是<strong>产生物理电路门级结构</strong>，并在逻辑、时序上进行一定程度的优化，寻求逻辑、面积、功耗的平衡，增强电路的可测试性。</li>
+<li>注：但不是所有的 Verilog 语句都是可以综合成逻辑单元的，例如时延语句。</li>
+</ul>
+</li>
+<li><strong>布局布线</strong>：
+<ul>
+<li>根据<strong>逻辑综合出的网表与约束文件</strong></li>
+<li>利用<strong>厂家提供的各种基本标准单元库</strong></li>
+<li>对<strong>门级电路进行布局布线。</strong></li>
+<li>至此，已经将 Verilog 设计的数字电路，<strong>设计成由标准单元库组成的数字电路。</strong></li>
+</ul>
+</li>
+<li><strong>时序仿真（后仿真）</strong>——sign-off步骤2
+<ul>
+<li>前提准备——布局布线后，电路模型中已经包含了时延信息。</li>
+<li>工作目的：利用在布局布线中获得的精确参数，用仿真软件验证电路的时序。</li>
+<li>注：单元器件的不同、布局布线方案都会给电路的时序造成影响，严重时会出现错误。出错后可能就需要重新修改 RTL（寄存器传输级描述，即 Verilog 初版描述），重复后面的步骤。这样的过程可能反复多次，直至错误完全排除。</li>
+</ul>
+</li>
+<li><strong>FPGA/CPLD 下载或 ASIC 制造工艺生产</strong>
+<ul>
+<li>前提准备——完成上面所有步骤后</li>
+<li>通过开发工具将设计的数字电路目标文件下载到 FPGA/CPLD 芯片中，然后在电路板上进行调试、验证。</li>
+<li>如果要在 ASIC 上实现，则需要制造芯片。一般芯片制造时，也需要先在 FPGA 板卡上进行逻辑功能的验证。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://luciferpluto.github.io/tag/1xX2tV1atw/" class="tag">
+                    verilog
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://luciferpluto.github.io/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-yi/">
+                  <h3 class="post-title">
+                    Verilog学习——基于菜鸟教程（一）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
