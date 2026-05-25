@@ -1,0 +1,215 @@
+<html>
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Gridea Pro 1.2.1">
+<title>解决VM共享文件夹与主体机不互联的问题 | 数字IC成长日记</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1779692088">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="解决VM共享文件夹与主体机不互联的问题 | 数字IC成长日记 - Atom Feed" href="/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="Linux,项目实战" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+<meta name="description" content="解决VM共享文件夹与主体机不互联的问题 问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。 但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并没有出现，所以究其原因： 问题1：[win10装 vmware ubuntu 共享文件夹 以及共享不生效的问题解决办法 - HappyC&amp;hellip;">
+<link rel="canonical" href="https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"解决VM共享文件夹与主体机不互联的问题","url":"https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/","description":"解决VM共享文件夹与主体机不互联的问题 问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。 但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并没有出现，所以究其原因： 问题1：[win10装 vmware ubuntu 共享文件夹 以及共享不生效的问题解决办法 - HappyC\u0026hellip;","datePublished":"2025-07-15T11:03:17+08:00","dateModified":"2026-05-25T14:15:39+08:00","author":{"@type":"Person","name":"数字IC成长日记"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"数字IC成长日记"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://luciferpluto.github.io","name":"数字IC成长日记","position":1},{"@type":"ListItem","item":"https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/","name":"解决VM共享文件夹与主体机不互联的问题","position":2}]}</script>
+<meta property="og:title" content="解决VM共享文件夹与主体机不互联的问题">
+<meta property="og:description" content="解决VM共享文件夹与主体机不互联的问题 问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。 但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并没有出现，所以究其原因： 问题1：[win10装 vmware ubuntu 共享文件夹 以及共享不生效的问题解决办法 - HappyC&amp;hellip;">
+<meta property="og:url" content="https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="数字IC成长日记">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://luciferpluto.github.io/post/jie-jue-vm-gong-xiang-wen-jian-jia-yu-zhu-ti-ji-bu-hu-lian-de-wen-ti/">
+<meta name="twitter:title" content="解决VM共享文件夹与主体机不互联的问题">
+<meta name="twitter:description" content="解决VM共享文件夹与主体机不互联的问题 问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。 但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并没有出现，所以究其原因： 问题1：[win10装 vmware ubuntu 共享文件夹 以及共享不生效的问题解决办法 - HappyC&amp;hellip;">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+
+<body>
+    <div class="main">
+        <div class="main-content">
+            
+<div class="site-header">
+    <a href="/">
+        <img class="avatar" src="/images/avatar.png?v=1779692088" alt="">
+    </a>
+    <h1 class="site-title">
+        数字IC成长日记
+    </h1>
+    <p class="site-description">
+        欢迎来到数字IC小白的学习日记，道不孤行，共同前进
+    </p>
+    <div class="menu-container">
+        
+        
+        <a href="/" class="menu">
+            首页
+        </a>
+        
+        
+        
+        <a href="/post" class="menu">
+            博客
+        </a>
+        
+        
+        
+        <a href="/memos" class="menu">
+            闪念
+        </a>
+        
+        
+        
+        <a href="/archives" class="menu">
+            归档
+        </a>
+        
+        
+        
+        <a href="/tags" class="menu">
+            标签
+        </a>
+        
+        
+        
+        <a href="/links" class="menu">
+            友链
+        </a>
+        
+        
+        
+        <a href="/post/about" class="menu">
+            关于
+        </a>
+        
+        
+    </div>
+    <div class="social-container">
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+            <div class="post-detail">
+                <article class="post">
+                    <h2 class="post-title">
+                        解决VM共享文件夹与主体机不互联的问题
+                    </h2>
+                    <div class="post-info">
+                        <span>
+                            2025-07-15
+                        </span>
+                        <span>
+                            1 分钟阅读
+                        </span>
+                        
+                        <a href="/tag/linux/" class="post-tag">
+                            # Linux
+                        </a>
+                        
+                        <a href="/tag/xiang-mu-shi-zhan/" class="post-tag">
+                            # 项目实战
+                        </a>
+                        
+                    </div>
+                    
+                    <div class="post-content-wrapper">
+                        <div class="post-content" v-pre>
+                            <h2 id="vm">解决VM共享文件夹与主体机不互联的问题</h2>
+<p>问题：在创建unubtu虚拟机的时候就发现“重新安装VMtools一直是灰色”，但因为粘贴复制和拖动文件一直有效就没有去管。</p>
+<p>但是在这个时候出现将文件夹上传到/mnt/hgfs，但是windows中并没有出现，所以究其原因：</p>
+<p>问题1：<a href="https://www.cnblogs.com/132818Creator/p/12557920.html">win10装 vmware ubuntu 共享文件夹 以及共享不生效的问题解决办法 - HappyCoder_1 - 博客园</a></p>
+<p>但是出现只在root情况下，其余都会有权限问题</p>
+<p>由此想到重新安装VM tools ，随即想到将VM中重新安装tools，但是又变灰了</p>
+<p>问题2：<a href="https://blog.csdn.net/qq_40259641/article/details/79022844">安装VMware Tools选项显示灰色的正确解决办法_vmtools怎么安装是灰色的-CSDN博客</a></p>
+<p>最后可以解决</p>
+
+                        </div>
+                        <div class="toc-container">
+                            
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            
+            <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="/post/gdb-diao-shi-qi-xue-xi/">
+                    <h3 class="post-title">
+                        GDB调试器学习
+                    </h3>
+                </a>
+            </div>
+            
+
+            
+
+            
+<div class="site-footer">
+    
+    <a class="rss" href="/atom.xml" target="_blank">
+        <i class="ri-rss-line"></i> RSS
+    </a>
+</div>
+
+        </div>
+    </div>
+
+    <script>
+        hljs.initHighlightingOnLoad()
+
+        let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+        
+        
+        
+        
+        
+        
+        
+        
+
+        window.addEventListener("scroll", event => {
+            let fromTop = window.scrollY;
+
+            mainNavLinks.forEach((link, index) => {
+                let section = document.getElementById(decodeURI(link.hash).substring(1));
+                let nextSection = null
+                if (mainNavLinks[index + 1]) {
+                    nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+                }
+                if (section.offsetTop <= fromTop) {
+                    if (nextSection) {
+                        if (nextSection.offsetTop > fromTop) {
+                            link.classList.add("current");
+                        } else {
+                            link.classList.remove("current");
+                        }
+                    } else {
+                        link.classList.add("current");
+                    }
+                } else {
+                    link.classList.remove("current");
+                }
+            });
+        });
+
+    </script>
+<script>console.log("\n%c ✦ Gridea Pro v1.2.1 %c · Theme: inotes v1.0.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+
+</html>
