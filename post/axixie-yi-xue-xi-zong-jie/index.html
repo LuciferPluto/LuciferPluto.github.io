@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="/styles/main.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+
+
+<style>:root { --heatmap-color: #39d353; }</style>
+
+
+
+<style>
+  .theme-toggle-sun  { display: flex; }
+  .theme-toggle-moon { display: none; }
+  :root.theme-light .theme-toggle-sun  { display: none; }
+  :root.theme-light .theme-toggle-moon { display: flex; }
+</style>
+
+
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('flavor-theme');
+      var theme = saved || 'dark';
+      if (theme === 'light') {
+        document.documentElement.classList.add('theme-light');
+      }
+    } catch (e) { }
+  })();
+</script>
+  <meta name="generator" content="Gridea Pro 1.2.2">
+  <title>AXI协议学习总结 | 数字IC成长日记</title>
+  
+<meta property="og:title" content="AXI协议学习总结" />
+<meta property="og:type" content="article" />
+
+
+<meta name="description" content="AXI协议学习总结 1 AXI的概述 1.1 AXI简介 AXI总线协议是 ARM 公司提出来的 AMBA 3.0 协议中最重要的部分，是一种面向高性能、高带宽、低延迟的片内总线。 1.2 AMBA的历史 年份 版本 说明 1995 AMBA 1.0 A&amp;hellip;">
+<link rel="canonical" href="https://luciferpluto.github.io/post/axixie-yi-xue-xi-zong-jie/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AXI协议学习总结","url":"https://luciferpluto.github.io/post/axixie-yi-xue-xi-zong-jie/","description":"AXI协议学习总结 1 AXI的概述 1.1 AXI简介 AXI总线协议是 ARM 公司提出来的 AMBA 3.0 协议中最重要的部分，是一种面向高性能、高带宽、低延迟的片内总线。 1.2 AMBA的历史 年份 版本 说明 1995 AMBA 1.0 A\u0026hellip;","datePublished":"2026-09-07T19:39:55+08:00","dateModified":"2026-09-07T11:58:38+08:00","author":{"@type":"Person","name":"数字IC成长日记"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"数字IC成长日记"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://luciferpluto.github.io","name":"数字IC成长日记","position":1},{"@type":"ListItem","item":"https://luciferpluto.github.io/post/axixie-yi-xue-xi-zong-jie/","name":"AXI协议学习总结","position":2}]}</script>
+<meta property="og:title" content="AXI协议学习总结">
+<meta property="og:description" content="AXI协议学习总结 1 AXI的概述 1.1 AXI简介 AXI总线协议是 ARM 公司提出来的 AMBA 3.0 协议中最重要的部分，是一种面向高性能、高带宽、低延迟的片内总线。 1.2 AMBA的历史 年份 版本 说明 1995 AMBA 1.0 A&amp;hellip;">
+<meta property="og:url" content="https://luciferpluto.github.io/post/axixie-yi-xue-xi-zong-jie/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="数字IC成长日记">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://luciferpluto.github.io/post/axixie-yi-xue-xi-zong-jie/">
+<meta name="twitter:title" content="AXI协议学习总结">
+<meta name="twitter:description" content="AXI协议学习总结 1 AXI的概述 1.1 AXI简介 AXI总线协议是 ARM 公司提出来的 AMBA 3.0 协议中最重要的部分，是一种面向高性能、高带宽、低延迟的片内总线。 1.2 AMBA的历史 年份 版本 说明 1995 AMBA 1.0 A&amp;hellip;">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+<body class="flavor-theme">
+
+  <header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <div class="top-bar">
+
+      
+      <div class="top-bar__left">
+        
+        <a href="https://luciferpluto.github.io" class="site-avatar-link" aria-label="返回首页">
+          <img class="site-avatar" src="/images/avatar.png" alt="数字IC成长日记" />
+        </a>
+        
+        <a href="https://luciferpluto.github.io" class="site-name-link">数字IC成长日记</a>
+      </div>
+
+      
+      <nav class="top-bar__nav" id="sectionBar">
+        
+        
+        <a class="nav-item" href="/">首页</a>
+        
+        <a class="nav-item" href="/post">博客</a>
+        
+        <a class="nav-item" href="/memos">闪念</a>
+        
+        <a class="nav-item" href="/archives">归档</a>
+        
+        <a class="nav-item" href="/tags">标签</a>
+        
+        <a class="nav-item" href="/links">友链</a>
+        
+        <a class="nav-item" href="/post/about">关于</a>
+        
+        
+      </nav>
+
+      
+      <div class="top-bar__right">
+        <button class="btn-icon btn-search search-btn" id="btnSearch" type="button" aria-label="搜索">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="btn-icon theme-toggle theme-toggle-sun" id="themeToggleSun" type="button"
+          aria-label="切换到浅色模式">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1C12.5523 1 13 1.44772 13 2V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V2C11 1.44772 11.4477 1 12 1Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12ZM12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9Z"></path>
+            <path d="M13 20C13 19.4477 12.5523 19 12 19C11.4477 19 11 19.4477 11 20V22C11 22.5523 11.4477 23 12 23C12.5523 23 13 22.5523 13 22V20Z"></path>
+            <path d="M4.22282 4.22289C4.61335 3.83236 5.24651 3.83236 5.63704 4.22289L7.04704 5.63289C7.43756 6.02341 7.43756 6.65658 7.04704 7.0471C6.65651 7.43762 6.02335 7.43762 5.63283 7.0471L4.22282 5.6371C3.8323 5.24658 3.8323 4.61341 4.22282 4.22289Z"></path>
+            <path d="M18.367 16.9529C17.9765 16.5623 17.3433 16.5623 16.9528 16.9529C16.5623 17.3434 16.5623 17.9766 16.9528 18.3671L18.3628 19.7771C18.7533 20.1676 19.3865 20.1676 19.777 19.7771C20.1675 19.3866 20.1675 18.7534 19.777 18.3629L18.367 16.9529Z"></path>
+            <path d="M1 12C1 11.4477 1.44772 11 2 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H2C1.44772 13 1 12.5523 1 12Z"></path>
+            <path d="M20 11C19.4477 11 19 11.4477 19 12C19 12.5523 19.4477 13 20 13H22C22.5523 13 23 12.5523 23 12C23 11.4477 22.5523 11 22 11H20Z"></path>
+            <path d="M7.04704 16.9529C7.43756 17.3434 7.43756 17.9766 7.04704 18.3671L5.63704 19.7771C5.24651 20.1676 4.61335 20.1676 4.22282 19.7771C3.8323 19.3866 3.8323 18.7534 4.22283 18.3629L5.63283 16.9529C6.02335 16.5623 6.65651 16.5623 7.04704 16.9529Z"></path>
+            <path d="M19.777 5.6371C20.1675 5.24657 20.1675 4.61341 19.777 4.22289C19.3865 3.83236 18.7533 3.83236 18.3628 4.22289L16.9528 5.63289C16.5623 6.02341 16.5623 6.65658 16.9528 7.0471C17.3433 7.43762 17.9765 7.43762 18.367 7.0471L19.777 5.6371Z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon theme-toggle theme-toggle-moon" id="themeToggleMoon" type="button"
+          aria-label="切换到深色模式">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C10.0222 2 8.08879 2.58649 6.4443 3.6853C4.79981 4.78412 3.51809 6.3459 2.76121 8.17317C2.00433 10.0004 1.8063 12.0111 2.19215 13.9509C2.578 15.8907 3.53041 17.6725 4.92894 19.0711C6.32746 20.4696 8.10929 21.422 10.0491 21.8079C11.9889 22.1937 13.9996 21.9957 15.8268 21.2388C17.6541 20.4819 19.2159 19.2002 20.3147 17.5557C21.4135 15.9112 22 13.9778 22 12C22 11.5955 21.7564 11.2309 21.3827 11.0761C21.009 10.9213 20.5789 11.0069 20.2929 11.2929C19.287 12.2988 17.9226 12.864 16.5 12.864C15.0774 12.864 13.713 12.2988 12.7071 11.2929C11.7012 10.287 11.136 8.92261 11.136 7.5C11.136 6.07739 11.7012 4.71304 12.7071 3.70711C12.9931 3.42111 13.0787 2.99099 12.9239 2.61732C12.7691 2.24364 12.4045 2 12 2ZM7.55544 5.34824C8.27036 4.87055 9.05353 4.51389 9.87357 4.28778C9.39271 5.27979 9.13604 6.37666 9.13604 7.5C9.13604 9.45304 9.91189 11.3261 11.2929 12.7071C12.6739 14.0881 14.547 14.864 16.5 14.864C17.6233 14.864 18.7202 14.6073 19.7122 14.1264C19.4861 14.9465 19.1295 15.7296 18.6518 16.4446C17.7727 17.7602 16.5233 18.7855 15.0615 19.391C13.5997 19.9965 11.9911 20.155 10.4393 19.8463C8.88743 19.5376 7.46197 18.7757 6.34315 17.6569C5.21447 16.538 4.4624 15.1126 4.15372 13.5607C3.84504 12.0089 4.00347 10.4003 4.60897 8.93853C5.21447 7.47672 6.23985 6.22729 7.55544 5.34824Z"></path>
+            <path d="M19 2C19.5523 2 20 2.44772 20 3V4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H20V7C20 7.55228 19.5523 8 19 8C18.4477 8 18 7.55228 18 7V6H17C16.4477 6 16 5.55228 16 5C16 4.44772 16.4477 4 17 4H18V3C18 2.44772 18.4477 2 19 2Z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon btn-nav-toggle mobile-only" id="btnNavToggle" type="button" aria-label="切换导航">
+          <div class="hamburger" id="hamburger">
+            <span class="hamburger__line hamburger__line--top"></span>
+            <span class="hamburger__line hamburger__line--bottom"></span>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+
+<div class="header-spacer"></div>
+
+<script>
+(function(){
+  var btn = document.getElementById('btnNavToggle');
+  var nav = document.getElementById('sectionBar');
+  var hamburger = document.getElementById('hamburger');
+  if (btn && nav) {
+    btn.addEventListener('click', function(){
+      nav.classList.toggle('top-bar__nav--open');
+      if (hamburger) hamburger.classList.toggle('is-active');
+    });
+    nav.querySelectorAll('.nav-item').forEach(function(item){
+      item.addEventListener('click', function(){
+        nav.classList.remove('top-bar__nav--open');
+        if (hamburger) hamburger.classList.remove('is-active');
+      });
+    });
+  }
+
+  var root = document.documentElement;
+  var applyTheme = function(theme, persist){
+    if (theme === 'light') {
+      root.classList.add('theme-light');
+    } else {
+      root.classList.remove('theme-light');
+    }
+    if (persist) {
+      try { localStorage.setItem('flavor-theme', theme); } catch (e) {}
+    }
+  };
+  document.querySelectorAll('.theme-toggle').forEach(function(el){
+    el.addEventListener('click', function(){
+      applyTheme(root.classList.contains('theme-light') ? 'dark' : 'light', true);
+    });
+  });
+})();
+</script>
+
+  <main class="site-main" role="main">
+    
+<article class="article-container">
+  <header class="article-header">
+    <h1 class="article-title">AXI协议学习总结</h1>
+    <div class="article-meta">
+      
+      <span class="article-meta__item">2026-09-07</span>
+      
+      <span class="article-meta__sep">·</span>
+      <span class="article-meta__item">26 分钟阅读</span>
+      
+    </div>
+    
+  </header>
+
+  
+
+  <div class="article-content">
+    <h1 id="axi">AXI协议学习总结</h1>
+<hr />
+<h2 id="1-axi">1 AXI的概述</h2>
+<h3 id="11-axi">1.1 AXI简介</h3>
+<p>AXI总线协议是 <strong>ARM 公司提出来的 AMBA 3.0 协议中最重要的部分</strong>，是一种面向<strong>高性能、高带宽、低延迟</strong>的片内总线。</p>
+<h3 id="12-amba">1.2 AMBA的历史</h3>
+<table>
+<thead>
+<tr>
+<th>年份</th>
+<th>版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1995</td>
+<td>AMBA 1.0</td>
+<td>APB 外设总线以及 ASB 系统总线发布</td>
+</tr>
+<tr>
+<td>1999</td>
+<td>AMBA 2.0</td>
+<td>AHB 系统总线发布，APB 总线升级为同步总线</td>
+</tr>
+<tr>
+<td>2003</td>
+<td>AMBA 3.0</td>
+<td>高性能互联协议 AXI 发布，APB 总线扩展，AHB-LITE 协议发布</td>
+</tr>
+<tr>
+<td>2010</td>
+<td>AMBA 4.0</td>
+<td>发布 AXI4 和 AXI-LITE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>协议演进时间轴（原图）</strong>：横轴为时间（1995 / 1999 / 2003 / 2010，对应 V4 / V5 / V6 / V7），纵轴为 Performance（性能）与 Architecture（架构）。</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>版本</th>
+<th>协议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1995</td>
+<td>V4</td>
+<td>AMBA ASB、AMBA APB</td>
+</tr>
+<tr>
+<td>1999</td>
+<td>V5</td>
+<td>AMBA 2 AHB、AMBA 2 APB</td>
+</tr>
+<tr>
+<td>2003</td>
+<td>V6</td>
+<td>AMBA 3 AXI、AMBA 3 AHB-Lite、AMBA 3 APB</td>
+</tr>
+<tr>
+<td>2010</td>
+<td>V7</td>
+<td>AMBA 4 AXI4、AMBA 4 AXI_Lite</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-axi">1.3 AXI特性</h3>
+<ul>
+<li>地址/控制操作与数据操作<strong>相位分离</strong>。</li>
+<li><strong>Byte Strobe</strong> 信号支持非对齐传输。</li>
+<li>每次突发传输只需要发送传输的<strong>首地址</strong>。</li>
+<li><strong>分离的读、写通道</strong>支持低成本 DMA。</li>
+<li>支持 <strong>Outstanding</strong> 地址发送功能。</li>
+<li>支持<strong>乱序传输</strong>。</li>
+<li>方便集成寄存器 Stage 以满足时序要求。</li>
+</ul>
+<hr />
+<h2 id="2-axi">2 AXI协议结构</h2>
+<h3 id="21-axi">2.1 AXI架构</h3>
+<ul>
+<li>AXI 的基本传输模式为<strong>突发传输</strong>（Burst）。</li>
+<li><strong>五个数据通道（Channel）</strong>，相当于独立的五条总线。</li>
+<li>每条通道都具有<strong>固定的方向性</strong>。</li>
+<li>通道以<strong>异步方式</strong>进行传输，包括独立的双向握手信号（<strong>Valid 和 Ready</strong>）。</li>
+<li>信源通过 <strong>Valid</strong> 信号指示数据或控制信息在该通道有效，信宿通过 <strong>Ready</strong> 信号指示该数据已经被获取。</li>
+</ul>
+<p><strong>读写通道组成：</strong></p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>包含通道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读操作</td>
+<td>AR 通道（读地址）、R 通道（读数据），共 2 个通道</td>
+</tr>
+<tr>
+<td>写操作</td>
+<td>AW 通道（写地址）、W 通道（写数据）、B 通道（写响应），共 3 个通道</td>
+</tr>
+</tbody>
+</table>
+<p><strong>通道结构（原图）</strong>：Master（Interface Master）通过 Addr and Ctrl 接口与 Slave（Interface Slave）连接，包括：</p>
+<ul>
+<li><strong>Read Address Channel</strong>：Addr and Ctrl → 地址与控制信息（Master → Slave）</li>
+<li><strong>Read Data Channel</strong>：Read Data（Slave → Master）</li>
+<li><strong>Write Address Channel</strong>：Addr and Ctrl（Master → Slave）</li>
+<li><strong>Write Data Channel</strong>：Write Data（Master → Slave）</li>
+<li><strong>Write Resp Channel</strong>：Write Resp（Slave → Master）<br />
+<img src="/post-images/1788753378550376200_0.png" alt="" /><br />
+<strong>架构要点</strong>：AXI 架构由五个通道组成，master 的写操作由<strong>写地址通道、写数据通道、写响应通道</strong>完成；Master 的读操作由<strong>读地址通道和读数据通道</strong>完成。每个通道都是独立的，由 master 的 <strong>valid</strong> 和 slave 的 <strong>ready</strong> 进行握手通信。</li>
+</ul>
+<h3 id="22-axi">2.2 AXI通道握手</h3>
+<p>传输都是发生在 <strong>valid 和 ready 都有效</strong>的时刻。<br />
+<img src="/post-images/1788753398434219900_0.png" alt="" /></p>
+<h4 id="figure-1-4-read-burst">读操作（Figure 1-4 Read burst）</h4>
+<p><img src="/post-images/1788753412912092900_0.png" alt="" /><br />
+ARADDR、ARVALID、ARREADY 属于<strong>读地址通道</strong>：</p>
+<ul>
+<li>在 <strong>T1</strong> 时刻 master 发出地址和 valid，但 slave 的 ready 拉低表示在忙；</li>
+<li>下一拍拉高表示可以接收命令；</li>
+<li>在 <strong>T2</strong> 时刻读命令有效。</li>
+</ul>
+<p>RDATA、RLAST、RVALID、RREADY 属于<strong>读数据通道</strong>，同样，在 valid 和 ready 都为高的时刻传输才有效。</p>
+<p><strong>时序波形要点（T0 ~ T13）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>波形要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACLK</td>
+<td>全局时钟</td>
+</tr>
+<tr>
+<td>ARADDR</td>
+<td>T1 发出地址 A</td>
+</tr>
+<tr>
+<td>ARVALID</td>
+<td>T1 拉高，保持至握手完成</td>
+</tr>
+<tr>
+<td>ARREADY</td>
+<td>T1 为低（忙），T2 拉高，读命令在 T2 有效</td>
+</tr>
+<tr>
+<td>RDATA</td>
+<td>在握手有效时刻依次输出 DA0 / DA1 / DA2 / DA3</td>
+</tr>
+<tr>
+<td>RLAST</td>
+<td>最后一个读数据时拉高</td>
+</tr>
+<tr>
+<td>RVALID / RREADY</td>
+<td>均为高时读数据传输有效</td>
+</tr>
+</tbody>
+</table>
+<p><strong>读操作依赖关系</strong>：单箭头表示没有明确要求先后顺序，双箭头有明确要求。<strong>要求读数据 valid（RVALID）一定要在读地址 valid（ARVALID）和 ready（ARREADY）之后</strong>。</p>
+<pre><code>ARVALID ────▶ RVALID
+ARREADY ────▶ RREADY
+（ARVALID/ARREADY 先于 RVALID 有效）
+</code></pre>
+<h4 id="figure-1-6-write-burst">写操作（Figure 1-6 Write burst）</h4>
+<ul>
+<li>AWADDR、AWVALID、AWREADY 属于<strong>写地址通道</strong>；</li>
+<li>WDATA、WLAST、WVALID、WREADY 属于<strong>写数据通道</strong>；</li>
+<li>BRESP、BVALID、BREADY 属于<strong>写响应通道</strong>。<br />
+<img src="/post-images/1788753423779063500_0.png" alt="" /><br />
+<strong>时序要点（T0 ~ T10）</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>波形要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACLK</td>
+<td>全局时钟</td>
+</tr>
+<tr>
+<td>AWADDR</td>
+<td>T1 发出地址 A</td>
+</tr>
+<tr>
+<td>AWVALID / AWREADY</td>
+<td>写地址在 <strong>T2</strong> 时刻当两者都有效时生效</td>
+</tr>
+<tr>
+<td>WDATA</td>
+<td>数据分别于 <strong>T4 / T6 / T8 / T9</strong> 时刻有效，依次为 D(A0) / D(A1) / D(A2) / D(A3)</td>
+</tr>
+<tr>
+<td>WLAST</td>
+<td>最后一个写数据时拉高</td>
+</tr>
+<tr>
+<td>WVALID / WREADY</td>
+<td>均为高时写数据传输有效</td>
+</tr>
+<tr>
+<td>BRESP</td>
+<td>写响应在 <strong>T10</strong> 时刻有效（OKAY）</td>
+</tr>
+<tr>
+<td>BVALID / BREADY</td>
+<td>均为高时写响应有效</td>
+</tr>
+</tbody>
+</table>
+<p>当 slave 接收到所有的写数据后才回应 master 一个 <strong>response</strong>。</p>
+<h2 id="post-images1788753439085383900-0png"><strong>写操作依赖关系</strong>：单箭头表示没有明确要求先后顺序，双箭头有明确要求（AWVALID/AWREADY → WVALID/WREADY → BVALID/BREADY 依次握手）。<br />
+<img src="/post-images/1788753439085383900_0.png" alt="" /></h2>
+<h2 id="3-axi">3 AXI的端口信号</h2>
+<h3 id="31-">3.1 全局信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACLK</td>
+<td>Clock source</td>
+<td>全局时钟信号</td>
+</tr>
+<tr>
+<td>ARESETn</td>
+<td>Reset source</td>
+<td>全局复位信号，低电平有效</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-">3.2 写地址通道信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWID[3:0]</td>
+<td>主机</td>
+<td>写地址 ID，这个信号是写地址信号组的 ID tag。</td>
+</tr>
+<tr>
+<td>AWADDR[31:0]</td>
+<td>主机</td>
+<td>写地址。</td>
+</tr>
+<tr>
+<td>AWLEN[3:0]</td>
+<td>主机</td>
+<td>突发式写的长度。此长度决定突发式写所有传输的数据的个数。</td>
+</tr>
+<tr>
+<td>AWSIZE[2:0]</td>
+<td>主机</td>
+<td>突发式写的大小。</td>
+</tr>
+<tr>
+<td>AWBURST[1:0]</td>
+<td>主机</td>
+<td>突发式写的类型。</td>
+</tr>
+<tr>
+<td>AWLOCK[1:0]</td>
+<td>主机</td>
+<td>锁类型。</td>
+</tr>
+<tr>
+<td>AWCACHE[3:0]</td>
+<td>主机</td>
+<td>Cache 类型。这信号指明事务的 bufferable、cacheable、write-through、write-back、allocate attributes 信息。</td>
+</tr>
+<tr>
+<td>AWPROT[2:0]</td>
+<td>主机</td>
+<td>保护类型。</td>
+</tr>
+<tr>
+<td>AWVALID</td>
+<td>主机</td>
+<td>写地址有效。1 = 地址和控制信息有效；0 = 地址和控制信息无效。这个信号会一直保持，直到 AWREADY 变为高。</td>
+</tr>
+<tr>
+<td>AWREADY</td>
+<td>设备</td>
+<td>写地址准备好。这个信号用来指明设备已经准备好接受地址和控制信息了。1 = 设备准备好；0 = 设备没准备好。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-">3.3 写数据通道信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WID[3:0]</td>
+<td>主机</td>
+<td>写 ID tag，WID 的值必须与 AWID 的值匹配。</td>
+</tr>
+<tr>
+<td>WDATA[31:0]</td>
+<td>主机</td>
+<td>写的数据。</td>
+</tr>
+<tr>
+<td>WSTRB[3:0]</td>
+<td>主机</td>
+<td>写阀门（Write Strobe）。WSTRB[n] 标示的区间为 WDATA[(8×n)+7 : (8×n)]。</td>
+</tr>
+<tr>
+<td>WLAST</td>
+<td>主机</td>
+<td>写的最后一个数据。</td>
+</tr>
+<tr>
+<td>WVALID</td>
+<td>主机</td>
+<td>写有效。1 = 写数据和阀门有效；0 = 写数据和阀门无效。</td>
+</tr>
+<tr>
+<td>WREADY</td>
+<td>设备</td>
+<td>写就绪。指明设备已经准备好接受数据了。1 = 设备就绪；0 = 设备未就绪。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Byte lane mapping（Figure 9-1）</strong>：</p>
+<pre><code>位号: 63  56 55  48 47  40 39  32 31  24 23  16 15  8 7  0
+      7   6   5   4   3   2   1   0   （对应 WSTRB 位）
+</code></pre>
+<h3 id="34-">3.4 写响应通道信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BID[3:0]</td>
+<td>设备</td>
+<td>响应 ID，这个数值必须与 AWID 的数值匹配。</td>
+</tr>
+<tr>
+<td>BRESP[1:0]</td>
+<td>设备</td>
+<td>写响应。这个信号指明写事务的状态。可能的响应：<strong>OKAY、EXOKAY、SLVERR、DECERR</strong>。</td>
+</tr>
+<tr>
+<td>BVALID</td>
+<td>设备</td>
+<td>写响应有效。1 = 写响应有效；0 = 写响应无效。</td>
+</tr>
+<tr>
+<td>BREADY</td>
+<td>主机</td>
+<td>接受响应就绪。该信号表示主机已经能够接受响应信息。1 = 主机就绪；0 = 主机未就绪。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-">3.5 读地址通道信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARID[3:0]</td>
+<td>主机</td>
+<td>读地址 ID。</td>
+</tr>
+<tr>
+<td>ARADDR[31:0]</td>
+<td>主机</td>
+<td>读地址。</td>
+</tr>
+<tr>
+<td>ARLEN[3:0]</td>
+<td>主机</td>
+<td>突发式读长度。</td>
+</tr>
+<tr>
+<td>ARSIZE[2:0]</td>
+<td>主机</td>
+<td>突发式读大小。</td>
+</tr>
+<tr>
+<td>ARBURST[1:0]</td>
+<td>主机</td>
+<td>突发式读类型。</td>
+</tr>
+<tr>
+<td>ARLOCK[1:0]</td>
+<td>主机</td>
+<td>锁类型。</td>
+</tr>
+<tr>
+<td>ARCACHE[3:0]</td>
+<td>主机</td>
+<td>Cache 类型。</td>
+</tr>
+<tr>
+<td>ARPROT[2:0]</td>
+<td>主机</td>
+<td>保护类型。</td>
+</tr>
+<tr>
+<td>ARVALID</td>
+<td>主机</td>
+<td>读地址有效。信号一直保持，直到 ARREADY 为高。1 = 地址和控制信息有效；0 = 地址和控制信息无效。</td>
+</tr>
+<tr>
+<td>ARREADY</td>
+<td>设备</td>
+<td>读地址就绪。指明设备已经准备好接受数据了。1 = 设备就绪；0 = 设备未就绪。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="36-">3.6 读数据通道信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RID[3:0]</td>
+<td>设备</td>
+<td>读 ID tag。RID 的数值必须与 ARID 的数值匹配。</td>
+</tr>
+<tr>
+<td>RDATA[31:0]</td>
+<td>设备</td>
+<td>读数据。</td>
+</tr>
+<tr>
+<td>RRESP[1:0]</td>
+<td>设备</td>
+<td>读响应。这个信号指明读传输的状态：<strong>OKAY、EXOKAY、SLVERR、DECERR</strong>。</td>
+</tr>
+<tr>
+<td>RLAST</td>
+<td>设备</td>
+<td>读事务传送的最后一个数据。</td>
+</tr>
+<tr>
+<td>RVALID</td>
+<td>设备</td>
+<td>读数据有效。1 = 读数据有效；0 = 读数据无效。</td>
+</tr>
+<tr>
+<td>RREADY</td>
+<td>主机</td>
+<td>读数据就绪。1 = 主机就绪；0 = 主机未就绪。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="37-">3.7 低功耗接口信号</h3>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>源</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSYSREQ</td>
+<td>CLOCK controller</td>
+<td>系统低功耗请求。此信号来自系统时钟控制器，使外围设备进入低功耗状态。</td>
+</tr>
+<tr>
+<td>CSYSACK</td>
+<td>外围设备</td>
+<td>低功耗请求应答。</td>
+</tr>
+<tr>
+<td>CACTIVE</td>
+<td>外围设备</td>
+<td>Clock activ。1 = 外围设备时钟请求；0 = 外围设备时钟无请求。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="38-axi40">3.8 AXI4.0新增信号</h3>
+<ol>
+<li><strong>AWQOS 和 ARQOS</strong> 代表着当前命令的<strong>优先级</strong>，用于总线仲裁；</li>
+<li><strong>AWREGION 和 ARREGION</strong>：
+<ul>
+<li>一方面给 transaction 标识 region，从而很方便的实现 logical address 到 physical address 的 address mapping。如一个 logical address 标识为不同的 region，就可以 mapping 到不同的物理地址上去，所以不需要 slave 用额外的 decoder 去支援不同的逻辑地址；</li>
+<li>另一方面通过划分 region，对某些 physical allocation 进行保护，比如某个 region 只能被 non-secure write，某个 region 只能被 secure write。</li>
+</ul>
+</li>
+<li><strong>AXI4 除去了 WID</strong>，对于写操作不能实现乱序了。</li>
+</ol>
+<hr />
+<h2 id="4-axi">4 AXI突发操作</h2>
+<h3 id="41-axi">4.1 AXI突发类型</h3>
+<p>AXI 突发类型主要包括三种：<strong>FIXED、INCR、WRAP</strong>。由总线信号 AWBURST 和 ARBURST 来决定突发操作的类型。</p>
+<p><strong>Table 4-3 Burst type encoding</strong></p>
+<table>
+<thead>
+<tr>
+<th>ARBURST[1:0] / AWBURST[1:0]</th>
+<th>Burst type</th>
+<th>Description</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b00</td>
+<td>FIXED</td>
+<td>Fixed-address burst</td>
+<td>FIFO-type</td>
+</tr>
+<tr>
+<td>b01</td>
+<td>INCR</td>
+<td>Incrementing-address burst</td>
+<td>Normal sequential memory</td>
+</tr>
+<tr>
+<td>b10</td>
+<td>WRAP</td>
+<td>Incrementing-address burst that wraps to a lower address at the wrap boundary</td>
+<td>Cache line</td>
+</tr>
+<tr>
+<td>b11</td>
+<td>Reserved</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-axifixed">4.2 AXI的FIXED传输</h3>
+<p>AXI 的 FIXED 传输是指当 AWBURST/ARBURST 配置为 00 的时候，意思是<strong>在一个固定长度的突发，每个传输的地址都是相同的</strong>。这种突发传输用于重复访问相同的位置，比如<strong>装载和清空一个外设 FIFO</strong>。</p>
+<h3 id="43-axiincr">4.3 AXI的INCR传输</h3>
+<p>AXI 的 INCR 传输是指当 AWBURST/ARBURST 配置为 01 的时候，在 INCR 传输中，<strong>每次传输的地址都是在前一个传输地址的基础上递增</strong>，递增的值取决于 Axsize。比如 Axsize=000，那表示每次传输大小是 1byte，那每次地址增加 1。</p>
+<h3 id="44-axiwrap">4.4 AXI的WRAP传输</h3>
+<h4 id="441-wrap">4.4.1 WRAP的介绍</h4>
+<p>AXI 的 WRAP 传输是指当 AWBURST/ARBURST 配置为 10 的时候，在回环突发中，<strong>当地址增加到回环地址边界的时候地址会卷回回环地址段的第一个地址</strong>。</p>
+<p>回环突发需要遵循两个限制：</p>
+<ol>
+<li><strong>起始地址必须和传输大小对齐</strong>；</li>
+<li><strong>突发长度必须是 2 / 4 / 8 / 16</strong>。</li>
+</ol>
+<blockquote>
+<p>注：起始地址一定要与传输大小对齐的意思是：起始地址一定要是传输大小（byte 单位）的整数倍。</p>
+</blockquote>
+<h4 id="442-wrap">4.4.2 WRAP地址的计算</h4>
+<p>WRAP 地址的计算中最重要的是要计算出<strong>回环边界</strong>：</p>
+<pre><code>Boundary_addr = int(start_addr / (burst_size × burst_len) + 1) × (burst_size × burst_len)
+</code></pre>
+<p>在回环边界会回环到回环地段的首地址，<strong>首地址</strong>的计算方式：</p>
+<pre><code>First_addr = int(start_addr / (burst_size × burst_len)) × (burst_size × burst_len)
+</code></pre>
+<p><strong>举例</strong>：一个 WRAP 操作</p>
+<ul>
+<li>start address：0x04</li>
+<li>Transfer size：32 bits</li>
+<li>Burst length：4 transfers</li>
+</ul>
+<p>计算过程：</p>
+<pre><code>边界地址 = (4/(4×4) + 1) × (4×4) = 0x10
+首地址   = (4/(4×4)) × (4×4)     = 0x00
+</code></pre>
+<p>所以在 0x10 会回环到回环地段的首地址 0x00，本次操作对应的 Wrap_Boundary 为 0x0C，绕回地址为 0x00。</p>
+<hr />
+<h2 id="5-axicache">5 AXI的cache</h2>
+<h3 id="51-cache">5.1 Cache简介</h3>
+<p>AXI 对于系统级 cache 的支持是由总线上 <strong>AWCACHE 和 ARCACHE</strong> 实现的。这两个信号通过提供事务的<strong>可缓存、可高速缓存以及可分配属性</strong>来支持系统级 caches。</p>
+<p><strong>AWCACHE/ARCACHE 每一比特的含义：</strong></p>
+<table>
+<thead>
+<tr>
+<th>比特位</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Awcache/Arcache[0]</td>
+<td>表示 <strong>bufferable</strong>，Interconnect 可以先返回 response，只用在 write 操作。</td>
+</tr>
+<tr>
+<td>Awcache/Arcache[1]</td>
+<td>表示 <strong>Cacheable</strong>，对于写操作，可以有不同的 write merge；对于读操作，可以预读取。</td>
+</tr>
+<tr>
+<td>Awcache/Arcache[2]</td>
+<td><strong>Read allocate</strong>，用于读操作时 cache miss，他会先分配再读。</td>
+</tr>
+<tr>
+<td>Awcache/Arcache[3]</td>
+<td><strong>Write allocate</strong>，用于写操作时 cache miss，他会先分配再读外存，在 write-back 写回。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-cache">5.2 Cache读写机制</h3>
+<p><strong>1) Write-through 和 write-back 的区别：</strong></p>
+<ul>
+<li><strong>Write-through（直写模式）</strong>：数据更新的时候，<strong>同时写入 cache 和下一级存储</strong>；</li>
+<li><strong>Write-back（回写模式）</strong>：数据更新的时候，<strong>只写 cache</strong>；当数据被替换出来的时候才将被修改的 cache 数据写到下一级存储。</li>
+</ul>
+<p><strong>2) Allocate</strong>（针对 cache miss 时的处理）：</p>
+<ul>
+<li><strong>NO-allocate</strong>：不论读写，cache miss 的时候直接写下一级存储；</li>
+<li><strong>Read-allocate</strong>：读操作，cache miss 的时候在 cache 中分配一个空间，从下一级存储读取该数据到 cache 分配的这个空间，最后读取该值；</li>
+<li><strong>Write-allocate</strong>：写操作，cache miss 的时候在 cache 中分配一个空间，将数据先写入该位置，根据 write-back 还是 write-through 决定是否在写入下一级存储。</li>
+</ul>
+<p><strong>Memory Type 对照表（ARCACHE[3:0] / AWCACHE[3:0] 配置）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>ARCACHE[3:0]</th>
+<th>AWCACHE[3:0]</th>
+<th>Memory Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000</td>
+<td>0000</td>
+<td>Device Non-bufferable</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>0001</td>
+<td>Device bufferable</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>0010</td>
+<td>Normal Non-cacheable Non-bufferable</td>
+</tr>
+<tr>
+<td>0011</td>
+<td>0011</td>
+<td>Normal Non-cacheable Bufferable</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>0110</td>
+<td>Write Through No Allocate</td>
+</tr>
+<tr>
+<td>1110 (0110)</td>
+<td>0110</td>
+<td>Write Through Read Allocate</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>1110 (1010)</td>
+<td>Write Through Write Allocate</td>
+</tr>
+<tr>
+<td>1110</td>
+<td>1110</td>
+<td>Write Through Read &amp; Write Allocate</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>0111</td>
+<td>Write Back No Allocate</td>
+</tr>
+<tr>
+<td>1111 (0111)</td>
+<td>0111</td>
+<td>Write Back Read Allocate</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>1111 (1011)</td>
+<td>Write Back Write Allocate</td>
+</tr>
+<tr>
+<td>1111</td>
+<td>1111</td>
+<td>Write Back Read &amp; Write Allocate</td>
+</tr>
+</tbody>
+</table>
+<p>AXI 不同配置对应着不同的 cache 操作类型，由上表所示。</p>
+<hr />
+<h2 id="6-axi">6 AXI原子操作</h2>
+<h3 id="61-lock">6.1 Lock操作</h3>
+<p><strong>Lock</strong> 是指 master 独占一个 slave 直至一次完整操作完成。</p>
+<ul>
+<li>只存在于 <strong>AXI3</strong> 协议中，<strong>AXI4 将该操作移除</strong>。</li>
+<li>AXI3 和 AXI4 的 AWLOCK/ARLOCK 配置如下表所示。</li>
+</ul>
+<p><strong>Table 6-1 Atomic access encoding（AXI3）</strong></p>
+<table>
+<thead>
+<tr>
+<th>ARLOCK[1:0] / AWLOCK[1:0]</th>
+<th>Access type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b00</td>
+<td>Normal access</td>
+</tr>
+<tr>
+<td>b01</td>
+<td>Exclusive access</td>
+</tr>
+<tr>
+<td>b10</td>
+<td>Locked access</td>
+</tr>
+<tr>
+<td>b11</td>
+<td>Reserved</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 13-6 Atomic access encoding（AXI4）</strong></p>
+<table>
+<thead>
+<tr>
+<th>ARLOCK / AWLOCK</th>
+<th>Access type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b0</td>
+<td>Normal access</td>
+</tr>
+<tr>
+<td>b1</td>
+<td>Exclusive access</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AXI4 中移除 lock 传输的理由：</strong></p>
+<ul>
+<li>大多数 AXI 设备不支持 lock 传输；</li>
+<li>Lock 传输为 Interconnect 设计带来了巨大的复杂度；</li>
+<li>Lock 传输严重影响了 QOS 的实现。</li>
+</ul>
+<h3 id="62-exclusive-">6.2 Exclusive 操作</h3>
+<p>Exclusive 操作又称<strong>排他式操作</strong>，主要分为两大步骤：</p>
+<ol>
+<li><strong>排他式读</strong>；</li>
+<li><strong>排他式写</strong>。</li>
+</ol>
+<p>而且要在 slave 支持排他式访问的前提下进行：</p>
+<ul>
+<li><strong>第一步</strong>：Master 在排他式读的时候会将 ARlock 赋值为 1，如果 slave 支持排他式访问，会反馈 <strong>EXOKAY</strong>，master 收到 EXOKAY 的反馈以后就会知道 slave 是支持排他式访问的；</li>
+<li><strong>第二步</strong>：接着就会发送排他式写，slave 收到排他式写命令的时候会检查写地址内容在第一步排他式读以后<strong>有没有被别的 master 写过</strong>：
+<ul>
+<li>如果写过 → 本次排他式访问失败，slave 会反馈 <strong>OKAY</strong>，表示访问成功但是排他式访问失败；</li>
+<li>如果写地址内容没有&quot;被污染&quot; → 则将数据写入写地址，slave 反馈 <strong>EXOKAY</strong> 表示排他式访问成功。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Exclusive 传输的限制包括：</strong></p>
+<ul>
+<li>读、写操作的<strong>长度和位宽必须相同</strong>；</li>
+<li>读、写<strong>地址必须相同且对齐</strong>；</li>
+<li><strong>ARID 和 AWID 必须相同</strong>；</li>
+<li>读、写<strong>控制信号必须相同</strong>；</li>
+<li>操作的 <strong>Byte 总宽度必须为 2 的指数倍</strong>；</li>
+<li><strong>最大 Byte 宽度为 128 bytes</strong>；</li>
+<li>AR(W)CACHE 信号必须符合原子操作的规范。</li>
+</ul>
+<p><strong>Exclusive 操作时序图（原图说明）：</strong></p>
+<ul>
+<li><strong>成功的 exclusive 操作</strong>：Master → EMT → Slave：Exclusive Read（返回 EXOK / OKAY）→ Exclusive Write（返回 EXOK / OKAY）。</li>
+<li><img src="/post-images/1788753472229382700_0.png" alt="" /></li>
+<li><strong>失败的 exclusive 操作</strong>：Master1 发出 Exclusive Read（返回 EXOK / OKAY）后，Master2 先执行了 Write 操作，随后 Master1 的 Exclusive Write 失败（Failed Exclusive Write），最终返回 OKAY。<br />
+<img src="/post-images/1788753475292377900_0.png" alt="" /></li>
+</ul>
+<hr />
+<h2 id="7-axioutstanding">7 AXI的outstanding</h2>
+<p>AXI 的 <strong>outstanding</strong> 是指：</p>
+<ul>
+<li>master <strong>没必要等待上一个操作完成就进行下一次操作</strong>；</li>
+<li>或者 slave 没必要等上一次数据处理完成才能接受下一次请求数据。</li>
+</ul>
+<p>如下图所示，A21 的数据还在传输，A41 的地址就来了。<br />
+<img src="/post-images/1788753483339152800_0.png" alt="" /></p>
+<pre><code>Address Channel:  A21       A41       A31
+Data Channel:     D21 D22 D23 D24   D41 D42 D43
+                  ↑ A21 数据尚未传完，A41 地址已发出
+</code></pre>
+<hr />
+<h2 id="8-axi">8 AXI的乱序传输和间插</h2>
+<h3 id="81-">8.1 乱序传输</h3>
+<p><strong>乱序传输</strong>是指快速 memory 域访问没有必要等待排在它前面的访问较慢 memory 域的操作完成而完成，排在后面的可以提前完成。简单说就是，<strong>slave 返回的数据或者响应的顺序可以是和 master 发出的不一致</strong>，这样快的先返回，慢的后返回，没有等待，可以大大提高总线的效率。</p>
+<p>之所以能支持乱序返回是由于 <strong>ID 的存在</strong>，master 可以根据 ID 来判断本次返回的 response 或者数据是哪一次发出的。所以 <strong>AXI 协议有相同 ID 之间的传输保序的要求</strong>，ID 一样的话，返回的顺序如果不保序那 master 就乱了。<br />
+<img src="/post-images/1788753487897793900_0.png" alt="" /></p>
+<pre><code>ADDRESS:  A11   A21   A31
+DATA:           D21 D22 D23   D31   D11 D12 D13 D14
+（A31 后发但先返回；A11 先发但后返回 → 乱序）
+</code></pre>
+<h3 id="82-">8.2 间插</h3>
+<p>间插分为<strong>读间插</strong>和<strong>写间插</strong>：</p>
+<ul>
+<li><strong>读间插</strong>：不同 ID 之间传输的数据能相互穿插，但是<strong>一个 ID 所对应的数据先后顺序不能变</strong>；</li>
+<li><strong>写间插</strong>：不同 ID 之间传输的数据能相互穿插。</li>
+</ul>
+<p>间插也是利用 <strong>ID</strong> 来识别的，不过由于 <strong>AXI4 移除了 WID，所以 AXI4 并不支持写间插</strong>。</p>
+<h2 id="post-images1788753492543251200-0png"><strong>间插示意图</strong>：地址 A0 / A1 / A2 对应的数据按 D00、D01、D10、D02、D11、D03、D20、D12、D21、D22 的顺序穿插返回。<br />
+<img src="/post-images/1788753492543251200_0.png" alt="" /></h2>
+<h2 id="9-">9 非对齐传输</h2>
+<p><strong>非对齐</strong>是指传输的起始地址和传输大小（byte 单位）是不对齐的。</p>
+<p>比如当传输大小为 32bit（4byte）的时候，传输中每前一个数据的地址是后一个数据的地址加 4，从 0x00 开始那么起始地址要是 4 的倍数才是和传输大小对齐的。换句话说就是<strong>起始地址对应的数据 32bit 都是有效的</strong>；若不是对齐的，那么会存在<strong>某几 byte 无效</strong>。</p>
+<p><strong>举例</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address</td>
+<td>0x07</td>
+</tr>
+<tr>
+<td>Transfer size</td>
+<td>32 bits</td>
+</tr>
+<tr>
+<td>Burst type</td>
+<td>incrementing</td>
+</tr>
+<tr>
+<td>Burst length</td>
+<td>5 transfers</td>
+</tr>
+</tbody>
+</table>
+<p>由于 0x07 不是对齐地址，所以<strong>第一次传输数据只有高 1 byte 有效，低 3 byte 无效</strong>。</p>
+<p><strong>Figure 10-1 Aligned and unaligned word transfers on a 32-bit bus</strong></p>
+<table>
+<thead>
+<tr>
+<th>数据位 [31:24]</th>
+<th>[23:16]</th>
+<th>[15:8]</th>
+<th>[7:0]</th>
+<th>传输</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>6</td>
+<td>5</td>
+<td>4</td>
+<td>1st transfer</td>
+</tr>
+<tr>
+<td>B</td>
+<td>A</td>
+<td>9</td>
+<td>8</td>
+<td>2nd transfer</td>
+</tr>
+<tr>
+<td>F</td>
+<td>E</td>
+<td>D</td>
+<td>C</td>
+<td>3rd transfer</td>
+</tr>
+<tr>
+<td>13</td>
+<td>12</td>
+<td>11</td>
+<td>10</td>
+<td>4th transfer</td>
+</tr>
+<tr>
+<td>17</td>
+<td>16</td>
+<td>15</td>
+<td>14</td>
+<td>5th transfer</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-narrow-">10 Narrow 传输</h2>
+<p><strong>Narrow 传输</strong>是指 master 要传输的数据宽度要<strong>小于数据总线的宽度</strong>。根据 <strong>AWSIZE 和 ARSIZE</strong> 来决定传输数据的宽度。</p>
+<p><strong>Table 4-2 Burst size encoding</strong></p>
+<table>
+<thead>
+<tr>
+<th>ARSIZE[2:0] / AWSIZE[2:0]</th>
+<th>Bytes in transfer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>b001</td>
+<td>2</td>
+</tr>
+<tr>
+<td>b010</td>
+<td>4</td>
+</tr>
+<tr>
+<td>b011</td>
+<td>8</td>
+</tr>
+<tr>
+<td>b100</td>
+<td>16</td>
+</tr>
+<tr>
+<td>b101</td>
+<td>32</td>
+</tr>
+<tr>
+<td>b110</td>
+<td>64</td>
+</tr>
+<tr>
+<td>b111</td>
+<td>128</td>
+</tr>
+</tbody>
+</table>
+<p><strong>举例</strong>：总线数据位宽是 1024 比特，但是 Axsize 配置为 b010，那每次传输只有 32bit 有效，具体是哪 32bit 有效还要看传输的地址。</p>
+<p><strong>Figure 9-2 Narrow transfer example with 8-bit transfers</strong>（In Figure 9-2）：</p>
+<ul>
+<li>the burst has <strong>five transfers</strong></li>
+<li>the starting address is <strong>0</strong></li>
+<li>each transfer is <strong>eight bits</strong></li>
+<li>the transfers are on a <strong>32-bit bus</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Byte lane used</th>
+<th>传输</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATA[7:0]</td>
+<td>1st transfer</td>
+</tr>
+<tr>
+<td>DATA[15:8]</td>
+<td>2nd transfer</td>
+</tr>
+<tr>
+<td>DATA[23:16]</td>
+<td>3rd transfer</td>
+</tr>
+<tr>
+<td>DATA[31:24]</td>
+<td>4th transfer</td>
+</tr>
+<tr>
+<td>DATA[7:0]</td>
+<td>5th transfer</td>
+</tr>
+</tbody>
+</table>
+<p>上图所示的例子是总线数据位宽 32bit，传输大小为 1byte，起始地址为 0 的传输，可以看到第一次传输有效位是在总线第一个 byte，第二次是在第二个 byte，这样依次下去。</p>
+<h3 id="byte-lane">有效位（Byte Lane）计算</h3>
+<p><strong>参数定义：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start_Address</td>
+<td>主机发送的起始地址</td>
+</tr>
+<tr>
+<td>Number_Bytes</td>
+<td>一次传输中传输的 Byte 数目</td>
+</tr>
+<tr>
+<td>Data_Bus_Bytes</td>
+<td>数据总线上面 byte lanes 的数量</td>
+</tr>
+<tr>
+<td>Aligned_Address</td>
+<td>对齐版本的起始地址</td>
+</tr>
+<tr>
+<td>Burst_Length</td>
+<td>一次突发式读写所传输的数据的个数</td>
+</tr>
+<tr>
+<td>Address_N</td>
+<td>每一次突发式读写所传输的地址数量，范围是 2–16</td>
+</tr>
+<tr>
+<td>Wrap_Boundary</td>
+<td>WRAP 突发读写的低边界地址</td>
+</tr>
+<tr>
+<td>Lower_Byte_Lane</td>
+<td>传输的最低地址的 byte lane</td>
+</tr>
+<tr>
+<td>Upper_Byte_Lane</td>
+<td>传输的最高地址的 byte lane</td>
+</tr>
+<tr>
+<td>INT(x)</td>
+<td>对 x 进行向下取整</td>
+</tr>
+</tbody>
+</table>
+<p><strong>计算公式：</strong></p>
+<pre><code>Start_Address   = ADDR
+Number_Bytes    = 2^SIZE
+Burst_Length    = LEN + 1
+Aligned_Address = (INT(Start_Address / Number_Bytes)) × Number_Bytes
+Address_1       = Start_Address
+Address_N       = Aligned_Address + (N - 1) × Number_Bytes
+Wrap_Boundary   = (INT(Start_Address / (Number_Bytes × Burst_Length))) × (Number_Bytes × Burst_Length)
+</code></pre>
+<p>如果有 <code>Address_N = Wrap_Boundary + (Number_Bytes × Burst_Length)</code>，则后面的公式成立 <code>Address_N = Wrap_Boundary</code>。</p>
+<p><strong>第一次突发式读写：</strong></p>
+<pre><code>Lower_Byte_Lane = Start_Address - (INT(Start_Address / Data_Bus_Bytes)) × Data_Bus_Bytes
+Upper_Byte_Lane = Aligned_Address + (Number_Bytes - 1) - (INT(Start_Address / Data_Bus_Bytes)) × Data_Bus_Bytes
+</code></pre>
+<p><strong>除了第一次读写之后的读写：</strong></p>
+<pre><code>Lower_Byte_Lane = Address_N - (INT(Address_N / Data_Bus_Bytes)) × Data_Bus_Bytes
+Upper_Byte_Lane = Lower_Byte_Lane + Number_Bytes - 1
+DATA[(8 × Upper_Byte_Lane) + 7 : (8 × Lower_Byte_Lane)]
+</code></pre>
+
+  </div>
+
+  
+  <nav class="post-nav">
+    
+    <a href="/post/about/" class="post-nav-card post-nav-card--prev">
+      
+      <div class="post-nav-card__body">
+        <span class="post-nav-card__label meta-text">上一篇</span>
+        <span class="post-nav-card__title">关于我</span>
+      </div>
+      <span class="post-nav-card__arrow">&larr;</span>
+    </a>
+    
+    
+    <a href="/post/svaji-chu-zheng-li/" class="post-nav-card post-nav-card--next">
+      <div class="post-nav-card__body">
+        <span class="post-nav-card__label meta-text">下一篇</span>
+        <span class="post-nav-card__title">SVA基础整理</span>
+      </div>
+      
+      <span class="post-nav-card__arrow">&rarr;</span>
+    </a>
+    
+  </nav>
+
+  
+  
+
+
+</article>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="footer-inner">
+
+    
+    
+    <nav class="footer-nav" aria-label="页脚导航">
+      
+      <a class="footer-nav__link" href="/">首页</a>
+      
+      <a class="footer-nav__link" href="/post">博客</a>
+      
+      <a class="footer-nav__link" href="/memos">闪念</a>
+      
+      <a class="footer-nav__link" href="/archives">归档</a>
+      
+      <a class="footer-nav__link" href="/tags">标签</a>
+      
+      <a class="footer-nav__link" href="/links">友链</a>
+      
+      <a class="footer-nav__link" href="/post/about">关于</a>
+      
+    </nav>
+    
+
+    
+    <div class="footer-social">
+      
+      
+      
+      <a class="footer-social__link" href="/feed.xml" aria-label="RSS">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.18 15.64a2.18 2.18 0 110 4.36 2.18 2.18 0 010-4.36zM4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44zm0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z"/>
+        </svg>
+      </a>
+    </div>
+
+    
+    <div class="footer-copyright">
+      <p>&copy; 2026 数字IC成长日记. All rights reserved.</p>
+    </div>
+
+    
+    
+
+    
+    <div class="footer-powered">
+      <span>Powered by <a href="https://gridea.pro" target="_blank" rel="noopener noreferrer">Gridea Pro</a></span>
+    </div>
+
+  </div>
+</footer>
+
+  
+  <div class="search-overlay" id="searchOverlay" style="display:none;">
+  <div class="search-modal">
+    <div class="search-header">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="搜索文章..." autocomplete="off" />
+      <span class="search-kbd">&#8984;K</span>
+      <button class="search-close" id="searchClose" type="button" aria-label="关闭搜索">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<script src="/scripts/search.js"></script>
+  
+
+  
+
+  
+
+  
+
+<script>console.log("\n%c ✦ Gridea Pro v1.2.2 %c · Theme: flavor-theme v1.0.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>

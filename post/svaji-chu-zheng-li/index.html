@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="/styles/main.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+
+
+<style>:root { --heatmap-color: #39d353; }</style>
+
+
+
+<style>
+  .theme-toggle-sun  { display: flex; }
+  .theme-toggle-moon { display: none; }
+  :root.theme-light .theme-toggle-sun  { display: none; }
+  :root.theme-light .theme-toggle-moon { display: flex; }
+</style>
+
+
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('flavor-theme');
+      var theme = saved || 'dark';
+      if (theme === 'light') {
+        document.documentElement.classList.add('theme-light');
+      }
+    } catch (e) { }
+  })();
+</script>
+  <meta name="generator" content="Gridea Pro 1.2.2">
+  <title>SVA基础整理 | 数字IC成长日记</title>
+  
+<meta property="og:title" content="SVA基础整理" />
+<meta property="og:type" content="article" />
+
+
+<meta name="description" content="SVA基础培训 目录 断言基本概念 常用 SVA 语法 &amp;amp; 实例 SVA 的集成与仿真控制 参考书目 1. 断言基本概念 1.1 什么是断言？ 断言并不是一个全新的概念，在软件设计中断言早已得到了广泛的应用。它的最早的使用，可以追溯到 1949 年，在高速自动计算机会议的论文中有以下的一&amp;hellip;">
+<link rel="canonical" href="https://luciferpluto.github.io/post/svaji-chu-zheng-li/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SVA基础整理","url":"https://luciferpluto.github.io/post/svaji-chu-zheng-li/","description":"SVA基础培训 目录 断言基本概念 常用 SVA 语法 \u0026amp; 实例 SVA 的集成与仿真控制 参考书目 1. 断言基本概念 1.1 什么是断言？ 断言并不是一个全新的概念，在软件设计中断言早已得到了广泛的应用。它的最早的使用，可以追溯到 1949 年，在高速自动计算机会议的论文中有以下的一\u0026hellip;","datePublished":"2026-08-25T14:30:33+08:00","dateModified":"2026-08-25T14:30:33+08:00","author":{"@type":"Person","name":"数字IC成长日记"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"数字IC成长日记"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://luciferpluto.github.io","name":"数字IC成长日记","position":1},{"@type":"ListItem","item":"https://luciferpluto.github.io/post/svaji-chu-zheng-li/","name":"SVA基础整理","position":2}]}</script>
+<meta property="og:title" content="SVA基础整理">
+<meta property="og:description" content="SVA基础培训 目录 断言基本概念 常用 SVA 语法 &amp;amp; 实例 SVA 的集成与仿真控制 参考书目 1. 断言基本概念 1.1 什么是断言？ 断言并不是一个全新的概念，在软件设计中断言早已得到了广泛的应用。它的最早的使用，可以追溯到 1949 年，在高速自动计算机会议的论文中有以下的一&amp;hellip;">
+<meta property="og:url" content="https://luciferpluto.github.io/post/svaji-chu-zheng-li/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="数字IC成长日记">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://luciferpluto.github.io/post/svaji-chu-zheng-li/">
+<meta name="twitter:title" content="SVA基础整理">
+<meta name="twitter:description" content="SVA基础培训 目录 断言基本概念 常用 SVA 语法 &amp;amp; 实例 SVA 的集成与仿真控制 参考书目 1. 断言基本概念 1.1 什么是断言？ 断言并不是一个全新的概念，在软件设计中断言早已得到了广泛的应用。它的最早的使用，可以追溯到 1949 年，在高速自动计算机会议的论文中有以下的一&amp;hellip;">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+<body class="flavor-theme">
+
+  <header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <div class="top-bar">
+
+      
+      <div class="top-bar__left">
+        
+        <a href="https://luciferpluto.github.io" class="site-avatar-link" aria-label="返回首页">
+          <img class="site-avatar" src="/images/avatar.png" alt="数字IC成长日记" />
+        </a>
+        
+        <a href="https://luciferpluto.github.io" class="site-name-link">数字IC成长日记</a>
+      </div>
+
+      
+      <nav class="top-bar__nav" id="sectionBar">
+        
+        
+        <a class="nav-item" href="/">首页</a>
+        
+        <a class="nav-item" href="/post">博客</a>
+        
+        <a class="nav-item" href="/memos">闪念</a>
+        
+        <a class="nav-item" href="/archives">归档</a>
+        
+        <a class="nav-item" href="/tags">标签</a>
+        
+        <a class="nav-item" href="/links">友链</a>
+        
+        <a class="nav-item" href="/post/about">关于</a>
+        
+        
+      </nav>
+
+      
+      <div class="top-bar__right">
+        <button class="btn-icon btn-search search-btn" id="btnSearch" type="button" aria-label="搜索">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="btn-icon theme-toggle theme-toggle-sun" id="themeToggleSun" type="button"
+          aria-label="切换到浅色模式">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1C12.5523 1 13 1.44772 13 2V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V2C11 1.44772 11.4477 1 12 1Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12ZM12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9Z"></path>
+            <path d="M13 20C13 19.4477 12.5523 19 12 19C11.4477 19 11 19.4477 11 20V22C11 22.5523 11.4477 23 12 23C12.5523 23 13 22.5523 13 22V20Z"></path>
+            <path d="M4.22282 4.22289C4.61335 3.83236 5.24651 3.83236 5.63704 4.22289L7.04704 5.63289C7.43756 6.02341 7.43756 6.65658 7.04704 7.0471C6.65651 7.43762 6.02335 7.43762 5.63283 7.0471L4.22282 5.6371C3.8323 5.24658 3.8323 4.61341 4.22282 4.22289Z"></path>
+            <path d="M18.367 16.9529C17.9765 16.5623 17.3433 16.5623 16.9528 16.9529C16.5623 17.3434 16.5623 17.9766 16.9528 18.3671L18.3628 19.7771C18.7533 20.1676 19.3865 20.1676 19.777 19.7771C20.1675 19.3866 20.1675 18.7534 19.777 18.3629L18.367 16.9529Z"></path>
+            <path d="M1 12C1 11.4477 1.44772 11 2 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H2C1.44772 13 1 12.5523 1 12Z"></path>
+            <path d="M20 11C19.4477 11 19 11.4477 19 12C19 12.5523 19.4477 13 20 13H22C22.5523 13 23 12.5523 23 12C23 11.4477 22.5523 11 22 11H20Z"></path>
+            <path d="M7.04704 16.9529C7.43756 17.3434 7.43756 17.9766 7.04704 18.3671L5.63704 19.7771C5.24651 20.1676 4.61335 20.1676 4.22282 19.7771C3.8323 19.3866 3.8323 18.7534 4.22283 18.3629L5.63283 16.9529C6.02335 16.5623 6.65651 16.5623 7.04704 16.9529Z"></path>
+            <path d="M19.777 5.6371C20.1675 5.24657 20.1675 4.61341 19.777 4.22289C19.3865 3.83236 18.7533 3.83236 18.3628 4.22289L16.9528 5.63289C16.5623 6.02341 16.5623 6.65658 16.9528 7.0471C17.3433 7.43762 17.9765 7.43762 18.367 7.0471L19.777 5.6371Z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon theme-toggle theme-toggle-moon" id="themeToggleMoon" type="button"
+          aria-label="切换到深色模式">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C10.0222 2 8.08879 2.58649 6.4443 3.6853C4.79981 4.78412 3.51809 6.3459 2.76121 8.17317C2.00433 10.0004 1.8063 12.0111 2.19215 13.9509C2.578 15.8907 3.53041 17.6725 4.92894 19.0711C6.32746 20.4696 8.10929 21.422 10.0491 21.8079C11.9889 22.1937 13.9996 21.9957 15.8268 21.2388C17.6541 20.4819 19.2159 19.2002 20.3147 17.5557C21.4135 15.9112 22 13.9778 22 12C22 11.5955 21.7564 11.2309 21.3827 11.0761C21.009 10.9213 20.5789 11.0069 20.2929 11.2929C19.287 12.2988 17.9226 12.864 16.5 12.864C15.0774 12.864 13.713 12.2988 12.7071 11.2929C11.7012 10.287 11.136 8.92261 11.136 7.5C11.136 6.07739 11.7012 4.71304 12.7071 3.70711C12.9931 3.42111 13.0787 2.99099 12.9239 2.61732C12.7691 2.24364 12.4045 2 12 2ZM7.55544 5.34824C8.27036 4.87055 9.05353 4.51389 9.87357 4.28778C9.39271 5.27979 9.13604 6.37666 9.13604 7.5C9.13604 9.45304 9.91189 11.3261 11.2929 12.7071C12.6739 14.0881 14.547 14.864 16.5 14.864C17.6233 14.864 18.7202 14.6073 19.7122 14.1264C19.4861 14.9465 19.1295 15.7296 18.6518 16.4446C17.7727 17.7602 16.5233 18.7855 15.0615 19.391C13.5997 19.9965 11.9911 20.155 10.4393 19.8463C8.88743 19.5376 7.46197 18.7757 6.34315 17.6569C5.21447 16.538 4.4624 15.1126 4.15372 13.5607C3.84504 12.0089 4.00347 10.4003 4.60897 8.93853C5.21447 7.47672 6.23985 6.22729 7.55544 5.34824Z"></path>
+            <path d="M19 2C19.5523 2 20 2.44772 20 3V4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H20V7C20 7.55228 19.5523 8 19 8C18.4477 8 18 7.55228 18 7V6H17C16.4477 6 16 5.55228 16 5C16 4.44772 16.4477 4 17 4H18V3C18 2.44772 18.4477 2 19 2Z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon btn-nav-toggle mobile-only" id="btnNavToggle" type="button" aria-label="切换导航">
+          <div class="hamburger" id="hamburger">
+            <span class="hamburger__line hamburger__line--top"></span>
+            <span class="hamburger__line hamburger__line--bottom"></span>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+
+<div class="header-spacer"></div>
+
+<script>
+(function(){
+  var btn = document.getElementById('btnNavToggle');
+  var nav = document.getElementById('sectionBar');
+  var hamburger = document.getElementById('hamburger');
+  if (btn && nav) {
+    btn.addEventListener('click', function(){
+      nav.classList.toggle('top-bar__nav--open');
+      if (hamburger) hamburger.classList.toggle('is-active');
+    });
+    nav.querySelectorAll('.nav-item').forEach(function(item){
+      item.addEventListener('click', function(){
+        nav.classList.remove('top-bar__nav--open');
+        if (hamburger) hamburger.classList.remove('is-active');
+      });
+    });
+  }
+
+  var root = document.documentElement;
+  var applyTheme = function(theme, persist){
+    if (theme === 'light') {
+      root.classList.add('theme-light');
+    } else {
+      root.classList.remove('theme-light');
+    }
+    if (persist) {
+      try { localStorage.setItem('flavor-theme', theme); } catch (e) {}
+    }
+  };
+  document.querySelectorAll('.theme-toggle').forEach(function(el){
+    el.addEventListener('click', function(){
+      applyTheme(root.classList.contains('theme-light') ? 'dark' : 'light', true);
+    });
+  });
+})();
+</script>
+
+  <main class="site-main" role="main">
+    
+<article class="article-container">
+  <header class="article-header">
+    <h1 class="article-title">SVA基础整理</h1>
+    <div class="article-meta">
+      
+      <span class="article-meta__item">2026-08-25</span>
+      
+      <span class="article-meta__sep">·</span>
+      <span class="article-meta__item">21 分钟阅读</span>
+      
+    </div>
+    
+  </header>
+
+  
+
+  <div class="article-content">
+    <h1 id="sva">SVA基础培训</h1>
+<hr />
+<h2 id="heading">目录</h2>
+<ol>
+<li>断言基本概念</li>
+<li>常用 SVA 语法 &amp; 实例</li>
+<li>SVA 的集成与仿真控制</li>
+<li>参考书目</li>
+</ol>
+<hr />
+<h2 id="1-">1. 断言基本概念</h2>
+<h3 id="11-">1.1 什么是断言？</h3>
+<p>断言并不是一个全新的概念，在软件设计中断言早已得到了广泛的应用。它的最早的使用，可以追溯到 1949 年，在高速自动计算机会议的论文中有以下的一段叙述：</p>
+<blockquote>
+<p>&ldquo;In order that the man who checks may not have too difficult a task, the programmer should make a number of definite assertions which can be checked individually, and from which the correctness of the whole program easily flows&rdquo;</p>
+</blockquote>
+<p><strong>断言</strong>：断言是对设计属性（feature）的描述：</p>
+<ul>
+<li>描述<strong>期望发生</strong>什么事情。如果实际发生与期望不同，那么这个断言失败；</li>
+<li>描述<strong>不期望发生</strong>什么事情。如果不期望发生的事情发生了，那么这个断言失败。</li>
+</ul>
+<p>EDA 验证中的断言可以用 <strong>SVA</strong> 和 <strong>PSL</strong> 实现：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SVA</strong></td>
+<td>System Verilog Assertions，是 System Verilog 的一个子集</td>
+</tr>
+<tr>
+<td><strong>PSL</strong></td>
+<td>Property Specification Language，IEEE 1850，在 2005 年发布</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-">1.2 断言的好处</h3>
+<p>具有独特的语法，在检验某些设计特性上比 verilog 实现具有自身的优势：<strong>描述简洁、容易维护</strong>。</p>
+<p><strong>例子</strong>：在当前检测到信号 a 由低变高，则接下来的 1~3 时钟周期内，信号 b 应该变为高电平。</p>
+<p><strong>Assertion use SV（简洁）：</strong></p>
+<pre><code class="language-systemverilog">a_to_b_chk: assert property
+    @(posedge clk) $rose(a) |-&gt; ##[1:3] $rose(b);
+</code></pre>
+<p><strong>Assertion use Verilog（繁琐）：</strong></p>
+<pre><code class="language-verilog">always @(posedge a)
+begin
+    repeat (1) @(posedge clk)
+    fork: a_to_b
+        begin
+            @(posedge b)
+            $display(&quot;SUCCESS: b arrived in time\n&quot;, $time);
+            disable a_to_b;
+        end
+        begin
+            repeat (3) @(posedge clk);
+            $display(&quot;ERROR: b did not arrived in time\n&quot;, $time);
+            disable a_to_b;
+        end
+    join
+end
+</code></pre>
+<h3 id="13-">1.3 断言的好处（续）</h3>
+<ul>
+<li>断言描述的属性一般是比较简单的，并且是基于底层的信号关系，这一特性使得<strong>使用断言检查设计中的错误成为一件简单的事情</strong>；</li>
+<li>基于同样的原因，当仿真中的断言报错时，能够<strong>方便快速定位到出问题的模块和发生问题的时间</strong>，从而快速定位问题；</li>
+</ul>
+<p>（配图：仿真波形中 <code>a_p10</code> 出现 <strong>Failure</strong> 报错标记，clk_event、a（1&rsquo;b0→1&rsquo;b1）、b（1&rsquo;b0→1&rsquo;b1）的时序关系。）</p>
+<h3 id="14-2">1.4 断言的好处（续2）</h3>
+<ul>
+<li>对一些常用的检查，目前已经有了很多成熟的库，或者是别人编写的断言供我们重用，最重要的是，比起各种验证环境的组件，<strong>断言是非常容易集成</strong>；</li>
+<li>除了可以检测设计的正确性，assertion 也可以应用于 <strong>coverage</strong>。</li>
+</ul>
+<p><strong>Cover property 的例子：</strong> queue 中是否有包要调度，四种条件场景：</p>
+<ol>
+<li>有 schedule_en，但是没有 queue 是 ready 的；</li>
+<li>有 schedule_en，并且所有 queue 都是 ready 的；</li>
+<li>有 schedule_en，有 queue 是 ready 的，但不是所有 queue 都是 ready 的；</li>
+<li>无 schedule_en，有 queue 是 ready 的。</li>
+</ol>
+<pre><code class="language-systemverilog">// Cover property
+if (COVER_ON)
+    sch_en_all_rdy: cover property (
+        @(posedge clk) disable iff(!rst_n)
+        i_input_sched_en &amp;&amp; (&amp;(i_input_sched_u_rdy == (NRP_0_NUM(1'b1))))
+    );
+    sch_en_all: cover property (
+        @(posedge clk) disable iff(!rst_n)
+        i_input_sched_en &amp;&amp; (&amp;(i_input_sched_u_rdy))
+    );
+    sch_en_some_rdy: cover property (
+        @(posedge clk) disable iff(!rst_n)
+        i_input_sched_en &amp;&amp; (&amp;(i_input_sched_u_rdy)) &amp;&amp; !(&amp;(i_input_sched_u_rdy))
+    );
+    sch_disen_some_rdy: cover property (
+        @(posedge clk) disable iff(!rst_n)
+        !i_input_sched_en &amp;&amp; (&amp;(i_input_sched_u_rdy))
+    );
+endif
+</code></pre>
+<h3 id="15-">1.5 断言的适用场景</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>无条件的禁止</strong></td>
+<td>某些情况永远不允许发生</td>
+<td>比如：fifo 永远都不能溢出</td>
+</tr>
+<tr>
+<td><strong>有条件的禁止</strong></td>
+<td>在某种条件下不允许发生</td>
+<td>比如：控制器处于工作模式时，是不应该对 Memory 进行测试的</td>
+</tr>
+<tr>
+<td><strong>信号之间的互斥关系</strong></td>
+<td>信号不能同时成立</td>
+<td>比如：单口的 SRAM，只能写或者读，不能同时进行读写</td>
+</tr>
+<tr>
+<td><strong>信号间的关系</strong></td>
+<td>信号间的时序/逻辑约束</td>
+<td>比如：Ready 信号没有拉高、握手没有完成时，valid 信号不能拉低</td>
+</tr>
+</tbody>
+</table>
+<p><strong>不适用的场景</strong>：比如端到端的数据比对，设计的模块过多，检查的时间范围太大，违背了&quot;简单&quot;原则。</p>
+<hr />
+<h2 id="2-sva--">2. 常用SVA语法 &amp; 实例</h2>
+<h3 id="21-">2.1 即时断言与并发断言</h3>
+<p>SVA 定义了两种断言：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>本质</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>即时断言</strong></td>
+<td>基于事件的模拟，本质不与时序相关</td>
+<td>一旦信号值发生改变，立刻计算逻辑表达式是否成立，<strong>必须放在过程块中</strong></td>
+</tr>
+<tr>
+<td><strong>并发断言</strong></td>
+<td>基于时钟周期</td>
+<td>在<strong>时钟边缘采样</strong>，然后计算逻辑表达式是否成立</td>
+</tr>
+</tbody>
+</table>
+<p><strong>即时断言：</strong></p>
+<pre><code class="language-systemverilog">property p1
+    a &amp;&amp; b;
+endproperty
+
+always @(*) begin
+    a1: assert property(p1)
+end
+</code></pre>
+<p><strong>并发断言：</strong></p>
+<pre><code class="language-systemverilog">property p1
+    @(posedge clk) a ##1 b;
+endproperty
+
+a1: assert property(p1)
+</code></pre>
+<h3 id="22-">2.2 编写断言的步骤</h3>
+<p>编写一条断言一般包括以下步骤：</p>
+<ol>
+<li>编写序列（sequence）表达式；</li>
+<li>编写属性（property）表达式；</li>
+<li>断言属性（assert property / cover property / cover sequence / assume property）。</li>
+</ol>
+<p><strong>Sequence：</strong></p>
+<pre><code class="language-systemverilog">sequence BusReq(bit REQ=0, bit ACK=0);
+    REQ ##[1:3] ACK;
+endsequence
+</code></pre>
+<p><strong>Property：</strong></p>
+<pre><code class="language-systemverilog">property P6(bit AA, BB='true, EN=1);
+    @(posedge clk) disable iff(!rst_n)
+    EN |-&gt; (BB ##1 o) |=&gt; (AA ##[1:2] (!AA));
+endproperty
+</code></pre>
+<p><strong>四种断言标签：</strong></p>
+<pre><code class="language-systemverilog">// label: assert property
+name: assert property(P6(aa,bb,en))
+    &lt;success message&gt;;
+else
+    &lt;fail message&gt;;
+
+// label: assume property
+name: assume property(P6(aa,bb,en));
+
+// label: cover property
+name: cover property(P6(aa,bb,en));
+
+// label: cover sequence
+name: cover sequence(BusReq(req,ack));
+</code></pre>
+<h3 id="23-sequence--property-">2.3 sequence / property 结构</h3>
+<p><strong>sequence 语法结构：</strong></p>
+<pre><code>sequence BusReq (bit REQ=0, bit ACK=0);
+         ↑        ↑                  ↑
+       关键字   Sequence的名字      参数表（被例化时使用，可以没有）
+    REQ ##[1:3] ACK;
+         ↑
+    Sequence表达式，一般是一个逻辑序列
+endsequence
+</code></pre>
+<blockquote>
+<p>注意：sequence 定义和 sequence 本体所在的两行结束处需要<strong>加分号</strong>。</p>
+</blockquote>
+<p><strong>property 语法结构：</strong></p>
+<pre><code>property p_addr_stable(bit rd_en, bit wr_en, bit[ADDR_WIDTH-1:0] wr_addr);
+    @(posedge clk) disable iff(!rst_n)
+    wr_en ^~ rd_en |-&gt; $stable(wr_addr);
+endproperty
+</code></pre>
+<blockquote>
+<p>同样注意两个分号。property 表达式可以是逻辑表达式或者 sequence。</p>
+</blockquote>
+<h3 id="24-clock--disable--">2.4 Clock / disable / 逻辑表达式</h3>
+<p><strong>Clock 表达式：</strong></p>
+<ul>
+<li><code>@(posedge|negedge clk)</code></li>
+<li>位于 property 或者 sequence 内部；</li>
+</ul>
+<p><strong>disable 表达式：</strong></p>
+<ul>
+<li><code>disable iff(!rst_n || $isunknown(rst_n))</code></li>
+<li>一般位于 property 内部，可以用于解决在 DUT 未解复位时的 assertion 误报错；</li>
+</ul>
+<p><strong>逻辑表达式：</strong></p>
+<ul>
+<li>assertion 本质上是进行逻辑运算，判断信号组合或者时序序列成立（为 true）或者不成立（为 false）；</li>
+<li>逻辑表达式中一般使用逻辑运算符（<code>&amp;&amp;</code>、<code>||</code>、<code>!=</code>、<code>==</code> 等）；</li>
+<li><code>@(posedge clk) a ##DELAY b;</code> // DELAY 是个定值，可以用参数、宏，<strong>不能是变量</strong>；</li>
+<li><code>##[1:3]</code> 代表 ##1 或 ##2 或 ##3；</li>
+<li><code>##[1:$]</code> 代表从下一拍开始直到永远（仿真结束）。</li>
+</ul>
+<pre><code class="language-systemverilog">property P4;
+    @(negedge clk) disable iff (rst)
+    (c) |-&gt; (##[max-1:$] d);
+endproperty
+</code></pre>
+<h3 id="25-implication">2.5 蕴含（Implication）操作符</h3>
+<p><strong>交叠蕴含（overlapped implication）<code>|-&gt;</code>：</strong></p>
+<ul>
+<li><code>a |-&gt; b</code>：a 为 1 的时候，检查<strong>同拍</strong> b 是否为 1；如果 a 为 0，则不检查 b；如果 a 为 1 而 b 不为 1，则报错；</li>
+<li>左边叫&quot;先行算子&quot;（antecedent），右边叫&quot;后续算子&quot;（consequent），先行算子和后续算子可以是逻辑表达式，也可以是 sequence。</li>
+</ul>
+<p><strong>非交叠蕴含（non-overlapped implication）<code>|=&gt;</code>：</strong></p>
+<ul>
+<li><code>a |=&gt; b</code>：a 为 1 的时候，检查<strong>下一拍</strong> b 是否为 1；如果 a 为 0，则不检查下一拍 b 的值；如果 a 为 1 而下一拍 b 不为 1，则报错。</li>
+</ul>
+<p><strong>要点：</strong></p>
+<ul>
+<li>用蕴含符号来设置检查的<strong>门槛条件</strong>，避免每一拍都进行检查，提高仿真效率；</li>
+<li><code>a |=&gt; b</code> 和 <code>a |-&gt; ##1 b</code> 具有相同的含义；</li>
+<li>蕴含可以嵌套：<code>a |-&gt; b |-&gt; c</code> 是允许的，要求 a、b、c 同时为 1 时，才会检查成功；a 和 b 有一个为 0 时，不作检查。</li>
+</ul>
+<h3 id="26-">2.6 系统函数（一）</h3>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$rose(a)</code></td>
+<td>检测信号上升沿，相当于 <code>a &amp;&amp; !a_ff</code></td>
+</tr>
+<tr>
+<td><code>$fell(a)</code></td>
+<td>检测信号下降沿，相当于 <code>!a &amp;&amp; a_ff</code></td>
+</tr>
+<tr>
+<td><code>$stable(a)</code></td>
+<td>检测信号无跳变，相当于 <code>a ~^ a_ff</code></td>
+</tr>
+<tr>
+<td><code>$onehot(a)</code></td>
+<td>检查信号是否有且仅有 1 bit 为 1</td>
+</tr>
+<tr>
+<td><code>$onehot0(a)</code></td>
+<td>检查信号最多仅有 1 bit 为 1，可以为全 0</td>
+</tr>
+<tr>
+<td><code>$isunknown(a)</code></td>
+<td>检查信号的值是否为 X 或 Z</td>
+</tr>
+<tr>
+<td><code>$countones(a)</code></td>
+<td>返回向量中值为 1 的 bit 的数量</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例：</strong></p>
+<pre><code class="language-systemverilog">assert property(@(posedge clk) $countones(bus) &lt; 5);
+</code></pre>
+<h3 id="27--past">2.7 系统函数（二）—— $past</h3>
+<p><strong><code>$past(a[, b, cl])</code></strong>：表达信号过去 b 拍的值，相当于 a_ff1、a_ff2……a_ffb；<code>$past(a)</code> 表示过去一拍的值；c 为 clock gating 信号。</p>
+<pre><code class="language-systemverilog">property p19;
+    @(posedge clk) (c &amp;&amp; d) |-&gt;
+    ($past(a &amp;&amp; b, 2) == 1'b1);
+endproperty;
+</code></pre>
+<h3 id="28-">2.8 重复运算符（一）：连续重复</h3>
+<p>重复运算符的运算结果，实质上是一个<strong>序列</strong>。</p>
+<p><strong>连续重复：</strong></p>
+<pre><code>signal or sequence[*n]
+</code></pre>
+<ul>
+<li><code>n</code> 为一个常数；</li>
+<li><code>a[*n]</code>：a 连续 n 拍为真；</li>
+<li><code>(a ##1 b ##1 c)[*3]</code> 等价于 <code>(a ##1 b ##1 c) ##1 (a ##1 b ##1 c) ##1 (a ##1 b ##1 c)</code>；</li>
+<li><strong>连续重复要求中间无中断</strong>，中断则不成立。</li>
+</ul>
+<h3 id="29-">2.9 重复运算符（二）：跟随重复与非连续重复</h3>
+<p><strong>跟随重复（goto repetition）：</strong></p>
+<pre><code>signal or sequence[-&gt;n]
+</code></pre>
+<ul>
+<li><code>n</code> 为一个常数；</li>
+<li><code>a[-&gt;n]</code>：n 拍为真，<strong>不必连续，不带尾巴</strong>；</li>
+</ul>
+<pre><code class="language-systemverilog">property p26;
+    @(posedge clk) $rose(a) |-&gt; ##2 (b[-&gt;3]) ##1 c;
+endproperty;
+</code></pre>
+<p><strong>非连续重复（non-consecutive repetition）：</strong></p>
+<pre><code>signal or sequence[=n]
+</code></pre>
+<ul>
+<li><code>n</code> 为一个常数；</li>
+<li><code>a[=n]</code>：n 拍为真，<strong>不必连续，带尾巴</strong>；</li>
+</ul>
+<pre><code class="language-systemverilog">property p27;
+    @(posedge clk) $rose(a) |-&gt; ##2 (b[=3]) ##1 c;
+endproperty;
+</code></pre>
+<h3 id="210-sequence-and--intersect">2.10 sequence 操作符：and 与 intersect</h3>
+<p><strong>and</strong>：两个序列必须有<strong>相同的起始点</strong>，但是可以有不同的结束点，结束点为<strong>最后结束的序列</strong>的结束点。</p>
+<pre><code class="language-systemverilog">sequence s27a;
+    @(posedge clk) a ##[1:2] b;
+endsequence
+sequence s27b;
+    @(posedge clk) c ##[2:3] d;
+endsequence
+property p27;
+    @(posedge clk) s27a and s27b;
+endproperty
+a27: assert property(p27);
+</code></pre>
+<p><strong>intersect</strong>：和 and 类似，不同的是 intersect 构造要求连接的两个序列有<strong>相同的起始点和相同的结束点</strong>。</p>
+<pre><code class="language-systemverilog">property p21;
+    @(posedge clk) s27a intersect s27b;
+endproperty
+</code></pre>
+<h3 id="211-sequence-or--throughout">2.11 sequence 操作符：or 与 throughout</h3>
+<p><strong>or</strong>：两个序列，只要有一个成功则为真。</p>
+<pre><code class="language-systemverilog">sequence s12a;
+    @(posedge clk) a ##[1:2] b;
+endsequence
+sequence s20b;
+    @(posedge clk) c ##[2:3] d;
+endsequence
+property p29;
+    @(posedge clk) s12a or s20b;
+endproperty
+a29: assert property(p29);
+</code></pre>
+<p><strong>throughout</strong>：检查<strong>右边序列持续的时候，左边的表达式要一直为真</strong>。</p>
+<pre><code class="language-systemverilog">property p_no_req_0_two_gnt_1;
+    @(posedge clk) disable iff (rst)
+    req[0] ##1 (!gnt[0] throughout (gnt[1][-&gt;2])) |-&gt; 0;
+endproperty
+a_no_req_0_two_gnt_1: assert property (p_no_req_0_two_gnt_1);
+</code></pre>
+<h3 id="212-sequence-within">2.12 sequence 操作符：within</h3>
+<p><strong>within</strong>：格式为 <code>seq1 within seq2</code>，表示 seq1 在 seq2 起始点和结束点<strong>之内</strong>成立。</p>
+<pre><code class="language-systemverilog">sequence s32a;
+    @(posedge clk) ##1 (c[-&gt;3]) ##1 (a &amp;&amp; b);
+endsequence
+sequence s32b;
+    @(posedge start) ##[5:10] $rose(start);
+endsequence
+sequence s32;
+    @(posedge clk) s32a within s32b;
+endsequence
+
+property p32;
+    @(posedge clk) $fell(start) |-&gt; s32;
+endproperty
+a32: assert property(p32);
+</code></pre>
+<h3 id="213-">2.13 序列操作符及其优先级</h3>
+<p><strong>Table 17-2 — Sequence and property operator precedence and associativity</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sequence operators</th>
+<th>Property operators</th>
+<th>Associativity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[*]</code>, <code>[+]</code>, <code>[-&gt;]</code></td>
+<td>—</td>
+<td>Left</td>
+</tr>
+<tr>
+<td><code>##</code></td>
+<td>—</td>
+<td>Right</td>
+</tr>
+<tr>
+<td><code>throughout</code></td>
+<td>—</td>
+<td>Left</td>
+</tr>
+<tr>
+<td><code>within</code></td>
+<td>—</td>
+<td>Left</td>
+</tr>
+<tr>
+<td><code>intersect</code></td>
+<td>—</td>
+<td>Left</td>
+</tr>
+<tr>
+<td><code>not</code></td>
+<td><code>not</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>and</code></td>
+<td><code>and</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td><code>or</code></td>
+<td><code>or</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>—</td>
+<td><code>if - else</code></td>
+<td>Right</td>
+</tr>
+<tr>
+<td>—</td>
+<td>`</td>
+<td>-&gt;<code>, </code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-sva">3. SVA的集成与仿真控制</h2>
+<h3 id="31-sva-">3.1 SVA 的编写位置</h3>
+<p><strong>SVA 可以写在 module 和 interface 内部，不能写在 class 中：</strong></p>
+<ul>
+<li>写在 <strong>module 内部</strong>可以有两种方式：
+<ol>
+<li>写在 <strong>RTL 文件内部</strong>，用宏和 verilog pragma 隔开，一般由<strong>设计人员</strong>编写；</li>
+<li><strong>Assertion 写在单独的 module 中</strong>，以独立文件的方式存在，用 <strong>bind 方式</strong>与 RTL module 进行连接，这种方式 assertion module 会成为 RTL module 的一个 sub instance，一般由<strong>验证人员</strong>编写；</li>
+</ol>
+</li>
+<li>写在 <strong>interface 中</strong>，直接检查 interface 中的信号，一般由验证人员编写。</li>
+</ul>
+<p><strong>分工示意（原图）：</strong></p>
+<pre><code>设计人员 (Designer)：      子模块 A/B/AA/BB 的断言 → A_chk.sv / B_chk.sv / AA_chk.sv / BB_chk.sv
+验证人员 (DV)：            DE 需要将断言写入 RTL 代码；DV 需要将断言代码写入单独的文件
+模块关系：Sub-block A/B/AA/BB → Block C / CC → C_chk.sv / CC_chk.sv
+</code></pre>
+<h3 id="32--bind-">3.2 用 bind 将断言与模块绑定</h3>
+<p>将断言检验器与模块、模块的实例或者一个模块的多个实例绑定：</p>
+<p><strong>Design &ldquo;fifo.v&rdquo;：</strong></p>
+<pre><code class="language-verilog">`include &quot;defines.h&quot;
+module fifo(input clk, rst_n, read, write,
+            input [FIFO_WIDTH:0] data_i,
+            output [FIFO_WIDTH:0] data_o);
+    always @(posedge clk)
+    begin
+        if (rst)
+            ...
+    end
+endmodule
+</code></pre>
+<p><strong>Assertion &ldquo;assert_fifo.v&rdquo;：</strong></p>
+<pre><code class="language-systemverilog">module assert_fifo(clk, rst_n, read, empty);
+    input clk, rst_n, read, empty;
+    //do not underflow FIFO
+    no_underflow: assert property (
+        @(posedge clk) disable iff(!rst_n)
+        empty |-&gt; read
+    );
+endmodule
+</code></pre>
+<p><strong>绑定（bind）：</strong></p>
+<pre><code class="language-systemverilog">module binds_list();
+    bind fifo assert_fifo assert_fifo_inst(clk, rst_n, read, empty);
+endmodule
+</code></pre>
+<pre><code>Device Under Test         Module with SVA Properties        Instance of SVA Module
+   fifo.v                      assert_fifo.v               bind fifo assert_fifo assert_fifo_inst(...)
+</code></pre>
+<h3 id="33--interface-">3.3 在 interface 中定义断言</h3>
+<pre><code class="language-systemverilog">interface cpu_if(input bit cpu_clk); // one clock per clock domain
+    //define synchronous and asynchronous signals as logic
+    logic cpu_cs_n;
+    logic cpu_rd_n;
+    logic cpu_wr_n;
+    logic [15:0] cpu_addr;
+    wire  [31:0] cpu_data;
+    logic cpu_rdy_n;
+    logic rst_n;
+
+    //Define default setup &amp; hold times
+    parameter INPUT_SKEW = 1ns;  // time unit is defined by timescale
+    parameter OUTPUT_SKEW = 1ns;
+
+    clocking cpu_cb @(posedge cpu_clk);
+        default input #INPUT_SKEW output #OUTPUT_SKEW;
+        input cpu_cs_n;
+        input cpu_rd_n;
+        input cpu_wr_n;
+        input cpu_addr;
+        output cpu_rdy_n;
+    endclocking
+
+    modport cpu_mp(clocking cpu_cb, output rst_n);
+
+    //assert avm interface timing assertions in write operation
+    assert_tcdwd: assert property (@(posedge cpu_clk) disable iff ((!rst_n) | $isunknown(rst_n))
+        $fell(cpu_wr_n) |-&gt; ##8[0:20] $fell(cpu_rdy_n))
+        else $error(&quot;The timing of cpu_rdy_n tie-low is wrong in write operation&quot;);
+    assert_tcdwd: assert property (@(posedge cpu_clk) disable iff ((!rst_n) | $isunknown(rst_n))
+        $rose(cpu_wr_n) |-&gt; ##8[0:8] $rose(cpu_rdy_n))
+        else $error(&quot;The timing of cpu_rdy_n tie-high is wrong in write operation&quot;);
+endinterface
+</code></pre>
+<hr />
+<h2 id="4-">4. 参考书目</h2>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>资料</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>两页纸，语法速查，简单易上手</td>
+<td><strong>SVA_QuickReference.pdf</strong></td>
+</tr>
+<tr>
+<td>详细的语法书，结合实例</td>
+<td>《SystemVerilog Assertions》/ 《SystemVerilog Assertions 应用指南》</td>
+</tr>
+<tr>
+<td>实战参考，提供多种典型电路常用功能的断言写法</td>
+<td><strong>Creating_Assertion-Based_IP.pdf</strong></td>
+</tr>
+</tbody>
+</table>
+
+  </div>
+
+  
+  <nav class="post-nav">
+    
+    <a href="/post/axixie-yi-xue-xi-zong-jie/" class="post-nav-card post-nav-card--prev">
+      
+      <div class="post-nav-card__body">
+        <span class="post-nav-card__label meta-text">上一篇</span>
+        <span class="post-nav-card__title">AXI协议学习总结</span>
+      </div>
+      <span class="post-nav-card__arrow">&larr;</span>
+    </a>
+    
+    
+    <a href="/post/eccxiao-yan/" class="post-nav-card post-nav-card--next">
+      <div class="post-nav-card__body">
+        <span class="post-nav-card__label meta-text">下一篇</span>
+        <span class="post-nav-card__title">ECC校验</span>
+      </div>
+      
+      <span class="post-nav-card__arrow">&rarr;</span>
+    </a>
+    
+  </nav>
+
+  
+  
+
+
+</article>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="footer-inner">
+
+    
+    
+    <nav class="footer-nav" aria-label="页脚导航">
+      
+      <a class="footer-nav__link" href="/">首页</a>
+      
+      <a class="footer-nav__link" href="/post">博客</a>
+      
+      <a class="footer-nav__link" href="/memos">闪念</a>
+      
+      <a class="footer-nav__link" href="/archives">归档</a>
+      
+      <a class="footer-nav__link" href="/tags">标签</a>
+      
+      <a class="footer-nav__link" href="/links">友链</a>
+      
+      <a class="footer-nav__link" href="/post/about">关于</a>
+      
+    </nav>
+    
+
+    
+    <div class="footer-social">
+      
+      
+      
+      <a class="footer-social__link" href="/feed.xml" aria-label="RSS">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.18 15.64a2.18 2.18 0 110 4.36 2.18 2.18 0 010-4.36zM4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44zm0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z"/>
+        </svg>
+      </a>
+    </div>
+
+    
+    <div class="footer-copyright">
+      <p>&copy; 2026 数字IC成长日记. All rights reserved.</p>
+    </div>
+
+    
+    
+
+    
+    <div class="footer-powered">
+      <span>Powered by <a href="https://gridea.pro" target="_blank" rel="noopener noreferrer">Gridea Pro</a></span>
+    </div>
+
+  </div>
+</footer>
+
+  
+  <div class="search-overlay" id="searchOverlay" style="display:none;">
+  <div class="search-modal">
+    <div class="search-header">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="搜索文章..." autocomplete="off" />
+      <span class="search-kbd">&#8984;K</span>
+      <button class="search-close" id="searchClose" type="button" aria-label="关闭搜索">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<script src="/scripts/search.js"></script>
+  
+
+  
+
+  
+
+  
+
+<script>console.log("\n%c ✦ Gridea Pro v1.2.2 %c · Theme: flavor-theme v1.0.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="/styles/main.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+
+
+<style>:root { --heatmap-color: #39d353; }</style>
+
+
+
+<style>
+  .theme-toggle-sun  { display: flex; }
+  .theme-toggle-moon { display: none; }
+  :root.theme-light .theme-toggle-sun  { display: none; }
+  :root.theme-light .theme-toggle-moon { display: flex; }
+</style>
+
+
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('flavor-theme');
+      var theme = saved || 'dark';
+      if (theme === 'light') {
+        document.documentElement.classList.add('theme-light');
+      }
+    } catch (e) { }
+  })();
+</script>
+  <meta name="generator" content="Gridea Pro 1.2.2">
+  <title>GVIM学习 | 数字IC成长日记</title>
+  
+<meta property="og:title" content="GVIM学习" />
+<meta property="og:type" content="article" />
+
+
+<meta name="description" content="GVIM必杀20招 目录 GVIM必杀20技： 必杀技 主题 必杀技1 以一敌百 必杀技2 四两千斤 必杀计3 跳来跳去 必杀计4 指哪打哪 必杀计5 复制删除 必杀计6 自由修改 必杀计7 统一替换 必杀计8 自动补齐&amp;hellip;">
+<link rel="canonical" href="https://luciferpluto.github.io/post/gvimxue-xi/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"GVIM学习","url":"https://luciferpluto.github.io/post/gvimxue-xi/","description":"GVIM必杀20招 目录 GVIM必杀20技： 必杀技 主题 必杀技1 以一敌百 必杀技2 四两千斤 必杀计3 跳来跳去 必杀计4 指哪打哪 必杀计5 复制删除 必杀计6 自由修改 必杀计7 统一替换 必杀计8 自动补齐\u0026hellip;","datePublished":"2026-08-01T22:28:49+08:00","dateModified":"2026-09-07T14:30:20+08:00","author":{"@type":"Person","name":"数字IC成长日记"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"数字IC成长日记"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://luciferpluto.github.io","name":"数字IC成长日记","position":1},{"@type":"ListItem","item":"https://luciferpluto.github.io/post/gvimxue-xi/","name":"GVIM学习","position":2}]}</script>
+<meta property="og:title" content="GVIM学习">
+<meta property="og:description" content="GVIM必杀20招 目录 GVIM必杀20技： 必杀技 主题 必杀技1 以一敌百 必杀技2 四两千斤 必杀计3 跳来跳去 必杀计4 指哪打哪 必杀计5 复制删除 必杀计6 自由修改 必杀计7 统一替换 必杀计8 自动补齐&amp;hellip;">
+<meta property="og:url" content="https://luciferpluto.github.io/post/gvimxue-xi/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="数字IC成长日记">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://luciferpluto.github.io/post/gvimxue-xi/">
+<meta name="twitter:title" content="GVIM学习">
+<meta name="twitter:description" content="GVIM必杀20招 目录 GVIM必杀20技： 必杀技 主题 必杀技1 以一敌百 必杀技2 四两千斤 必杀计3 跳来跳去 必杀计4 指哪打哪 必杀计5 复制删除 必杀计6 自由修改 必杀计7 统一替换 必杀计8 自动补齐&amp;hellip;">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+<body class="flavor-theme">
+
+  <header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <div class="top-bar">
+
+      
+      <div class="top-bar__left">
+        
+        <a href="https://luciferpluto.github.io" class="site-avatar-link" aria-label="返回首页">
+          <img class="site-avatar" src="/images/avatar.png" alt="数字IC成长日记" />
+        </a>
+        
+        <a href="https://luciferpluto.github.io" class="site-name-link">数字IC成长日记</a>
+      </div>
+
+      
+      <nav class="top-bar__nav" id="sectionBar">
+        
+        
+        <a class="nav-item" href="/">首页</a>
+        
+        <a class="nav-item" href="/post">博客</a>
+        
+        <a class="nav-item" href="/memos">闪念</a>
+        
+        <a class="nav-item" href="/archives">归档</a>
+        
+        <a class="nav-item" href="/tags">标签</a>
+        
+        <a class="nav-item" href="/links">友链</a>
+        
+        <a class="nav-item" href="/post/about">关于</a>
+        
+        
+      </nav>
+
+      
+      <div class="top-bar__right">
+        <button class="btn-icon btn-search search-btn" id="btnSearch" type="button" aria-label="搜索">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="btn-icon theme-toggle theme-toggle-sun" id="themeToggleSun" type="button"
+          aria-label="切换到浅色模式">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1C12.5523 1 13 1.44772 13 2V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V2C11 1.44772 11.4477 1 12 1Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12ZM12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9Z"></path>
+            <path d="M13 20C13 19.4477 12.5523 19 12 19C11.4477 19 11 19.4477 11 20V22C11 22.5523 11.4477 23 12 23C12.5523 23 13 22.5523 13 22V20Z"></path>
+            <path d="M4.22282 4.22289C4.61335 3.83236 5.24651 3.83236 5.63704 4.22289L7.04704 5.63289C7.43756 6.02341 7.43756 6.65658 7.04704 7.0471C6.65651 7.43762 6.02335 7.43762 5.63283 7.0471L4.22282 5.6371C3.8323 5.24658 3.8323 4.61341 4.22282 4.22289Z"></path>
+            <path d="M18.367 16.9529C17.9765 16.5623 17.3433 16.5623 16.9528 16.9529C16.5623 17.3434 16.5623 17.9766 16.9528 18.3671L18.3628 19.7771C18.7533 20.1676 19.3865 20.1676 19.777 19.7771C20.1675 19.3866 20.1675 18.7534 19.777 18.3629L18.367 16.9529Z"></path>
+            <path d="M1 12C1 11.4477 1.44772 11 2 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H2C1.44772 13 1 12.5523 1 12Z"></path>
+            <path d="M20 11C19.4477 11 19 11.4477 19 12C19 12.5523 19.4477 13 20 13H22C22.5523 13 23 12.5523 23 12C23 11.4477 22.5523 11 22 11H20Z"></path>
+            <path d="M7.04704 16.9529C7.43756 17.3434 7.43756 17.9766 7.04704 18.3671L5.63704 19.7771C5.24651 20.1676 4.61335 20.1676 4.22282 19.7771C3.8323 19.3866 3.8323 18.7534 4.22283 18.3629L5.63283 16.9529C6.02335 16.5623 6.65651 16.5623 7.04704 16.9529Z"></path>
+            <path d="M19.777 5.6371C20.1675 5.24657 20.1675 4.61341 19.777 4.22289C19.3865 3.83236 18.7533 3.83236 18.3628 4.22289L16.9528 5.63289C16.5623 6.02341 16.5623 6.65658 16.9528 7.0471C17.3433 7.43762 17.9765 7.43762 18.367 7.0471L19.777 5.6371Z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon theme-toggle theme-toggle-moon" id="themeToggleMoon" type="button"
+          aria-label="切换到深色模式">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C10.0222 2 8.08879 2.58649 6.4443 3.6853C4.79981 4.78412 3.51809 6.3459 2.76121 8.17317C2.00433 10.0004 1.8063 12.0111 2.19215 13.9509C2.578 15.8907 3.53041 17.6725 4.92894 19.0711C6.32746 20.4696 8.10929 21.422 10.0491 21.8079C11.9889 22.1937 13.9996 21.9957 15.8268 21.2388C17.6541 20.4819 19.2159 19.2002 20.3147 17.5557C21.4135 15.9112 22 13.9778 22 12C22 11.5955 21.7564 11.2309 21.3827 11.0761C21.009 10.9213 20.5789 11.0069 20.2929 11.2929C19.287 12.2988 17.9226 12.864 16.5 12.864C15.0774 12.864 13.713 12.2988 12.7071 11.2929C11.7012 10.287 11.136 8.92261 11.136 7.5C11.136 6.07739 11.7012 4.71304 12.7071 3.70711C12.9931 3.42111 13.0787 2.99099 12.9239 2.61732C12.7691 2.24364 12.4045 2 12 2ZM7.55544 5.34824C8.27036 4.87055 9.05353 4.51389 9.87357 4.28778C9.39271 5.27979 9.13604 6.37666 9.13604 7.5C9.13604 9.45304 9.91189 11.3261 11.2929 12.7071C12.6739 14.0881 14.547 14.864 16.5 14.864C17.6233 14.864 18.7202 14.6073 19.7122 14.1264C19.4861 14.9465 19.1295 15.7296 18.6518 16.4446C17.7727 17.7602 16.5233 18.7855 15.0615 19.391C13.5997 19.9965 11.9911 20.155 10.4393 19.8463C8.88743 19.5376 7.46197 18.7757 6.34315 17.6569C5.21447 16.538 4.4624 15.1126 4.15372 13.5607C3.84504 12.0089 4.00347 10.4003 4.60897 8.93853C5.21447 7.47672 6.23985 6.22729 7.55544 5.34824Z"></path>
+            <path d="M19 2C19.5523 2 20 2.44772 20 3V4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H20V7C20 7.55228 19.5523 8 19 8C18.4477 8 18 7.55228 18 7V6H17C16.4477 6 16 5.55228 16 5C16 4.44772 16.4477 4 17 4H18V3C18 2.44772 18.4477 2 19 2Z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon btn-nav-toggle mobile-only" id="btnNavToggle" type="button" aria-label="切换导航">
+          <div class="hamburger" id="hamburger">
+            <span class="hamburger__line hamburger__line--top"></span>
+            <span class="hamburger__line hamburger__line--bottom"></span>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+
+<div class="header-spacer"></div>
+
+<script>
+(function(){
+  var btn = document.getElementById('btnNavToggle');
+  var nav = document.getElementById('sectionBar');
+  var hamburger = document.getElementById('hamburger');
+  if (btn && nav) {
+    btn.addEventListener('click', function(){
+      nav.classList.toggle('top-bar__nav--open');
+      if (hamburger) hamburger.classList.toggle('is-active');
+    });
+    nav.querySelectorAll('.nav-item').forEach(function(item){
+      item.addEventListener('click', function(){
+        nav.classList.remove('top-bar__nav--open');
+        if (hamburger) hamburger.classList.remove('is-active');
+      });
+    });
+  }
+
+  var root = document.documentElement;
+  var applyTheme = function(theme, persist){
+    if (theme === 'light') {
+      root.classList.add('theme-light');
+    } else {
+      root.classList.remove('theme-light');
+    }
+    if (persist) {
+      try { localStorage.setItem('flavor-theme', theme); } catch (e) {}
+    }
+  };
+  document.querySelectorAll('.theme-toggle').forEach(function(el){
+    el.addEventListener('click', function(){
+      applyTheme(root.classList.contains('theme-light') ? 'dark' : 'light', true);
+    });
+  });
+})();
+</script>
+
+  <main class="site-main" role="main">
+    
+<article class="article-container">
+  <header class="article-header">
+    <h1 class="article-title">GVIM学习</h1>
+    <div class="article-meta">
+      
+      <span class="article-meta__item">2026-08-01</span>
+      
+      <span class="article-meta__sep">·</span>
+      <span class="article-meta__item">24 分钟阅读</span>
+      
+    </div>
+    
+  </header>
+
+  
+
+  <div class="article-content">
+    <h1 id="gvim20">GVIM必杀20招</h1>
+<hr />
+<h2 id="heading">目录</h2>
+<p>GVIM必杀20技：</p>
+<table>
+<thead>
+<tr>
+<th>必杀技</th>
+<th>主题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>必杀技1</td>
+<td>以一敌百</td>
+</tr>
+<tr>
+<td>必杀技2</td>
+<td>四两千斤</td>
+</tr>
+<tr>
+<td>必杀计3</td>
+<td>跳来跳去</td>
+</tr>
+<tr>
+<td>必杀计4</td>
+<td>指哪打哪</td>
+</tr>
+<tr>
+<td>必杀计5</td>
+<td>复制删除</td>
+</tr>
+<tr>
+<td>必杀计6</td>
+<td>自由修改</td>
+</tr>
+<tr>
+<td>必杀计7</td>
+<td>统一替换</td>
+</tr>
+<tr>
+<td>必杀计8</td>
+<td>自动补齐</td>
+</tr>
+<tr>
+<td>必杀计9</td>
+<td>分解屏幕</td>
+</tr>
+<tr>
+<td>必杀计10</td>
+<td>进来出去</td>
+</tr>
+<tr>
+<td>必杀计11</td>
+<td>灾后重建</td>
+</tr>
+<tr>
+<td>必杀计12</td>
+<td>按键映射</td>
+</tr>
+<tr>
+<td>必杀计13</td>
+<td>寻找</td>
+</tr>
+<tr>
+<td>必杀计14</td>
+<td>匹配不匹配</td>
+</tr>
+<tr>
+<td>必杀计15</td>
+<td>撤销反撤销</td>
+</tr>
+<tr>
+<td>必杀计16</td>
+<td>定制 GVIM</td>
+</tr>
+<tr>
+<td>必杀计17</td>
+<td>折起打开</td>
+</tr>
+<tr>
+<td>必杀计18</td>
+<td>格式化文本</td>
+</tr>
+<tr>
+<td>必杀计19</td>
+<td>全局操作</td>
+</tr>
+<tr>
+<td>必杀计20</td>
+<td>由你作主</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="heading-1">说明</h2>
+<p>本文档是 GVIM 文本编译器提高效率的一些技巧：</p>
+<ul>
+<li>如果你以前没有接触过 GVIM，那你需要先知道什么是 GVIM、GVIM 的一些最基本操作，然后再来看这篇文档；</li>
+<li>如果你已经用 GVIM 很久了，但是觉得自己局限于简单的操作、效率很低，那你需要看看这篇文档，最好还能看一下 GVIM 的 manual；</li>
+<li>如果你是高手，那就不用看了，或者可以进来挑挑毛病、添加一些技巧。</li>
+</ul>
+<p>另外，本文档还有一个目的，就是了解 GVIM 的强大功能，开阔视野，抛砖引玉，让大家自己去开发 GVIM 的其他强大功能。毕竟我们的编程也好、查看 log 也好，都是用的 GVIM 编辑器。</p>
+<p>GVIM 的使用是一项<strong>技能</strong>，需要的是双手，而不是理解，所以看文档时请在工作站上打开一个 GVIM 编译器，<strong>一边动手，一边看</strong>。</p>
+<h3 id="gvim-">GVIM 的三种模式</h3>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>光标特征</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal 模式</strong></td>
+<td>光标覆盖整个字母</td>
+<td>不管在哪种模式下，按 ESC 键（有时要 2 次）都会回到 Normal 模式。在 Normal 模式下，输入的都是命令。</td>
+</tr>
+<tr>
+<td><strong>Insert 模式</strong></td>
+<td>光标在字母之间</td>
+<td>输入的就是屏幕上要输入的字符。</td>
+</tr>
+<tr>
+<td><strong>Visual 模式</strong></td>
+<td>光标也在字母之间，比 Insert 模式的光标粗一点</td>
+<td>用于选择区域。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1">必杀技1：以一敌百</h2>
+<p>你有没有发觉很多时候我们输入的都是重复的东西，比如：</p>
+<ol>
+<li><code>always @(posedge) begin ... end</code></li>
+<li><code>if () begin: LAB_A ... end:LAB_A</code> / <code>else if () begin: LAB_B ... end:LAB_B</code> / <code>else begin: LAB_C ... end:LAB_C</code></li>
+<li><code>task xx: ... endtask: xx</code> / <code>function xx: ... endfunction: xx</code></li>
+<li><code>vm_note(log, $sprintf());</code>、<code>vm_warning(log, $sprintf());</code>……</li>
+<li><code>for () begin ... end</code>、<code>while() begin ... end</code></li>
+<li>标准的文件头</li>
+<li>task 或 function 的说明</li>
+<li>设计中大量重复的 output、input</li>
+<li>还有很多……</li>
+</ol>
+<p>这些东西的结构内容一样，但是在编码时又都经常使用。<strong>能不能用 1、2 个字符就可以输出整个部分？可以。</strong></p>
+<h3 id="heading-2">方法</h3>
+<p><strong>第一步，定义一个缩写汇总的文件</strong>，比如放在 <code>/home/68116</code> 下，文件名为 <code>ab_rc.rc</code>（文件名可以为 <code>ab.sv</code>、<code>ab.v</code>、<code>xx.sv</code> 都可以）：</p>
+<pre><code>:iab o5_ output[5:0]
+:iab al_ always @()&lt;enter&gt;begin&lt;enter&gt;end
+:iab if_ if ()&lt;enter&gt;begin&lt;enter&gt;end
+:iab if2_ if ()&lt;enter&gt;begin&lt;enter&gt;end&lt;enter&gt;else if ()&lt;enter&gt;begin&lt;enter&gt;en...
+:iab elseif_ else if ()&lt;enter&gt;begin&lt;enter&gt;end
+:iab else_ else&lt;enter&gt;begin&lt;enter&gt;end
+:iab task_ //&lt;enter&gt;// task name :&lt;enter&gt;// task purpose :&lt;enter&gt;//*****...
+</code></pre>
+<p><strong>格式为</strong>：<code>:iab a X</code></p>
+<ul>
+<li><code>ab</code> 是单词缩写 abbreviate 的缩写；</li>
+<li><code>a</code> 是缩写后的字符；</li>
+<li><code>X</code> 是需要被缩写的字符。例如：<code>:iab o5_ output[5:0]</code>。</li>
+<li>前面的 <code>a</code> 中不能含空格，后面的 <code>X</code> 中可以含空格，<strong>换行用 <code>&lt;enter&gt;</code> 表示</strong>。</li>
+</ul>
+<p>这样前面所有固定的结构、需要重复输入的东西都可以定义为缩写。</p>
+<p><strong>第二步</strong>：在自己的 <code>/home/68116</code> 目录下的 <code>.gvimrc</code> 文件中，添加 <code>source ~/ab_rc.rc</code>：</p>
+<pre><code>source $VIM/syntax/syntax.vim
+source ~/gvim.vim
+source ~/ab_rc.rc
+source /software/apptools/vim/6.1/menu.vim
+source /software/apptools/vim/6.1/mswin.vim
+</code></pre>
+<p><strong>第三步</strong>：试试好不好用。打开一个 gvim.sv，输入 <code>task_</code>，按空格或回车，效果为：</p>
+<pre><code>// task name :
+// task purpose :
+task xx();
+endtask: xx
+</code></pre>
+<p>输入 <code>if2_</code> 空格或回车，变为：</p>
+<pre><code>if ()
+begin
+end
+else if ()
+begin
+end
+else
+begin
+end
+</code></pre>
+<p>甚至输入 <code>fh_</code> 空格或回车，变为文件头模板：</p>
+<pre><code>Project name
+File Name : xx.sv
+Description
+Author : Liu Fujun/168116
+All Right Reserved
+//$log: xx.sv $
+</code></pre>
+<p><strong>建议</strong>：由于一个缩写的后面接空格或回车都会直接展开，所以建议 <code>:iab a X</code> 中的 <code>a</code> 统一以下划线 <code>_</code> 结束（如 <code>if_</code>、<code>n2_</code>……）。这样定义，真的可以做到&quot;输入一百&quot;。更重要的是，可以<strong>统一文件头的格式、统一编码的格式</strong>。</p>
+<p>还可以统一 if 的书写风格（<code>if () begin</code> / <code>if ()</code> 换行 / <code>if () begin: LAB_A</code>），统一标准的文件头，task 或 function 前强制加说明。<strong>建议验证组根据制定出的编码规范做一个这样的统一缩写模板</strong>，让大家的编码比较一致，符合验证编码规范。</p>
+<hr />
+<h2 id="2">必杀技2：四两千斤</h2>
+<p><strong>如何从图1到图2？</strong></p>
+<pre><code>（图1）                       （图2）
+11111111111111111111         //11111111111111111111
+2222222222222222222222       //2222222222222222222222
+333333333333333333          //333333333333333333
+4444444444444444444444      //4444444444444444444444
+555555555555                //555555555555
+6666666666666666            //6666666666666666
+777777777777777             //777777777777777
+888888888888888             //888888888888888
+</code></pre>
+<p>如果你是一次次将光标移到字符头，再一次次添加 <code>//</code>，那如果这种操作有 1000 行，你就要崩溃了。可以按以下操作：</p>
+<ol>
+<li>将鼠标放在全 1 的那一行，回到 normal 模式（按 Esc）；</li>
+<li>接着输入：
+<pre><code>qc
+^j// [Esc]j
+q
+</code></pre>
+</li>
+<li>接着执行 <code>7@c</code>。</li>
+</ol>
+<p><strong>说明：</strong></p>
+<ol>
+<li>以 <code>q</code> 开始，并且以 <code>q</code> 结束；</li>
+<li><code>c</code> 代表一组操作（<code>^j// [Esc]j</code>）的名称，可以是任何字母；</li>
+<li><code>^</code> 跳到光标所在行的字符头位置（参考必杀计3）；<code>j</code> 从 normal 模式到 insert 模式；<code>//</code> 插入字符；<code>[Esc]</code> 按 Esc 回到 normal 模式；<code>j</code> 跳到下一行；</li>
+<li><code>7@c</code> 执行 7 次 c 代表的命令集合，即 7 次 <code>^j// [Esc]j</code>，就实现了我们的意图。</li>
+</ol>
+<p>当你需要大量以比较固定格式重复的操作时，都要想想能不能用这一招，或者编写救急的简单的 perl 程序实现。</p>
+<hr />
+<h2 id="3">必杀计3：跳来跳去</h2>
+<p>下面的命令都是基本的移动方式，没有太多技巧，需要动手练习，直到你的手比你的脑袋先想到。这些很重要，你会在其它必杀计中经常用到。</p>
+<h3 id="1-1">1、上下左右</h3>
+<p>除了方向键外，请重点掌握 normal 模式下的 <strong>h j k l</strong>（不知道哪个对应上下左右？马上试试）。</p>
+<h3 id="2-word-normal-">2、按 word 移动（normal 模式）</h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>w</code></td>
+<td>右移一个 word，光标停在首字母</td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td>右移一个 word，光标停在尾字母</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>左移一个 word，光标停在首字母</td>
+</tr>
+<tr>
+<td><code>ge</code></td>
+<td>左移一个 word，光标停在尾字母</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-1">3、按行移动（常用）</h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code>（数字 0）或 <code>[home]</code> 键</td>
+<td>到行首</td>
+</tr>
+<tr>
+<td><code>$</code> 或 <code>[end]</code> 键</td>
+<td>到行尾</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>到第一个非空字符</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4">4、按屏幕移动</h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ctrl + u</code></td>
+<td>向上半屏幕</td>
+</tr>
+<tr>
+<td><code>ctrl + d</code></td>
+<td>向下半屏幕</td>
+</tr>
+<tr>
+<td><code>ctrl + f</code></td>
+<td>向下一整屏</td>
+</tr>
+<tr>
+<td><code>ctrl + b</code></td>
+<td>向上一整屏（自己试试）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5">5、组合移动（常用）</h3>
+<p>比如 <code>2j</code>、<code>3w</code> 之类。<code>2j</code> 向下 2 行（执行 2 次 j 操作）；举一反三，<code>3w</code> 就是执行 3 次 w。</p>
+<hr />
+<h2 id="4-1">必杀计4：指哪打哪</h2>
+<p>在查看 log 定位问题时，有时需要在几个地方跳来跳去的看，这时这招就比较好用。</p>
+<h3 id="1-2">1、找字符</h3>
+<p><code>fx</code> 找光标处的后一个 x。</p>
+<h3 id="2-1">2、找行</h3>
+<p><code>40G</code> 或 <code>:40</code>（冒号命令，就是 normal 模式下按冒号，光标会出现在屏幕的最下一行）。注意 G 是大写（按 shift+g）。</p>
+<h3 id="3-2">3、找变量定义位置（常用）</h3>
+<p>有时候看代码时，需要知道变量（如 m_PacketNum）的类型、位宽等：</p>
+<ul>
+<li>将光标放在这个变量上，按 <strong><code>gd</code></strong>，就直接跳到定义处；</li>
+<li>按 <strong><code>（2 次 1）</code></strong>，就会回到刚才的位置。` 很常用，表示跳到上次光标的位置。</li>
+</ul>
+<h3 id="4-2">4、找标记（很好用）</h3>
+<ul>
+<li>将光标移到你需要关注的行，按 <strong><code>ma</code></strong>（以 a 标记这行，当然也可以是 m、m 等字母）；</li>
+<li>以后无论你在哪里，只要按 <strong><code>`a</code></strong>（` 可以是 1 或 enter，区别自己动手看看），就会马上跳到刚才标记 a 的行；</li>
+<li>你可以在一个文件定义很多标记，就可以指哪打哪了。</li>
+</ul>
+<hr />
+<h2 id="5-1">必杀计5：复制删除</h2>
+<p>在编码或文字处理过程中，会常用到删除一个字符、删除一行、将 a 行删除并复制到 b 处、复制一行等类似操作。在各种模式下都可以做到复制删除。</p>
+<ul>
+<li><strong>insert 模式下</strong>：和 window 下 word 里一样。</li>
+<li><strong>normal 模式下</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td>删除当前字符</td>
+</tr>
+<tr>
+<td><code>dd</code> / <code>cc</code></td>
+<td>dd 删除一行；cc 删除一行并进入 insert 模式</td>
+</tr>
+<tr>
+<td><code>yy</code></td>
+<td>复制一行</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>粘贴，<code>dd+p</code>、<code>yy+p</code> 是最常用也很好用的组合</td>
+</tr>
+<tr>
+<td><code>dw</code> / <code>cw</code></td>
+<td>dw 删除从当前光标到 word 尾部（包含空格）；cw 自己试试</td>
+</tr>
+<tr>
+<td><code>daw</code> / <code>diw</code></td>
+<td>daw（delete a word）删除一个完整 word 即使光标不在 word 的首字符，这个比 dw 好用；diw 自己试试</td>
+</tr>
+<tr>
+<td><code>das</code></td>
+<td>delete a sentence</td>
+</tr>
+<tr>
+<td><code>d4w</code> 或 <code>4dw</code></td>
+<td>组合键，执行 4 次 dw。还有其它很多组合，大家可以自己组合</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6">必杀计6：自由修改</h2>
+<p>修改几乎和输入一样常用，如将 0000 修改为 0001。但是有人不管在什么 GVIM 模式下都切换到 insert 模式，然后按方向键进行修改。其实，有时候在 normal 模式下修改更简单——在 normal 模式修改并不是要显示我们会几种修改的技巧，而是<strong>节省按键次数、提高效率</strong>。</p>
+<ul>
+<li><strong>insert 模式下</strong>：和 word 文档中一样；</li>
+<li><strong>normal 模式下</strong>：
+<ul>
+<li><strong>单字母修改</strong>：normal 模式下光标移到需要修改的字符上，按 <code>r</code> + 修改后字符（2 次按键，比 insert 模式少 1 次）；</li>
+<li><strong>多字符替换修改</strong>：normal 模式下按 <code>shift + r</code> 后，移动光标到需要修改的字符上，键入修改后字符，直到修改完，按 Esc 回到 normal（请试一下就知道了）。</li>
+</ul>
+</li>
+</ul>
+<p>另外需要提示的是，<strong>请大家尽量在 normal 模式下操作</strong>，少按几个键、少用点时间是我们的目标。其实在 insert 模式下，还有两种删除 <code>ctrl+x</code>、<code>ctrl+u</code>，请大家试试。</p>
+<hr />
+<h2 id="7">必杀计7：统一替换</h2>
+<p><strong>场景</strong>：如果你想把左边 TC 列表修改为右边那样，你不会傻到一行一行去修改，更不要傻到用&quot;列操作&quot;，用冒号命令。</p>
+<pre><code>左边                                  右边
+make reg TC=TC_FUNC_UFEC_0102 :UFEC0102    make run_fsdb TC=TC_FUNC_UFEC_0102 :UFEC0102
+make reg TC=TC_FUNC_UFEC_0103 :UFEC0103    make run_fsdb TC=TC_FUNC_UFEC_0103 :UFEC0103
+... (共 20 行)                             ...
+</code></pre>
+<pre><code>:%s/reg/run_fsdb/gi
+</code></pre>
+<p>冒号命令就是在 normal 模式下，以冒号开头的命令。</p>
+<p><strong>参数解释：</strong></p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%s</code></td>
+<td>所有行，当然可以是 <code>1,20s</code> 即 1 到 20 行</td>
+</tr>
+<tr>
+<td><code>reg</code></td>
+<td>需要替换的东东</td>
+</tr>
+<tr>
+<td><code>run_fsdb</code></td>
+<td>替换后的东东</td>
+</tr>
+<tr>
+<td><code>g</code></td>
+<td>指定行的所有匹配字符，不加 g，只替换第一个</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td>不区分大小写，即 am 和 AM 是一样的</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>替换时会询问，你确认后才能一个一个替换</td>
+</tr>
+</tbody>
+</table>
+<p>最后可以加一些限制，如 g、i、c、e 等。</p>
+<hr />
+<h2 id="8">必杀计8：自动补齐</h2>
+<p>在写代码时经常要重复地写标量名，有时候为了可读性，变量名比较长，输入就很麻烦。这时可以用这招（注意细心点）。</p>
+<p>例如你之前输入过 <code>m_BasePacket</code>，过了一会又要输入 <code>m_BasePacket</code>。这时你只需要输入 <code>m</code>，接着按 <strong><code>ctrl+p</code></strong>（向前找以前以 m 开头的单词，找到你想要的就松手）或 <strong><code>ctrl+n</code></strong>（向后翻）。</p>
+<hr />
+<h2 id="9">必杀计9：分解屏幕</h2>
+<p>有时候，你需要在一段时间在一个目录下看不同的文件，如果不断去打开（如 <code>gvim TC_FUNC_MAC_2516.sv</code>），就很麻烦了。有时候还需要比较一个文件中的几行或几段的区别，就需要同时能看到一个文件的两段字符。这时一种好的方法就是<strong>分解屏幕</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:sp</code></td>
+<td>上下分解屏幕（sp 是 split 的缩写）</td>
+</tr>
+<tr>
+<td><code>:vs</code></td>
+<td>左右分解屏幕</td>
+</tr>
+<tr>
+<td><code>:new</code></td>
+<td>上下分解，打开一个新窗口</td>
+</tr>
+<tr>
+<td><code>:vnew</code></td>
+<td>左右分解，打开一个新窗口（自己猜）</td>
+</tr>
+<tr>
+<td><code>:only</code></td>
+<td>只留下光标所在窗口</td>
+</tr>
+<tr>
+<td><code>:q</code>（<code>:close</code>）</td>
+<td>关掉光标所在窗口</td>
+</tr>
+<tr>
+<td><code>:qall</code></td>
+<td>关掉所有窗口</td>
+</tr>
+</tbody>
+</table>
+<p>另外，请试一下 <code>:vs</code> 接着 <code>:e .</code>（. 为句号）。</p>
+<hr />
+<h2 id="10">必杀计10：进来出去</h2>
+<p>这个也常用，没有用过 GVIM 的一般都想象不到还可以这样。写 RTL 代码一定会有文件列表，验证环境中也一定有文件列表：</p>
+<pre><code>$SD5110V200_RTL/SD5110V200/digital_data/rtl/hdl/common_fifo/syn_byte_ff_ctrl.v
+$SD5110V200_RTL/SD5110V200/digital_data/rtl/hdl/common_fifo/asyn_block_ff_ctrl.v
+...
+</code></pre>
+<p><strong>怎么从列表直接进入代码文本呢？</strong></p>
+<ul>
+<li>将光标放在要看的那个文件行上，按 <strong><code>gf</code></strong>（girlfriend），（CTRL-WF）就直接进到代码文本里了；</li>
+<li>如果想回到文件列表，用冒号命令 <strong><code>:br</code></strong>（boyfriend，和 gf 对比，应该可以记住这组命令了吧），就回到列表。</li>
+</ul>
+<hr />
+<h2 id="11">必杀计11：灾后重建</h2>
+<p>如果你一不小心进入了一个比较烂的工作站，而且你又没有随时保存的习惯，突然你的 GVIM 文本被强行关掉了，导致你写的大片代码或处理过的文本毁于一旦。这时先骂一骂工作站，然后冷静一下，我们还是有一些方法来试试能不能恢复。</p>
+<ul>
+<li>你编辑的文本会被不断地备份在某些地方，你的文本无故被强行关掉时，会有以 <code>.swx</code> 为后缀的文件（如 <code>.swp</code> <code>.swo</code> <code>.swn</code> <code>.swm</code>），可以在你编译的文本当前目录键入 <code>ll</code> 看到。如你编译的文件名为 th.sv，这时你可能会看到 <code>th.sv.swp</code>；</li>
+<li>你可以输入 <strong><code>gvim -r</code></strong> 看到所有 .swx 的文件。</li>
+</ul>
+<p><strong>重建方式：</strong></p>
+<ul>
+<li>再次打开 th.sv，不出意外会弹出一些对话框，就是一些 .swx 的文件信息，以及想一下这些东西：
+<pre><code>[O]pen Read-Only, (E)dit anyway, (R)ecover, (Q)uit, (A)bort, (D)elete it:
+</code></pre>
+</li>
+<li>这时只要注意 .swx 文件的时间信息，通常选最近的那个替换文件，然后 Recover 即可。</li>
+</ul>
+<p><strong>手动方式：</strong></p>
+<ol>
+<li>用冒号命令 <code>:rec(over)</code>，简写或全写都可以；</li>
+<li>会出现一些 swx 的信息，主要看看时间信息：
+<pre><code>Swap files found:
+Using specified name
+1. .Makefile.swp
+   owned by: 168116 dated: Thu Apr 10 10:22:24 2008
+   file name: /nas/data2/.../sim/Makefile
+   modified: no
+   user name: 168116 host name: HM234
+   process ID: 25345
+2. .Makefile.swp ...
+</code></pre>
+</li>
+<li>最后会看到提示，你可以选择你想替换的 swx（输入对应的序号）：
+<pre><code>Enter number of swap file to use (0 to quit):
+</code></pre>
+</li>
+<li>你检查一下这时的文本，如果是你想要的，记得<strong>赶快重新保存</strong>。当然，可能你最后键入的一点点会没有（找回 98% 也高兴得不会在乎最后几个字符被丢掉）。</li>
+</ol>
+<hr />
+<h2 id="12">必杀计12：按键映射</h2>
+<p>这个是比较强大的机制，只是大家很少用。</p>
+<p><strong>先提一个命令 <code>.</code></strong>（中文叫&quot;句号&quot;），这是一个简单强大的命令，它会<strong>重复你上一次的动作</strong>。如你先 <code>3dd</code>（删除 3 行），发现还要删除 3 行，这时只要按 <code>.</code> 就又执行了一遍 3dd。</p>
+<p><strong>什么是键映射？</strong> 简单的说，就是一组按键用一个键代替。</p>
+<p><strong>举个例子：</strong></p>
+<pre><code>:map &lt;F2&gt; i{&lt;Esc&gt;ea}&lt;Esc&gt;
+</code></pre>
+<p><strong>说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:map</code></td>
+<td>定义键映射，冒号命令</td>
+</tr>
+<tr>
+<td><code>&lt;F2&gt;</code></td>
+<td>定义 F2，这时输入可以直接按 F2 键或输入 <code>&lt;F2&gt;</code> 四个字符</td>
+</tr>
+<tr>
+<td><code>i{&lt;Esc&gt;ea}&lt;Esc&gt;</code></td>
+<td>这个只能输入 <code>&lt;Esc&gt;</code> 五个字符，因为你按 Esc 键就跳出了</td>
+</tr>
+</tbody>
+</table>
+<p><strong>效果</strong>：在 normal 模式下，将光标移到 word 的首字母，按 F2 键，会在 word 前后加上 <code>{}</code>。因为按下 F2 键，相当于执行了 <code>i{&lt;Esc&gt;ea}&lt;Esc&gt;</code>。</p>
+<p>这个像不像在 cshrc 中定义快捷键？但是请注意他们的区别：</p>
+<ul>
+<li><code>:map</code> 定义键映射，是在 <strong>normal 模式</strong>下，也就是 normal 模式下按 F2 才会执行；在其它模式下也可以定义键映射；</li>
+<li><code>:imap</code> 在 <strong>insert 模式</strong>下定义键映射。如上例在 insert 下定义 <code>:imap &lt;F2&gt; {&lt;Esc&gt;ea}</code>，则在 insert 模式下，将光标移到 word 首字符，按 F2，则同样会在 word 前后加上 <code>{}</code>。</li>
+</ul>
+<p>GVIM 中除了 F1，其它 F2~F12 都空着可以供大家使用。至于怎么定义键映射，看你的需要和想象力。</p>
+<p><strong>各种模式下定义键映射：</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:map</code></td>
+<td>Normal, Visual and Operator-pending</td>
+</tr>
+<tr>
+<td><code>:vmap</code></td>
+<td>Visual</td>
+</tr>
+<tr>
+<td><code>:nmap</code></td>
+<td>Normal</td>
+</tr>
+<tr>
+<td><code>:omap</code></td>
+<td>Operator-pending</td>
+</tr>
+<tr>
+<td><code>:map!</code></td>
+<td>Insert and Command-line</td>
+</tr>
+<tr>
+<td><code>:imap</code></td>
+<td>Insert</td>
+</tr>
+<tr>
+<td><code>:cmap</code></td>
+<td>Command-line</td>
+</tr>
+</tbody>
+</table>
+<p>具体可以查 VIM 用户手册。</p>
+<hr />
+<h2 id="13">必杀计13：寻找</h2>
+<p>在定位时，经常需要查找某个关键词。前天还看见刚入职的一兄弟在用 Edit 菜单（VIM - Search&hellip;）在文本中查找，因此，对没有用过 GVIM 的新手我还是把这个列出来。</p>
+<ul>
+<li>在 normal 模式下，光标移到需要关注的 word 上，按 <strong><code>*</code></strong> 号，这时文中所有的这个 word 会被选中，以高亮显示（高亮显示需要自己定义，现在部门用的 GVIM 颜色定义一般都是高亮；如果不是，尽快向同事 copy 一个）。按 <strong><code>n</code></strong> 光标会移到下一个高亮处，按 <strong><code>shift+n</code></strong>（或打开 Capslock 键按 n，即大写的 N）会向上移动到高亮；</li>
+<li>真正查找是，按 <strong><code>/</code></strong>（这时光标在屏幕最下面一行），然后输入你要查找的字符，回车，你要查找的 word 就会以高亮显示。</li>
+</ul>
+<p><strong>例如：</strong></p>
+<ul>
+<li><code>/run</code>：只要包含 run 的都高亮，如 run、running、run_fsdb 中的 run 都高亮；</li>
+<li><code>/\&lt;run\&gt;</code>：这个只是 run 高亮。</li>
+</ul>
+<p>这个必杀计要经常结合必杀计14（匹配不匹配）使用。</p>
+<hr />
+<h2 id="14">必杀计14：匹配不匹配</h2>
+<p>这个是基础知识，在 perl 中也会用到，单独出来就是<strong>正则表达式</strong>的内容。什么是正则表达式？简单的说就是查看字符串，看是&quot;匹配&quot;还是&quot;不匹配&quot;。它包含的内容比较多。</p>
+<blockquote>
+<p>注意：GVIM 中匹配和 perl 中的有差别，和文件的匹配也不一样，请不要弄混了。这些规则一般和必杀计13（查找）和必杀计7（替换）一起使用。</p>
+</blockquote>
+<p><strong>元字符：</strong></p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>匹配前一项 0 次、1 次或多次</td>
+</tr>
+<tr>
+<td><code>\+</code></td>
+<td>匹配前一项 1 次或多次</td>
+</tr>
+<tr>
+<td><code>\=</code></td>
+<td>前一项可有可无</td>
+</tr>
+<tr>
+<td><code>\{m,n\}</code></td>
+<td>匹配前一项 m~n 次</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>多选一</td>
+</tr>
+</tbody>
+</table>
+<p><strong>例子说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>匹配内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/a*/</code></td>
+<td>匹配 a，aa，……，还有空字符</td>
+</tr>
+<tr>
+<td><code>/\(ab\)*/</code></td>
+<td>匹配 ab，abab，……，还有空字符</td>
+</tr>
+<tr>
+<td><code>/a\+/</code></td>
+<td>匹配 a，aa，……</td>
+</tr>
+<tr>
+<td><code>/runs\=/</code></td>
+<td>匹配 run，runs</td>
+</tr>
+<tr>
+<td><code>/a\{1,3\}/</code></td>
+<td>匹配 a，aa，aaa</td>
+</tr>
+<tr>
+<td><code>/foo|bar/</code></td>
+<td>匹配 foo 或 bar</td>
+</tr>
+<tr>
+<td><code>/end\{if|for|while\}/</code></td>
+<td>匹配 endif，endfor，endwhile</td>
+</tr>
+</tbody>
+</table>
+<p>从上面可以看出，<code>*</code>、<code>\+</code>、<code>\=</code>、<code>\{m,n\}</code>、<code>\|</code> 可以组合出很奇妙的匹配，大家发挥想象力。</p>
+<p><strong>GVIM 提供的一些特殊而强大的东东：</strong></p>
+<table>
+<thead>
+<tr>
+<th>特殊项</th>
+<th>匹配什么</th>
+<th>等价的正则表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\d</code></td>
+<td>数字</td>
+<td><code>[0-9]</code></td>
+</tr>
+<tr>
+<td><code>\D</code></td>
+<td>非数字</td>
+<td><code>[^0-9]</code></td>
+</tr>
+<tr>
+<td><code>\x</code></td>
+<td>十六进制数</td>
+<td><code>[0-9a-fA-F]</code></td>
+</tr>
+<tr>
+<td><code>\X</code></td>
+<td>非十六进制数</td>
+<td><code>[^0-9a-fA-F]</code></td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>空白字符</td>
+<td><code>[ ]</code>（&lt;Tab&gt; 和 &lt;Space&gt;）</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>非空白字符</td>
+<td><code>[^ ]</code>（除 &lt;Tab&gt; 和 &lt;Space&gt; 之外）</td>
+</tr>
+<tr>
+<td><code>\l</code></td>
+<td>小写字母</td>
+<td><code>[a-z]</code></td>
+</tr>
+<tr>
+<td><code>\L</code></td>
+<td>非小写字母</td>
+<td><code>[^a-z]</code></td>
+</tr>
+<tr>
+<td><code>\u</code></td>
+<td>大写字母</td>
+<td><code>[A-Z]</code></td>
+</tr>
+<tr>
+<td><code>\U</code></td>
+<td>非大写字母</td>
+<td><code>[^A-Z]</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="15">必杀计15：撤销反撤销</h2>
+<p>你在撤销上次操作时是不是用的 window 中的方式，用鼠标点按钮？这样也太土了。我们要尽量<strong>抛弃鼠标</strong>。</p>
+<ul>
+<li>在 normal 模式下，撤销对应的是字母 <strong><code>u</code></strong>，反撤销对应的是 <strong><code>ctrl+r</code></strong>；</li>
+<li>你会发现 <code>u</code> 和 <code>ctrl+r</code> 都可以重复按，可以重复撤销/反撤销多次操作。</li>
+</ul>
+<hr />
+<h2 id="16gvim">必杀计16：定制GVIM</h2>
+<p>你打开一个 GVIM 编辑器，里面的风格并不是天然存在的。比如你的自动缩进、一个 tab 键相当于几个空格、背景颜色、字体颜色、每行宽度、历史命令保存多少个等等，这些风格都要在 <strong>gvimrc</strong> 里定义（一般情况下，刚进部门时，都是导师 copy 一个 <code>.gvimrc</code>，新手比较少的人知道这些都是怎么设定的）。</p>
+<p><strong>.gvimrc 示例：</strong></p>
+<pre><code>set hlsearch        &quot; 高亮搜索
+set mousehide       &quot; hide the mouse pointer while typing
+set undolevels=100  &quot; set undo 100 times
+set backspace=indent,eol,start
+set history=100     &quot; keep 50 lines of command line history
+set ruler           &quot; show the cursor position all the time
+set showmatch
+set incsearch       &quot; 增量搜索
+set showcmd         &quot; display incomplete commands
+set matchtime=10
+set autoindent      &quot; Set automatic indent of a new line
+if has(&quot;vms&quot;)       &quot; keep a backup file
+  set backup
+else                &quot; do not keep a backup file, use version control
+  set nobackup
+endif
+</code></pre>
+<p>当你知道怎么设定时，就可以根据自己的喜好，定制一个你自己的 <code>.gvimrc</code>，让你的 GVIM 文本看起来有你自己的风格。</p>
+<hr />
+<h2 id="17">必杀计17：折起打开</h2>
+<p>有时候文本看起来很长，查找时需要翻页很多次，而且有的行我们不关心，就可以把这些行<strong>折起来</strong>。下面举个例子（将 62~79 行折叠起来）：</p>
+<pre><code>61 make run_fsdb TC=TC_FUNC_UFEC_0504 :UFEC0504
+62 *** 18 lines: make run_fsdb TC=TC_FUNC_UFEC_0104 :UFEC0104
+80 run runrrsrrrr
+</code></pre>
+<p><strong>两种折叠方式：</strong></p>
+<ul>
+<li>normal 模式下，光标移到 62 行，键入 <code>zf18j</code>（意思是折叠光标以下 18 行）；</li>
+<li>visual 模式下（normal 模式下按 v），用 hjkl 控制选中要折叠的文本，再按 <code>zf</code>。</li>
+</ul>
+<p><strong>相关命令：</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zf</code></td>
+<td>创建折叠</td>
+</tr>
+<tr>
+<td><code>zo</code></td>
+<td>打开折叠</td>
+</tr>
+<tr>
+<td><code>zr</code></td>
+<td>打开所有折叠，包含嵌套的折叠</td>
+</tr>
+<tr>
+<td><code>zc</code></td>
+<td>关闭折叠</td>
+</tr>
+<tr>
+<td><code>zm</code></td>
+<td>与 zr 相反</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="18">必杀计18：格式化文本</h2>
+<h3 id="1-3">1、大小写转换</h3>
+<p>在 visual 模式（normal 模式下直接按 v 进入 visual 模式）下，按 hjkl 键选定区域：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>U</code></td>
+<td>选中区域内小写字母变大写字母</td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td>选中区域内大写字母变小写字母</td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>选中区域内本来大写的字母变小写字母，本来小写的字母变大写字母，和程序中&quot;取反&quot;操作是一样的字符，意思也差不多</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2">2、断行</h3>
+<p><code>set textwidth = 72</code> 则一行有 72 字母以后会另起一行。</p>
+<h3 id="3-3">3、对齐</h3>
+<p>如下例，想对齐文本：</p>
+<pre><code>96 make run_fsdb TC=TC_FUNC_UFEC_0404 :UFEC0404
+97 make run_fsdb TC=TC_FUNC_UFEC_0501 :UFEC0501
+...
+</code></pre>
+<p>需要执行 <code>:96,100 left 0</code>，就会成为对齐的方式。<code>96,100</code> 是起始行数，<code>left</code> 表示左对齐，<code>0</code> 对齐在 0 列。类似的命令还有 <code>:96,100 right 80</code>、<code>:96,100 center 80</code>。</p>
+<h3 id="4-3">4、自动缩进</h3>
+<p><code>set autoindent</code> 和 <code>set sw=4</code>，你可以查看你的 home 目录下的 .gvimrc 文本。</p>
+<hr />
+<h2 id="19">必杀计19：全局操作</h2>
+<p>如果你想把好几个 c 文件中名为 &ldquo;c_cnt&rdquo; 的变量都改为 &ldquo;x_counter&rdquo;，这就要动到多个文件。</p>
+<p><strong>第一步</strong>，先把所有要改的文件放到参数列表上：</p>
+<pre><code>:args *.svt
+</code></pre>
+<p>该命令会找到所有的 svt 文件并开始编辑第一个。</p>
+<p><strong>第二步</strong>，对所有的文件都进行同一个替换操作：</p>
+<pre><code>:argdo %s/\&lt;x_cnt\&gt;/x_counter/ge | update
+</code></pre>
+<p><strong>说明：</strong></p>
+<ul>
+<li><code>:argdo</code> 命令以另一个命令为参数，该命令将对所有待编辑的文件都执行一次；</li>
+<li><code>%s</code> 替换操作将施于所有行上，它通过 <code>\&lt;x_cnt\&gt;</code> 查找 x_cnt。其中 <code>\&lt;</code> 和 <code>\&gt;</code> 使得只有完整的单词会被匹配，这样 &ldquo;px_cnt&rdquo; 和 &ldquo;x_cnt2&rdquo; 中的 x_cnt 才可以免遭毒手；</li>
+<li>替换操作的标志 <code>g</code> 使得每行中的全部 x_cnt 都被替换，标志 <code>e</code> 则用于避免某些文件中一个 x_cnt 都找不到时的错误消息，否则 argdo 命令遇到这些错误就会终止整个操作；</li>
+<li><code>|</code> 用来分隔两个命令，后面的 <code>update</code> 命令会在文件有改变时进行保存，如果没有一个 x_cnt 被替换为 x_counter 那就不进行任何操作。</li>
+</ul>
+<hr />
+<h2 id="20">必杀计20：由你作主</h2>
+<p>GVIM 的内容远不止上面的 19 条，上面的只是将自己认为的常用的好用总结出来，或者让大家看到 GVIM 的强大——如果工具掌握得熟练也是可以提高效率的。验证组就是要不断地提高效率，找到使人&quot;懒惰&quot;的方法。</p>
+<ul>
+<li>GVIM 的熟练使用是为了<strong>少敲一些键，少花点时间</strong>；</li>
+<li>VMM 架构及 CCB 的积累重用让我们<strong>少写点代码</strong>；</li>
+<li>perl 的使用也是为了让机器<strong>自动地替我们做事</strong>，让我们轻松一点，&ldquo;懒惰&quot;一点。</li>
+</ul>
+<p><strong>第 20 计，留个空白</strong>，大家可以发挥想象，总结一下还有什么好用的东西，可以弄成 20+、20++ 等添加进来。</p>
+
+  </div>
+
+  
+  <nav class="post-nav">
+    
+    <a href="/post/eccxiao-yan/" class="post-nav-card post-nav-card--prev">
+      
+      <div class="post-nav-card__body">
+        <span class="post-nav-card__label meta-text">上一篇</span>
+        <span class="post-nav-card__title">ECC校验</span>
+      </div>
+      <span class="post-nav-card__arrow">&larr;</span>
+    </a>
+    
+    
+    <a href="/post/verilog-xue-xi-ji-yu-cai-niao-jiao-cheng-fu-linux/" class="post-nav-card post-nav-card--next">
+      <div class="post-nav-card__body">
+        <span class="post-nav-card__label meta-text">下一篇</span>
+        <span class="post-nav-card__title"> Verilog学习——基于菜鸟教程（附——linux）</span>
+      </div>
+      
+      <span class="post-nav-card__arrow">&rarr;</span>
+    </a>
+    
+  </nav>
+
+  
+  
+
+
+</article>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="footer-inner">
+
+    
+    
+    <nav class="footer-nav" aria-label="页脚导航">
+      
+      <a class="footer-nav__link" href="/">首页</a>
+      
+      <a class="footer-nav__link" href="/post">博客</a>
+      
+      <a class="footer-nav__link" href="/memos">闪念</a>
+      
+      <a class="footer-nav__link" href="/archives">归档</a>
+      
+      <a class="footer-nav__link" href="/tags">标签</a>
+      
+      <a class="footer-nav__link" href="/links">友链</a>
+      
+      <a class="footer-nav__link" href="/post/about">关于</a>
+      
+    </nav>
+    
+
+    
+    <div class="footer-social">
+      
+      
+      
+      <a class="footer-social__link" href="/feed.xml" aria-label="RSS">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.18 15.64a2.18 2.18 0 110 4.36 2.18 2.18 0 010-4.36zM4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44zm0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z"/>
+        </svg>
+      </a>
+    </div>
+
+    
+    <div class="footer-copyright">
+      <p>&copy; 2026 数字IC成长日记. All rights reserved.</p>
+    </div>
+
+    
+    
+
+    
+    <div class="footer-powered">
+      <span>Powered by <a href="https://gridea.pro" target="_blank" rel="noopener noreferrer">Gridea Pro</a></span>
+    </div>
+
+  </div>
+</footer>
+
+  
+  <div class="search-overlay" id="searchOverlay" style="display:none;">
+  <div class="search-modal">
+    <div class="search-header">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="搜索文章..." autocomplete="off" />
+      <span class="search-kbd">&#8984;K</span>
+      <button class="search-close" id="searchClose" type="button" aria-label="关闭搜索">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<script src="/scripts/search.js"></script>
+  
+
+  
+
+  
+
+  
+
+<script>console.log("\n%c ✦ Gridea Pro v1.2.2 %c · Theme: flavor-theme v1.0.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>
